@@ -1,0 +1,69 @@
+
+
+.animationLogoLeft{
+    /* border: 2px solid red; */
+    height: 200px;
+    width: 200px;
+    animation: animLogo 6s linear infinite;
+    position: relative;
+    margin-right: -100px;
+    rotate: 90deg;
+}
+@keyframes animLogo {
+    0%{
+        rotate: 90deg;
+    }100%{
+        rotate: 450deg;
+    }
+}
+.animationLogoLeft div > img{
+    height: 100%;
+}
+.animationLogoRight{
+    /* border: 2px solid red; */
+    height: 200px;
+    width: 200px;
+    animation: animLogo 6s linear infinite;
+    position: relative;
+    margin-left: -100px;
+    rotate: 90deg;
+}
+@keyframes animLogo {
+    0%{
+        rotate: 90deg;
+    }100%{
+        rotate: 450deg;
+    }
+}
+.animationLogoRight div > img{
+    height: 100%;
+}
+.comLeft, .comRight{
+    width: 50%;
+    height: 100vh;
+    background: #408759;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    z-index: 100000;
+}
+.comLeft{
+    justify-content: end;
+    left: 0;
+}
+.comRight{
+    right: 0;
+}
+.titAnim1, .titAnim2{
+    position: absolute;
+}
+    
+.comLeftAnim{
+    transition: all 1s ease-in-out;
+    left: -50%;
+}
+.comRightAnim{
+    transition: all 1s ease-in-out;
+    right: -50%;
+}
