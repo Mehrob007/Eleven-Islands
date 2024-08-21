@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'AGAvantGardeCyr';
-  src: url('../assets/fonts/agavantgardecyr-book.woff2') format('woff2'),
-       url('../assets/fonts/agavantgardecyr-book.woff') format('woff');
+  src: url('./assets/fonts/agavantgardecyr-book.woff2') format('woff2'),
+       url('./assets/fonts/agavantgardecyr-book.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
@@ -26,7 +26,6 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
   font-family: 'AGAvantGardeCyr', sans-serif;
 }

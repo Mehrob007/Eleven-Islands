@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Box2 from './pageElements/Box2'
 
 
@@ -88,8 +88,6 @@ const arrDataImg = [
     subTitle: 'New collection'
   }
 ];
-
-
 export default function Products() {
   return (
     <>

@@ -27,7 +27,7 @@ header{
     /* height: 15px; */
     width: 376px;
 }
-.navigation > ul > li{
+.navigation > ul > a{
     font-family: 'AGAvantGardeCyr', sans-serif;
     color: white;
     cursor: pointer;
@@ -134,8 +134,8 @@ header{
 }
 .header{
     max-width: 1440px;
-    padding: 0px 50px;
     width: 100%;
+    padding: 0px 0px;
     margin: 0 auto;
     min-height: 32px;
     display: flex;
@@ -617,3 +617,31 @@ select{
 .contentProducts{
     margin-bottom: 60px;
 }
+.contectProductId{
+    /* padding: 0 50px; */
+    padding-top: 60px;
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    gap: 40px;
+}
+.contectProductId__img{
+    max-width: 930px;
+    width: 100%;
+    min-height: 1014px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.contectProductId__info{
+    min-height: 937px;
+    max-width: 420px;
+    width: 100%;
+
+}
+/* 930 */

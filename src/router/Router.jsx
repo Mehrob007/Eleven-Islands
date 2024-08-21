@@ -2,13 +2,13 @@ import React, { lazy, Suspense, useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 // import components
-import Loading from '../../components/loading/Loading'
+import Loading from '../components/loading/Loading'
 
 // lazy pages
-const Layout = lazy(() => import('../../components/layout/Layout'))
-const MainPage = lazy(() => import('../../components/layout/page/MainPage'))
-const Products = lazy(() => import('../../components/layout/page/Products'))
-const Product = lazy(() => import('../../components/layout/page/Prodect'))
+const Layout = lazy(() => import('../components/layout/Layout'))
+const MainPage = lazy(() => import('../components/layout/page/MainPage'))
+const Products = lazy(() => import('../components/layout/page/Products'))
+const Product = lazy(() => import('../components/layout/page/Prodect'))
 
 export default function Router() {
     const [isLoading, setIsLoading] = useState(true)
@@ -27,7 +27,7 @@ export default function Router() {
     }, [isLoading])
 
     return (
-        <div className={!isDataLoaded && `box`}>
+        <div className={!isDataLoaded && 'box'}>
             {!isDataLoaded && <Loading isLoading={isLoading} />}
             <Suspense fallback={<Loading isLoading={true} />}>
                 <Routes>
