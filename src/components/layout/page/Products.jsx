@@ -1,125 +1,63 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import Box2 from './pageElements/Box2'
 
-
-import image from '../../../assets/img/1.png';
-import hover from '../../../assets/img/2.png';
 import SendEmail from './pageElements/SendEmail';
+import { usePhotoStore } from '../storeState/store';
 
 
-
-const arrDataImg = [
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  }
-];
 export default function Products() {
+  const { photos, currentPage, fetching, fetchPhotos, setFetching } = usePhotoStore();
+
+  useEffect(() => {
+    fetchPhotos(4, currentPage);
+  }, []);
+
+  const scrollHandler = (e) => {
+    if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
+      setFetching(true);
+      console.log('scroll'); 
+    }
+  };
+
+  useEffect(() => {
+    if (fetching) {
+      fetchPhotos(4, currentPage);
+    }
+  }, [fetching]);
+
+  useEffect(() => {
+    document.addEventListener('scroll', scrollHandler);
+    return () => {
+      document.removeEventListener('scroll', scrollHandler);
+    };
+  }, []);
   return (
     <>
       <div className='filterBar'>
         <h1>Каталог</h1>
         <div>
-          <div>
+          <div className='filterProbucts'>
             <select id="">
-              <option value="*">Наличие</option>
-            </select>
-            <select id="">
-              <option value="*">Тип</option>
+              <option value="*">Тип продукции</option>
             </select>
             <select id="">
               <option value="*">Цвет</option>
             </select>
             <select id="">
-              <option value="*">Пол</option>
-            </select>
-            <select id="">
               <option value="*">Размер</option>
-            </select>
+            </select> 
           </div>
           <select id="">
-            <option value="*">Цена</option>
+            <option value="*">Сортировать по</option>
+            <option value="descending">По убыванию цены</option>
+            <option value="ascending">По возрастанию цены</option>
           </select>
         </div>
       </div>
       <div className="contentProducts">
-        <Box2 arrDataImg={arrDataImg} />
+        <Box2 arrDataImg={photos.filter((_, i) => i < 12)} />
         <SendEmail />
-        <Box2 arrDataImg={arrDataImg} />
+        <Box2 arrDataImg={photos.filter((_, i) => i > 12)} />
       </div>
     </>
   )

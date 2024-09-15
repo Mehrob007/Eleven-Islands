@@ -9,42 +9,14 @@ import SendEmail from './pageElements/SendEmail';
 
 import Photo2 from '../../../assets/img/Фото2.png';
 import Photo4 from '../../../assets/img/Фото4.png';
+import { usePhotoStore } from '../storeState/store';
 
-
-const arrDataImg = [
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  }
-];
 const arrDataImgFind = [
   {
     content: {
       image: [Photo2, Photo2, Photo4, Photo4],
       subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
+      size: ['XS', 'S', 'M', 'L'], 
       color: [Photo2, Photo2, Photo2],
       overview: {
         overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
@@ -338,21 +310,30 @@ const arrDataImgFind = [
 
 export default function Prodect() {
   const { id } = useParams()
+  const { findeElement, findeProduct } = usePhotoStore()
+
+  useEffect(() => {
+    findeProduct(id)
+  }, [])
+  // console.log(findeElement ? findeElement : 'loading...');
   console.log(`Prodect${id}`);
+
   
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
 
   return (<>
-    <div className='contectProductId'>
+    {findeElement && <>
+      <div className='contectProductId'>
       <div className='contectProductId__img'>
-          {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev) => (
-            <img src={prev} alt="imgProduct" />
+          {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev, i) => (
+            <img key={i} src={prev} alt="imgProduct" />
           ))}        
       </div>
       <div className='contectProductId__info'>
           Prodect{id}
+          {/* {findeElement.attributes[0].product_attribute_name && 'null'} */}
           {/* {arrDataImgFind[id] && arrDataImgFind[id]} */}
       </div>
       
@@ -365,8 +346,9 @@ export default function Prodect() {
         <div className='headerCom2'>
         </div>
       </div>
-      <Box2 arrDataImg={arrDataImg} /> 
+      {/* <Box2 arrDataImg={arrDataImg} />  */}
       <SendEmail />
     </div>
+    </>}
   </>)
 }

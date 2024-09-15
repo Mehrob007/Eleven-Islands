@@ -9,214 +9,11 @@ import element2Box1Logo from '../../../assets/icon/element2Box1Logo.svg';
 import StrelkaRight from '../../../assets/icon/StrelkaRight.svg';
 import StrelkaLeft from '../../../assets/icon/StrelkaLeft.svg';
 
-import image from '../../../assets/img/1.png';
-import hover from '../../../assets/img/2.png';
-
 import imgSlider from '../../../assets/img/imgSlidr.png';
 import imgBlog from '../../../assets/img/blogContent.png';
 
-import Photo2 from '../../../assets/img/Фото2.png';
-import Photo4 from '../../../assets/img/Фото4.png';
-
-
-const arrDataImg = [
-  {
-    content: {
-      image: [Photo2, Photo2, Photo4, Photo4],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [Photo2, Photo2],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-  },
-  {
-    content: {
-      image: [''],
-      subTitle: 'Спортивные шорты Emblem',
-      size: ['XS', 'S', 'M', 'L'],
-      color: [''],
-      overview: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      Care: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-      DeliveryAndReturn: {
-        overviewh1: 'Эти шорты средней длины из плотного джерси имеют пояс на кулиске, передние и задний карманы. ',
-        overviewul: ['- 100% хлопок, 9 унций.', '- Сделано в Португалии.', '- Эластичный пояс со шнурком.', '- Без усадки', '- Окрашенная одежда', '- Унисекс']
-      },
-    },
-    img: image,
-    hover: hover,
-    title: 'Dri-Fit Advantage Shorts Women',
-    price: "23.000",
-    subTitle: 'New collection'
-  }
-];
+import { Helmet } from 'react-helmet';
+import { usePhotoStore } from '../storeState/store';
 
 
 const images = [
@@ -246,6 +43,14 @@ const BlogData = [
   }
 ]
 
+const ogData = {
+  title: 'ELEVEN ISLANDS',
+  description: 'Eleven Islands — онлайн-магазин модной одежды, предлагающий уникальные коллекции для мужчин и женщин. Откройте для себя стильные и качественные наряды, вдохновленные красотой природы и современными трендами. Совершайте покупки онлайн и подчеркивайте свою индивидуальность с Eleven Islands.',
+  url: 'https://eleven-islands.netlify.app',
+  image: 'https://cotton-road.com/images/detskie-futbolki/37-temno-zelenaya.jpg',
+  siteName: 'ELEVEN ISLANDS',
+  keywords: 'модная одежда, стильная одежда, онлайн-магазин одежды, женская мода, мужская мода, эксклюзивная одежда, дизайнерская одежда, Eleven Islands, тренды моды, покупки онлайн, аксессуары, стиль'
+};
 
 
 export default function MainPage() {
@@ -253,6 +58,11 @@ export default function MainPage() {
   const imageListRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+
+  const { photos, currentPage, fetching, fetchPhotos } = usePhotoStore();
+
+  console.log(photos);
+  
 
   const scrollSlider = (direction) => {
     if (imageListRef.current) {
@@ -265,9 +75,17 @@ export default function MainPage() {
     if (imageListRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = imageListRef.current;
       setIsAtStart(scrollLeft === 0);
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 100);
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 10);
     }
   };
+  useEffect(() => {
+    fetchPhotos(4, currentPage);
+  }, []);
+  useEffect(() => {
+    if (fetching) {
+      fetchPhotos(4, currentPage);
+    }
+  }, [fetching]);
 
   useEffect(() => {
     updateButtonState();
@@ -277,7 +95,7 @@ export default function MainPage() {
       currentRef.addEventListener('scroll', updateButtonState);
     }
 
-    return () => {
+    return () => {  
       if (currentRef) {
         currentRef.removeEventListener('scroll', updateButtonState);
       }
@@ -286,9 +104,19 @@ export default function MainPage() {
 
   useEffect(() => {
     window.scroll(0, 0)
-  }, [])
+  }, [])  
   return (
     <>
+      <Helmet>
+        <meta property="og:title" content={ogData.title} />
+        <meta property="og:description" content={ogData.description} />
+        <meta property="og:url" content={ogData.url} />
+        <meta property="og:image" content={ogData.image} />
+        <meta property="og:site_name" content={ogData.siteName} />
+        <meta name="description" content={ogData.description} />
+        <meta name="keywords" content={ogData.keywords} />
+        <title>{ogData.title}</title>
+      </Helmet>
       <div className='box1'>
         <div className="box1newCollection">
           <div className='newCollection'>
@@ -310,7 +138,7 @@ export default function MainPage() {
           <Link to='products'>Смотреть все</Link>
         </div>
       </div>
-      <Box2 arrDataImg={arrDataImg} />
+      <Box2 arrDataImg={photos.filter((prev) => prev.show_on_home_page)} />
       <SendEmail />
       <div>
         <div className="box3">

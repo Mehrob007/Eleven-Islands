@@ -1,21 +1,40 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import Navigate from './navigate/Navigate'
 import './styles.css'
 
 import LogoFooter from '../../assets/icon/LogoFooter.svg'
-import instagram from '../../assets/icon/instagram.svg'
 import Tetegram from '../../assets/icon/Tetegram.svg'
-import whatsapp from '../../assets/icon/whatsapp.svg'
-import youtube from '../../assets/icon/youtube.svg'
+import p from '../../assets/icon/p.svg'
+import vk from '../../assets/icon/vk.svg'
 import creatorFactory from '../../assets/icon/creatorFactory.svg'
+import axios from 'axios'
 
 export default function Layout() {
   const location = useLocation();
-  
+  const [errorToken, setErrorToken] = useState([])
+
   const headerStyle = {
     background: location.products === '/some-route' ? '#ff6347' : '#408759'
   };
+
+  const guestFun = async () => {
+    if(!localStorage.getItem('token' || errorToken) ){
+      try {
+        const res = await axios.post('http://organizatsiya.org:8888/token', { guest: true })
+        localStorage.setItem('token', res.data.access_token)
+        console.log(res.data);
+        
+       }
+      catch (error){
+        console.error(error);
+        setErrorToken(error)
+      }
+    }
+  }
+  useEffect(() => {
+    guestFun()
+  }, [errorToken])
 
   return (
     <>
@@ -33,6 +52,8 @@ export default function Layout() {
             <img src={LogoFooter} alt="LogoFooter" />
             <form className='footerForm'>
               <label htmlFor="sendFooterEmail">Узнавай о скидках первый</label>
+              <p>Дарим промокод - скидка 500 рублей
+              на первую покупку от 5000 рублей.</p>
               <input type="email" id='sendFooterEmail' name='email' placeholder='Введите e-mail' ></input>
               <button type="submit">Подписаться</button>
             </form>
@@ -45,17 +66,17 @@ export default function Layout() {
             <h1>Навигация</h1>
             <div>
               <p>Главная</p>
+              <p>О нас</p>
               <p>Каталог</p>
-              <p>Йога</p>
-              <p>Теннис</p>
-              <p>Лайф стайл</p>
-              <p>О компании</p>
-              <p>Контакты</p>
+              <p>Подарочные карты</p>
+              <p>LookBook</p>
+              <p>Блог</p>
             </div>
           </div>
           <div className="footerContentCom3">
             <h1>Покупателям</h1>
             <div>
+              <p>Контакты</p>
               <p>Доставка и оплата</p>
               <p>Возврат товара</p>
               <p>Часто задаваемые вопросы (FAQ)</p>
@@ -65,10 +86,9 @@ export default function Layout() {
           </div>
           <div className="footerContentCom4">
             <div className='contactCom'>
-                <a href="#"><img src={instagram} alt="instagram" /></a>
-                <a href="#"><img src={Tetegram} alt="Tetegram" /></a>
-                <a href="#"><img src={whatsapp} alt="whatsapp" /></a>
-                <a href="#"><img src={youtube} alt="youtube" /></a>
+              <a href="#"><img src={vk} alt="whatsapp" /></a>
+              <a href="#"><img src={Tetegram} alt="Tetegram" /></a>
+              <a href="#"><img src={p} alt="youtube" /></a>
             </div>
             <div className='creatorCom'>
               <h1>Made in</h1>
