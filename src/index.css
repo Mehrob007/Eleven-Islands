@@ -86,3 +86,41 @@ table {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.custom-select .ant-select-selector {
+  border: none !important; /* Убираем бордеры */
+  background-color: transparent !important; /* Прозрачный фон */
+}
+
+.custom-select .ant-select-selection-placeholder {
+  color: #000; /* Цвет текста по умолчанию */
+  font-size: 16px; /* Размер текста по умолчанию */
+}
+
+.custom-select .ant-select-selection-item {
+  color: #000; /* Цвет выбранных элементов */
+  font-size: 16px; /* Размер текста */
+}
+.check-box-custom{
+  background: url('./assets/iconCustomElement/CheckFalse.svg') center / cover no-repeat;
+  min-width: 20px;
+  min-height: 20px;
+}
+.custom-select{
+  /* max-width: 200px; */
+  /* height: auto; */
+  /* background-color: red; */
+}
+.custom-select > button{
+  /* max-width: 200px; */
+}
+.customUl{
+  position: absolute;
+  min-width: 100px;
+  border: 1px solid #00000012;
+  box-shadow: 0px 2.77px 2.21px 0px #00000005;
+  box-shadow: 0px 6.65px 5.32px 0px #00000007;
+  box-shadow: 0px 12.52px 10.02px 0px #00000009;
+  box-shadow: 0px 22.34px 17.87px 0px #0000000B;
+  box-shadow: 0px 41.78px 33.42px 0px #0000000D;
+  box-shadow: 0px 100px 80px 0px #00000012;
+}

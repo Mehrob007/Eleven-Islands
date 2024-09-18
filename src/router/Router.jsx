@@ -36,7 +36,7 @@ export default function Router() {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route index element={<MainPage />} />
-                        <Route path="products" element={<Products />} />
+                        {/* <Route path="products" element={<Products />} /> */}
                         <Route path="products/:type" element={<Products />} />
                         <Route path="product/:id" element={<Product />} />
                         <Route path='login' element={<Login />} />

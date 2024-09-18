@@ -1,11 +1,10 @@
-// import React from 'react'
-import Router from './router/Router'
-// import Loading from './components/loading/Loading'
 
+import Router from './router/Router'
 export default function App() {
   return (
     <div>
         <Router/>
+        {/* <CustomSelect title='Котегории' value={arr} /> */}
     </div>
   )
 }

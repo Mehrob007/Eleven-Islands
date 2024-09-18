@@ -11,30 +11,36 @@ import iconSearch from '../../../assets/icon/iconSearch.svg'
 import iconShoping from '../../../assets/icon/iconShoping.svg'
 import { Link } from 'react-router-dom'
 import ModalBasket from '../modalBasket/modalBasket'
+import ModalSearch from '../modalBasket/ModalSearch'
 // iconShoping.svg
 
-import { useModalStore } from '../storeState/modalBasket'
-import { useState } from 'react'
+import { useModalSeatch, useModalStore } from '../storeState/modalBasket'
+// import { useState } from 'react'
 
 
 export default function Navigate() {
   const { modalState, setModalState } = useModalStore()
-  const [activeSearch, setActiveSearch] = useState(false)
-
+  const { modalStateSeatch, setModalStateSeatch } = useModalSeatch()
+  // useModalSeatch
+  // const [activeSearch, setActiveSearch] = useState(false)
+  console.log(modalStateSeatch);
+  
 
   return (
-    <div className='navigation'>
+    <div className='navigation' >
       <ul>
         <li className='Catalog'>
           <Link>Каталог</Link>
           <ol>
-            <li><Link to='/products'>Смотреть все</Link></li>
-            <li><Link to='/products/tops'>Топы</Link></li>
-            <li><Link to='/products/t-shirts'>Футболки</Link></li>
-            <li><Link to='/products/leggings'>Леггинсы</Link></li>
-            <li><Link to='/products/hoodies'>Толстовки</Link></li>
-            <li><Link to='/products/sweatpants'>Спортивные брюки</Link></li>
-            <li><Link to='/products/accessories'>Аксессуары</Link></li>
+            <ul>
+              <li><Link to='/products/all'>Смотреть все</Link></li>
+              <li><Link to='/products/tops'>Топы</Link></li>
+              <li><Link to='/products/t-shirts'>Футболки</Link></li>
+              <li><Link to='/products/leggings'>Леггинсы</Link></li>
+              <li><Link to='/products/hoodies'>Толстовки</Link></li>
+              <li><Link to='/products/sweatpants'>Спортивные брюки</Link></li>
+              <li><Link to='/products/accessories'>Аксессуары</Link></li>
+            </ul>
           </ol>
         </li>
         <Link to=''>LookBook</Link>
@@ -50,8 +56,8 @@ export default function Navigate() {
 
       <div className='paramsNav'>
         <div className='comParams'>
-          <input type="text" className={`search-product ${activeSearch ? 'active-search' : ''}`} placeholder='поиск...'/>
-          <img src={iconSearch} onClick={() => setActiveSearch(!activeSearch)} alt="iconSearch" />
+          {/* <input type="text" className={`search-product ${activeSearch ? 'active-search' : ''}`} placeholder='поиск...'/> */}
+          <img src={iconSearch} onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
           <img src={iconShoping} onClick={() => setModalState(true)} alt="iconShoping" />
           <Link to='/login'>
             <img src={iconPerson} alt="iconPerson" />
@@ -59,6 +65,7 @@ export default function Navigate() {
         </div>
       </div>  
       {modalState && <ModalBasket />}
+      {modalStateSeatch && <ModalSearch />}
     </div>
   )
 }

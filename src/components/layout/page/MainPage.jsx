@@ -135,7 +135,7 @@ export default function MainPage() {
           <h1>Летняя коллекция</h1>
         </div>
         <div className='headerCom2'>
-          <Link to='products'>Смотреть все</Link>
+          <Link to='products/all'>Смотреть все</Link>
         </div>
       </div>
       <Box2 arrDataImg={photos.filter((prev) => prev.show_on_home_page)} />

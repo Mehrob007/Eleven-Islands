@@ -2,6 +2,9 @@
 .bigBox{
     min-height: 70vh;
     width: 100%;
+    /* max-height: 92.5vh; */
+    /* padding-top: 70px; */
+    overflow-y: auto;
 }
 
 
@@ -10,11 +13,18 @@ header{
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 70px;
+    top: 0;
+    position: fixed;
+    background: #408759;
+    z-index: 99999;
+    transition: background 0.2s ease-in-out;
 }
 .navigation{
     max-width: 1440px;
     width: 100%;
-    height: 6vh;
+    height: 70px;
+    top: 0;
     padding: 0 50px;
     display: flex;
     justify-content: space-between;
@@ -45,19 +55,28 @@ header{
     /* justify-content: start; */
     flex-direction: column;
     /* gap: 15px; */
-    padding-top: 21px;
+    padding-top: 27px;
     display: none;
-    z-index: 999;
+    z-index: 99999;
 }
 .navigation > ul > .Catalog:hover > ol{
     display: block;
 }
-.navigation > ul > li > ol > li {
+.navigation > ul > li > ol > ul{
+    box-shadow: 0px 2.77px 2.21px 0px #00000005;
+    box-shadow: 0px 6.65px 5.32px 0px #00000007;
+    box-shadow: 0px 12.52px 10.02px 0px #00000009;
+    box-shadow: 0px 22.34px 17.87px 0px #0000000B;
+    box-shadow: 0px 41.78px 33.42px 0px #0000000D;
+    box-shadow: 0px 100px 80px 0px #00000012;
+    border: 1px solid #0000001A
+}
+.navigation > ul > li > ol > ul > li {
     background: #fff;
     padding: 15px ;
 
 }
-.navigation > ul > li > ol > li >  a:hover{
+.navigation > ul > li > ol > ul > li >  a:hover{
     text-decoration: underline;
 }
 .Catalog{
@@ -598,7 +617,8 @@ footer{
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 17px;
 }
 .footerContentCom2 > div > p{
     font-family: AGAvantGardeCyr;
@@ -628,7 +648,8 @@ footer{
     width: 247px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 17px;
 }
 .footerContentCom3 > div > p{
     font-family: AGAvantGardeCyr;
@@ -695,12 +716,25 @@ select{
     align-items: center;
     justify-content: space-between;
 }
-.filterBar > div > div{
+.filterProbucts{
     width: 450px;
     height: 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 40px;
+}
+.filterBar > div > select{
+    width: 145px;
+    font-family: AGAvantGardeCyr;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 15.52px;
+    text-align: left;
+    position: relative;
+}
+.filterBar > div > select > option{
+    position: absolute;
 }
 .contentProducts{
     margin-bottom: 60px;
@@ -730,6 +764,11 @@ select{
     min-height: 937px;
     max-width: 420px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 40px;
 
 }
 select{
@@ -870,10 +909,14 @@ select{
     font-size: 15px;
     /* margin: 0 auto; */
 }
-.add-product-btn-active{
+/* .add-product-btn:hover{
     background-color: #408759;
     color: white;
-}
+} */
+/* .add-product-btn-active{
+    background-color: #408759;
+    color: white;
+} */
 
 
 input[type="checkbox"] {
@@ -904,20 +947,24 @@ input[type="checkbox"] {
     /* padding-top: -1px; */
     /* content: '+'; */
   }
+  .custom-checkbox:hover{
+    background: #408759;
+    color: white;
+  }
   .custom-checkbox > span{
     margin-top: -1px;
   }
 
   /* Состояние, когда чекбокс НЕ выбран */
-  input[type="checkbox"]:not(:checked) + .custom-checkbox {
+  /* input[type="checkbox"]:not(:checked) + .custom-checkbox {
     background-color: #EAEAEA;
   }
 
-  /* Состояние, когда чекбокс выбран */
+  /* 
   input[type="checkbox"]:checked + .custom-checkbox {
     background-color: #408759;
     color: white;
-  }
+  } */
 
   /* Отображение галочки в выбранном состоянии */
   /* input[type="checkbox"]:checked + .custom-checkbox::after {
@@ -1026,5 +1073,219 @@ input[type="checkbox"] {
   .button-login:active{
     background: #2b5a3c;
     }
-  
+  .searchBox{
+    /* background: red; */
+    width: 410px;
+    min-height: 45px;
+    margin: 0 auto;
+    display: flex;
+    border-bottom: 2px solid #26262693;
+  }
+  .searchBox > input{
+    height: 35px;
+    width: 365px;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+  }
+  .iconImgSearch{
+    width: 35px;
+    height: 35px;
+    color: #26262693;
+    /* border: 2px solid; */
+    /* background: url('../../assets/icon/iconSearch.svg') center / cover no-repeat; */
+  }
+  .iconImgSearch > svg{
+    width: 100%;
+    height: 100%;
+  }
 /* 930 */
+.header-div-product{
+    width: 272px;
+    height: 143.6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 20px;
+}
+.header-div-product > div{
+    width: 100%;
+    height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 10px;
+}
+.header-div-product > div > h1{
+    font-family: AGAvantGardeCyr;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 27.16px;
+    text-align: left;
+}
+.header-div-product > div > p{
+    font-family: AGAvantGardeCyr;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: left;
+
+}
+.header-div-product > h4{
+    font-family: AGAvantGardeCyr;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 21.34px;
+    text-align: left;
+}
+.color-div-product{
+    width: 357px;
+    height: 133px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+}
+.color-div-product > h1{
+    font-family: AGAvantGardeCyr;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 21.34px;
+    text-align: left;
+}
+.color-div-product > div{
+    min-width: 155px;
+    max-width: 350px;
+    min-height: 28px;
+    overflow-x: auto;
+    display: flex;
+    gap: 10px;
+}
+.color-div-product > div > div{
+    /* padding: 1px; */
+    border: 1px solid transparent;
+    border-radius: 50%;
+    min-height: 28px;
+    min-width: 27px;
+    padding: 2px;
+    position: relative;
+}
+.color-div-product > div > div > nav{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.color-div-product > p{
+    font-family: AGAvantGardeCyr;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: left;
+}
+.size-div-product{
+    width: 420px;
+    height: 126px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: start;
+    justify-content: start;
+}
+.size-div-product > h1{
+    font-family: AGAvantGardeCyr;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 21.34px;
+    text-align: left;
+}
+.size-div-product > p {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+}
+.size-div-product > div{
+    display: flex;
+    gap: 10px;
+    width: 420px;
+    height: 45px;
+}
+.size-div-product > div > div{
+    width: 60px;
+    height: 45px;
+    border: 1px solid #262626;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: AGAvantGardeCyr;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 15.52px;
+    text-align: center;
+    cursor: pointer;
+}
+.button-div-product{
+    height: 45px;
+    width: 420px;
+    display: flex;
+    gap: 6px;
+}
+.button-div-product > button{
+    width: 207px;
+    height: 100%;
+    font-family: AGAvantGardeCyr;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: center;
+}
+.add-to-basket{
+    background-color: #408759;
+    color: white;
+}
+.on-click-buy{
+    border: 1px solid #262626
+}
+.dop-info-product{
+    width: 100%;
+    border-bottom: 1.5px solid #0000001A;
+    border-top: 1.5px solid #0000001A;
+}
+.info-d-product > p{
+    font-family: AGAvantGardeCyr;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: left;
+    color: #262626;
+}
+.size-none{
+    border: 1px solid #26262652;
+    color: #26262652;
+    width: 60px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: AGAvantGardeCyr;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 15.52px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+}
+.size-none::after{
+    content: '';
+    position: absolute;
+    width: 1px;
+    rotate: 53deg;
+    height: 72px;
+    top: -14px;
+    right: 28px;
+    background-color: #26262652;
+}

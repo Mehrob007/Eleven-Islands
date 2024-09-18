@@ -1,12 +1,28 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Box2 from './pageElements/Box2'
 
 import SendEmail from './pageElements/SendEmail';
 import { usePhotoStore } from '../storeState/store';
+import { Checkbox, Select } from 'antd';
+import { Option } from 'antd/es/mentions';
+import CustomSelect from './pageElements/CustomSelect';
 
 
 export default function Products() {
   const { photos, currentPage, fetching, fetchPhotos, setFetching } = usePhotoStore();
+  const [selectedSizes, setSelectedSizes] = useState([]);
+
+  const sizes = [
+    {label: 'XS', value: '0'}, 
+    {label: 'S', value: '1'}, 
+    {label: 'M', value: '2'}, 
+    {label: 'L', value: '3'}, 
+    {label: 'XL', value: '4'}
+  ];
+
+  const handleSizeChange = (size) => {
+    setSelectedSizes(size);
+  };
 
   useEffect(() => {
     fetchPhotos(4, currentPage);
@@ -15,7 +31,7 @@ export default function Products() {
   const scrollHandler = (e) => {
     if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 100) {
       setFetching(true);
-      console.log('scroll'); 
+      console.log('scroll');
     }
   };
 
@@ -31,27 +47,35 @@ export default function Products() {
       document.removeEventListener('scroll', scrollHandler);
     };
   }, []);
+
+  const arrSort = [
+    { label: 'Сортировать по', value: 'all' },
+    { label: 'По убыванию цены', value: '1' },
+    { label: 'По возрастанию цены', value: '2' }
+  ]
+
+  const typeSelect = [
+    { label: 'Все типы', value: 'all' },
+    { label: 'Топы', value: 'tops' },
+    { label: 'Футболки', value: 't-shirts' },
+    { label: 'Леггинсы', value: 'leggings' },
+    { label: 'Толстовки', value: 'hoodies' },
+    { label: 'Спортивные брюки', value: 'sweatpants' },
+    { label: 'Аксессуары', value: 'accessories' },
+  ]
   return (
     <>
       <div className='filterBar'>
         <h1>Каталог</h1>
         <div>
           <div className='filterProbucts'>
-            <select id="">
-              <option value="*">Тип продукции</option>
-            </select>
-            <select id="">
-              <option value="*">Цвет</option>
-            </select>
-            <select id="">
-              <option value="*">Размер</option>
-            </select> 
+            <CustomSelect title='Тип продукции' value={typeSelect} />
+            <CustomSelect title='Цвет' value={''} />
+            <CustomSelect title='Размер' value={sizes} />
           </div>
-          <select id="">
-            <option value="*">Сортировать по</option>
-            <option value="descending">По убыванию цены</option>
-            <option value="ascending">По возрастанию цены</option>
-          </select>
+          <div className='max-w-auto'>
+            <CustomSelect title='Сортировать по' value={arrSort} />
+          </div>
         </div>
       </div>
       <div className="contentProducts">

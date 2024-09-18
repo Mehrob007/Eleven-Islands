@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
-import plus from '../../../../assets/icon/plus.svg'
+// import plus from '../../../../assets/icon/plus.svg'
 import { FiPlus } from 'react-icons/fi';
 
 
@@ -38,7 +38,7 @@ export default function Box2({ arrDataImg }) {
 
                     <div className='itemInfoProduct'>
                       <h1 className='productTitle'>{item.name}</h1>
-                      <h1 className='productPrice'>{item.price} ₽ {item.attributes[0].text_prompt == 'true' && <><span className='sorcle'>•</span> New collection</>}</h1>
+                      <h1 className='productPrice'>{item.price} ₽ {item.attributes[0]?.text_prompt == 'true' && <><span className='sorcle'>•</span> New collection</>}</h1>
                     </div>
 
                   </Link>
