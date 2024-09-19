@@ -38,10 +38,6 @@ export default function Navigate() {
   const handleNavClick = () => {
     setModalStateNav(true);
   };
-
-  console.log(modalStateNav);
-  
-
   const isLargeScreen = useMediaQuery(`(min-width: ${widthLap})`);
 
   return (
@@ -49,18 +45,7 @@ export default function Navigate() {
       {isLargeScreen ? (
         <ul>
           <li className='Catalog'>
-            <Link>Каталог</Link>
-            <ol>
-              <ul>
-                <li><Link to='/products/all'>Смотреть все</Link></li>
-                <li><Link to='/products/tops'>Топы</Link></li>
-                <li><Link to='/products/t-shirts'>Футболки</Link></li>
-                <li><Link to='/products/leggings'>Леггинсы</Link></li>
-                <li><Link to='/products/hoodies'>Толстовки</Link></li>
-                <li><Link to='/products/sweatpants'>Спортивные брюки</Link></li>
-                <li><Link to='/products/accessories'>Аксессуары</Link></li>
-              </ul>
-            </ol>
+            <Link to='/products/all'>Каталог</Link>
           </li>
           <Link to=''>LookBook</Link>
         </ul>

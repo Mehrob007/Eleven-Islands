@@ -46,8 +46,11 @@ export default function Layout() {
   const guestFun = async () => {
     if (!localStorage.getItem('token' || errorToken)) {
       try {
-        const res = await axios.post('http://organizatsiya.org:8888/token', { guest: true })
-        localStorage.setItem('token', res.data.access_token)
+        const res = await axios.post('https://elevenislands.ru/token', {
+          guest: true,
+        })
+        localStorage.setItem('token', res.data.access_token) 
+        localStorage.setItem('customerId', res.data.customer_id) 
         console.log(res.data);
 
       }

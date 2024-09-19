@@ -44,12 +44,12 @@ export default function ModalNav() {
                     {isOpen && (
                         <div className='info-d-product' style={{ padding: '15px 0', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                             <Link onClick={() => setModalStateNav(false)} to='/products/all'>Смотреть все</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/tops'>Топы</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/t-shirts'>Футболки</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/leggings'>Леггинсы</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/hoodies'>Толстовки</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/sweatpants'>Спортивные брюки</Link>
-                            <Link onClick={() => setModalStateNav(false)} to='/products/accessories'>Аксессуары</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Топы'>Топы</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Футболки'>Футболки</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Леггинсы'>Леггинсы</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Толстовки'>Толстовки</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Спортивные брюки'>Спортивные брюки</Link>
+                            <Link onClick={() => setModalStateNav(false)} to='/products/Аксессуары'>Аксессуары</Link>
                         </div>
                     )}
 
