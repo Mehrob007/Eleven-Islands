@@ -8,3 +8,7 @@ export const useModalSeatch = create((set) => ({
     modalStateSeatch: false,
     setModalStateSeatch: (status) => set({ modalStateSeatch: status }),
 }))
+export const useModalNav = create((set) => ({
+    modalStateNav: false,
+    setModalStateNav: (status) => set({ modalStateNav: status }),
+}))

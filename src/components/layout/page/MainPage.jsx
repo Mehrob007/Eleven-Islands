@@ -53,6 +53,26 @@ const ogData = {
 };
 
 
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+
+    const listener = () => setMatches(media.matches);
+
+    media.addEventListener('change', listener);
+
+    return () => media.removeEventListener('change', listener);
+  }, [query]);
+
+  return matches;
+};
+
+const widthLap = '1020px'
+
+
+
 export default function MainPage() {
 
   const imageListRef = useRef(null);
@@ -62,7 +82,7 @@ export default function MainPage() {
   const { photos, currentPage, fetching, fetchPhotos } = usePhotoStore();
 
   console.log(photos);
-  
+
 
   const scrollSlider = (direction) => {
     if (imageListRef.current) {
@@ -95,7 +115,7 @@ export default function MainPage() {
       currentRef.addEventListener('scroll', updateButtonState);
     }
 
-    return () => {  
+    return () => {
       if (currentRef) {
         currentRef.removeEventListener('scroll', updateButtonState);
       }
@@ -104,7 +124,7 @@ export default function MainPage() {
 
   useEffect(() => {
     window.scroll(0, 0)
-  }, [])  
+  }, [])
   return (
     <>
       <Helmet>
@@ -134,12 +154,24 @@ export default function MainPage() {
         <div className='headerCom1'>
           <h1>Летняя коллекция</h1>
         </div>
-        <div className='headerCom2'>
-          <Link to='products/all'>Смотреть все</Link>
-        </div>
+        {useMediaQuery(`(min-width: ${widthLap})`) &&
+          <div className='headerCom2'>
+            <Link to='products/all'>Смотреть все</Link>
+          </div>
+        }
       </div>
       <Box2 arrDataImg={photos.filter((prev) => prev.show_on_home_page)} />
-      <SendEmail />
+
+      {useMediaQuery(`(max-width: ${widthLap})`) &&
+        <div className="header headerBox2 " style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className='headerCom2'>
+            <Link to='products/all' style={{ margin: '0 auto' }}>Смотреть все</Link>
+          </div>
+        </div>
+      }
+      {useMediaQuery(`(min-width: ${widthLap})`) &&
+        <SendEmail />
+      }
       <div>
         <div className="box3">
           <div className="header">
@@ -181,14 +213,19 @@ export default function MainPage() {
           <h3>Вся фотогалерея</h3>
         </div>
       </div>
+      {useMediaQuery(`(max-width: ${widthLap})`) &&
+        <SendEmail />
+      }
       <div className="box4">
         <div className="header">
           <div className='headerCom1'>
             <h1>Блог</h1>
           </div>
-          <div className='headerCom2'>
-            <p>Смотреть все</p>
-          </div>
+          {useMediaQuery(`(min-width: ${widthLap})`) &&
+            <div className='headerCom2'>
+              <p>Смотреть все</p>
+            </div>
+          }
         </div>
         <div className="contentBox4">
           {BlogData.map((prevState, i) => (
@@ -198,6 +235,14 @@ export default function MainPage() {
             </Link>
           ))}
         </div>
+        {/* {useMediaQuery(`(max-width: ${widthLap})`) &&
+          <div className='navigate-btn-slider'>
+            <div>
+
+            </div>
+          </div> 
+          } */}
+
       </div>
     </>
   );

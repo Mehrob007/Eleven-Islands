@@ -20,7 +20,7 @@ export default function Box2({ arrDataImg }) {
             <h2 className="sr-only">Products</h2>
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {arrDataImg ? arrDataImg.map((item, i) => (<>
-                <div className='aspect-h-1 w-[305px] h-[400px] aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative'>
+                <div className='aspect-h-1 mx-auto w-[305px] h-[501px] aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative'>
                   <Link
                     to={`/product/${item.id}`}
                     key={i}
