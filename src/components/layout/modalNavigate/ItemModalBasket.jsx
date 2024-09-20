@@ -2,6 +2,7 @@ import { useState } from 'react'
 import img from '../../../assets/img/1.png'
 import minus from '../../../assets/icon/minus.svg'
 import plus from '../../../assets/icon/plus.svg'
+import { RiDeleteBin6Fill } from 'react-icons/ri'
 
 export default function ItemModalBasket({ products }) {
     const [count, setCount] = useState(0)
@@ -25,6 +26,7 @@ export default function ItemModalBasket({ products }) {
                     <button onClick={() => setCount((el) => el += 1)}><img src={plus} alt='plus' /></button>
                 </div>
             </div>
+            <RiDeleteBin6Fill className='delete-button-modal-basket' />
         </div>
     )
 }
