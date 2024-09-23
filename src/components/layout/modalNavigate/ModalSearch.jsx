@@ -8,16 +8,15 @@ export default function ModalBasket() {
     return (
         <div className="boxModalBasket">
             <div className="componentModal">
-                <div className="componentModalHeader" style={{ border: 'none' }}>
-                    {/* <h1>Корзина</h1> */}
-                    <div></div>
+                <div className="componentModalHeader">
+                    <div>Поиск</div>
                     <button onClick={() => setModalStateSeatch(false)}><img src={CloasModal} alt="CloasModal" /></button>
                 </div>
                 <div className="searchBox">
                     <div className="iconImgSearch">
                         <LuSearch />
                     </div>
-                    <input type="text" />
+                    <input type="text" placeholder="Найти" />
                 </div>
                 {/*<div className="endPrice">
                     <h1>Итого:</h1>

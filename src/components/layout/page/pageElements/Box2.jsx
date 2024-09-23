@@ -32,7 +32,7 @@ export default function Box2({ arrDataImg }) {
   //     console.error("Error fetching photos:", error);
   //   }
   // }
-  console.log(arrDataImg);
+  // console.log(arrDataImg);
 
 
   return (

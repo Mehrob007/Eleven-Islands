@@ -14,6 +14,9 @@ import imgBlog from '../../../assets/img/blogContent.png';
 
 import { Helmet } from 'react-helmet';
 import { usePhotoStore } from '../storeState/store';
+import Slider from 'react-slick';
+import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 
 
 const images = [
@@ -31,15 +34,15 @@ const images = [
 const BlogData = [
   {
     image: imgBlog,
-    title: '4 альтернативы натуральным энергетическим напиткам'
+    title: ' энергетическим напиткам'
   },
   {
     image: imgBlog,
-    title: '4 альтернативы натуральным энергетическим напиткам'
+    title: ' энергетическим напиткам'
   },
   {
     image: imgBlog,
-    title: '4 альтернативы натуральным энергетическим напиткам'
+    title: ' энергетическим напиткам'
   }
 ]
 
@@ -69,11 +72,11 @@ const useMediaQuery = (query) => {
   return matches;
 };
 
-const widthLap = '1020px'
 
 
 
 export default function MainPage() {
+  const widthLap = '1020px'
 
   const imageListRef = useRef(null);
   const [isAtStart, setIsAtStart] = useState(true);
@@ -125,6 +128,24 @@ export default function MainPage() {
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
+  const settings = {
+    className: "slider variable-width",
+    dots: true,
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true
+  };
+  const settingsGelary = {
+    className: "slider Gelary variable-width",
+    dots: true,
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true
+  };
   return (
     <>
       <Helmet>
@@ -197,7 +218,7 @@ export default function MainPage() {
           </div>
         </div>
         <div className="contentBox3">
-          <div className="containerBox3">
+          {useMediaQuery(`(min-width: ${widthLap})`) ? <div className="containerBox3">
             <div className="slider-wrapper">
               <div className="image-list" ref={imageListRef}>
                 {images.map((el, i) => (
@@ -207,11 +228,23 @@ export default function MainPage() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> :
+
+            <Slider {...settingsGelary}>
+              {images.map((el, i) => (
+                <div key={i} className="bg-phone">
+                  <img src={el} alt={`img-${i}`} className="image-item" />
+                </div>
+              ))}
+            </Slider >
+
+
+          }
         </div>
+        {useMediaQuery(`(min-width: ${widthLap})`) &&
         <div className='allPhotoButton'>
           <h3>Вся фотогалерея</h3>
-        </div>
+        </div>}
       </div>
       {useMediaQuery(`(max-width: ${widthLap})`) &&
         <SendEmail />
@@ -227,14 +260,25 @@ export default function MainPage() {
             </div>
           }
         </div>
-        <div className="contentBox4">
-          {BlogData.map((prevState, i) => (
-            <Link key={i} className="box4ContentCom">
-              <span><img src={prevState.image} alt="imageBlog" /></span>
-              <p>{prevState.title}</p>
-            </Link>
-          ))}
-        </div>
+        {useMediaQuery(`(min-width: ${widthLap})`) ?
+          <div className="contentBox4">
+            {BlogData.map((prevState, i) => (
+              <Link key={i} className="box4ContentCom">
+                <span><img src={prevState.image} alt="imageBlog" /></span>
+                <p>{prevState.title}</p>
+              </Link>
+            ))}
+          </div >
+          :
+          <Slider {...settings} className="contentBox4">
+            {BlogData.map((prevState, i) => (
+              <Link key={i} className="box4ContentCom">
+                <span><img src={prevState.image} alt="imageBlog" /></span>
+                <p>{prevState.title}</p>
+              </Link>
+            ))}
+          </Slider >
+        }
         {/* {useMediaQuery(`(max-width: ${widthLap})`) &&
           <div className='navigate-btn-slider'>
             <div>

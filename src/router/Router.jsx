@@ -1,10 +1,11 @@
-import React, { lazy, Suspense, useState, useEffect } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 // import components
 import Loading from '../components/loading/Loading'
 import Registration from '../components/layout/page/login/Registration'
 import CreatePassword from '../components/layout/page/login/CreatePassword'
+import RecoveryPassword from '../components/layout/page/login/RecoveryPassword'
 
 // lazy pages
 const Layout = lazy(() => import('../components/layout/Layout'))
@@ -42,6 +43,7 @@ export default function Router() {
                         <Route path='login' element={<Login />} />
                         <Route path='registration' element={<Registration />} />
                         <Route path='create-password' element={<CreatePassword />} />
+                        <Route path='recovery-password' element={<RecoveryPassword/>} />
                     </Route>
                 </Routes>
             </Suspense>

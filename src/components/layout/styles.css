@@ -317,8 +317,9 @@ header{
     margin: 80px auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
+    gap: 40px;
 }
 .sendEmailTop{
     width: 351px;
@@ -474,7 +475,8 @@ header{
     height: 313px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 10px;
     align-items: center;
     text-align: center;
     font-family: AGAvantGardeCyr;
@@ -496,7 +498,7 @@ header{
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -705,6 +707,7 @@ footer{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: start;
 }
 select{
     outline: none;
@@ -721,6 +724,7 @@ select{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 .filterProbucts{
     width: 450px;
@@ -833,10 +837,10 @@ select{
     max-width: 450px;
     height: 100vh;
     background: #fff;
-    padding: 20px;
+    /* padding: 20px; */
 }
 .componentModalHeader{
-    max-width: 450px;
+    width: 450px;
     height: 55px;
     padding: 0 20px;
     display: flex;
@@ -873,6 +877,7 @@ select{
     /* margin: 0 20px;  */
     /* padding: 0 10px; */
     width: 100%;
+    margin: 0 20px;
 }
 
 .place-an-order-btn:active{
@@ -1139,10 +1144,13 @@ input[type="checkbox"] {
   .searchBox{
     /* background: red; */
     width: 410px;
-    min-height: 45px;
+    height: 45px;
     margin: 0 auto;
+    padding: 15px 0;
     display: flex;
+    align-items: center;
     border-bottom: 2px solid #26262693;
+    margin-top: 37px;
   }
   .searchBox > input{
     height: 35px;
@@ -1152,8 +1160,8 @@ input[type="checkbox"] {
     outline: none;
   }
   .iconImgSearch{
-    width: 35px;
-    height: 35px;
+    width: 15px;
+    height: 15px;
     color: #26262693;
     /* border: 2px solid; */
     /* background: url('../../assets/icon/iconSearch.svg') center / cover no-repeat; */
@@ -1384,6 +1392,9 @@ input[type="checkbox"] {
     height: 22px;
     border-radius: 50%;
 }
+.slick-dots{
+    bottom: 0;
+}
 
 @media screen and (max-width: 920px) {
     .box1{
@@ -1435,16 +1446,25 @@ input[type="checkbox"] {
     .box4{
         width: 100%;
         padding: 0;
+        max-height: 320px;
     }
     .box4 > .header{
         padding: 0 13px;
     }
     .box4ContentCom{
-        max-width: 230px;
+        max-width: 270px;
+        min-width: 270px;
+        max-height: 200px;
+        margin: 0 2.5px;
     }
     .contentBox4{
         width: 100%;
         padding: 0 5px;
+        gap: 5px;
+        min-height: 240px;
+        padding: 0;
+        margin: 0;
+        overflow-x:hidden ;
     }
     .add-product-btn{
         top: 72%;
@@ -1455,9 +1475,14 @@ input[type="checkbox"] {
         align-items: center;
         justify-content: center;
     }
+    .sendEmail{
+        height: 250px;
+    }
     .sendEmailTop{
-        /* display: block; */
         height: 80px;
+    }
+    .sendEmailForm{
+        min-height: 40px;
     }
     .headerBox2{
         padding-top: 30px;
@@ -1467,10 +1492,20 @@ input[type="checkbox"] {
         padding-top: 0;
     }
     .componentModal{
+        max-width: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        flex-direction: column;
+    }
+    .componentModalHeader, .endPrice{
+        max-width: 450px;
         width: 100%;
     }
     .place-an-order-btn{
         padding: 0 10px;
+        max-width: 93%;
     }
     .slider-wrapper .image-list .image-item{
         min-width: 330px;
@@ -1546,4 +1581,152 @@ input[type="checkbox"] {
     .info-d-product > a:hover{
         text-decoration: underline;
     }
+    .btn-filter-phone{
+        width: 145px;
+        height: 34px;
+        border: 1px solid #262626;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        font-family: AGAvantGardeCyr;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 11px;
+        text-align: center;
+    }
+    .filterBar > div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+    }
+    .filterBar > h1{
+        border-bottom: 1.5px solid #262626;
+        padding-bottom: 4px;
+    }
+    .slick-slider{
+        margin-top: 25px;
+        /* overflow: hidden;  */
+        /* overflow: hidden */
+    }
+    .slick-track{
+        max-height: 260px;
+    }
+    /* .slick-list{
+        max-height: 260px;
+    } */
+    .bg-phone{
+        margin: 0 2.5px;
+        max-width: 345px;
+    }
+    .Gelary{
+        height: 585px;
+        margin-top: 45px;   
+        overflow: hidden; 
+    }
+    .login-box{
+        max-height: 371px;
+        max-width: 90%;
+    }
+    .box-login{
+        margin: 30px 0 0 0 ;
+    }
+    .p-login-box{
+        text-align: center;
+        max-width: 230px;
+        margin-top: 15px;
+    }
+    .componentModalFilter{
+        width: 100%;
+        background-color: white;
+    }
+    .componentModalHeaderFilter{
+        height: 58px;
+        width: 100%;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        padding: 17px 13px 25px;
+    }
+    .componentModalHeaderFilter > h1{
+        margin-left: 104px;
+        margin-right: 69px;
+        font-family: AGAvantGardeCyr;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 15.52px;
+        text-align: left;
+    }
+    .componentModalHeaderFilter > button{
+        font-family: AGAvantGardeCyr;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 11px;
+        text-align: center;
+    }
+    .FilterBox{
+        min-height: 418px;
+        border-bottom: 1px solid #0000001A;
+        border-top: 1px solid #0000001A;
+        padding: 13px;
+        display: grid;
+        gap: 30px;
+    }
+    .phone-size-filter-ul{
+        /* display: flex;
+        justify-content: start;
+        align-items: start;
+        flex-wrap: wrap; */
+        display: grid;
+        grid-template-columns: repeat(3, 41px);
+        gap: 15px 44px;
+        width: 210px;
+    }
+    .componentModalHeaderReset{
+        display: flex;
+        justify-content: space-between;
+    }
+    .componentModalReset{
+        min-width: 220px;
+        height: 165px;
+        background-color: white;
+        padding: 13px;
+        padding-top: 20px;
+        z-index: 99999;
+    }
+    .box4ContentCom{
+        max-width: 270px;
+        max-height: 168px;
+    }
+    .box4ContentCom > span{
+        max-width: 270px;
+        max-height: 168px;
+        position: relative;
+    }
+    .box4ContentCom > span::after{
+        width: 270px;
+        height: 168px;
+        left: -135px;
+        bottom: -165px;
+    }
 }
+/* Стили для контейнера с точками */
+.slick-dots {
+    bottom: 20px; /* Отступ от нижнего края */
+    text-align: center; /* Выравнивание по центру */
+  }
+  
+  /* Стили для каждой точки */
+  .slick-dots li button::before {
+    font-size: 12px; /* Размер точек */
+    color: #40875933; /* Цвет неактивных точек */
+    opacity: 0.75; /* Прозрачность неактивных точек */
+  }
+  
+  /* Стили для активной точки */
+  .slick-dots li.slick-active button::before {
+    color: #408759; /* Цвет активной точки */
+    opacity: 1; /* Прозрачность активной точки */
+  }
+  

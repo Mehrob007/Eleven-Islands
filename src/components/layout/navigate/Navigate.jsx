@@ -28,16 +28,16 @@ const useMediaQuery = (query) => {
   return matches;
 };
 
-const widthLap = '1020px';
 
 export default function Navigate() {
   const { modalState, setModalState } = useModalStore();
   const { modalStateSeatch, setModalStateSeatch } = useModalSeatch();
   const { modalStateNav, setModalStateNav } = useModalNav();
-
+  
   const handleNavClick = () => {
     setModalStateNav(true);
   };
+  const widthLap = '1020px';
   const isLargeScreen = useMediaQuery(`(min-width: ${widthLap})`);
 
   return (

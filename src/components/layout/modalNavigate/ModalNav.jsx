@@ -35,13 +35,13 @@ export default function ModalNav() {
                         }}
                         onClick={toggleOpen}
                     >
-                        <h2 style={{ margin: 0 }} className="Cotalog-nav-phone">Каталог</h2>
-                        <span style={{ fontSize: '24px' }}>
+                        <Link style={{ margin: 0 }} onClick={() => setModalStateNav(false)}  to='/products/all' className="Cotalog-nav-phone">Каталог</Link>
+                        {/* <span style={{ fontSize: '24px' }}>
                             {isOpen ? (<RiArrowDownSLine />) : (<RiArrowDownSLine style={{ rotate: '-90deg' }} />)}
-                        </span>
+                        </span> */}
                     </div>
 
-                    {isOpen && (
+                    {/* {isOpen && (
                         <div className='info-d-product' style={{ padding: '15px 0', display: 'flex', flexDirection: 'column', gap: '15px' }}>
                             <Link onClick={() => setModalStateNav(false)} to='/products/all'>Смотреть все</Link>
                             <Link onClick={() => setModalStateNav(false)} to='/products/Топы'>Топы</Link>
@@ -51,7 +51,7 @@ export default function ModalNav() {
                             <Link onClick={() => setModalStateNav(false)} to='/products/Спортивные брюки'>Спортивные брюки</Link>
                             <Link onClick={() => setModalStateNav(false)} to='/products/Аксессуары'>Аксессуары</Link>
                         </div>
-                    )}
+                    )} */}
 
                 </div>
                 <div className='dop-info-product' style={{ padding: '2px 12px ', minHeight: '44px' }}>

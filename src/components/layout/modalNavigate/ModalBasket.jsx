@@ -3,7 +3,21 @@ import CloasModal from '../../../assets/icon/CloasModal.svg';
 import ItemModalBasket from "./ItemModalBasket";
 import { usePhotoStore } from '../storeState/store'
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const useMediaQuery = (query) => {
+    const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
+    useEffect(() => {
+        const media = window.matchMedia(query);
+        const listener = () => setMatches(media.matches);
+        media.addEventListener('change', listener);
+
+        return () => media.removeEventListener('change', listener);
+    }, [query]);
+
+    return matches;
+};
 
 export default function ModalBasket() {
     const { photos } = usePhotoStore();
@@ -25,6 +39,15 @@ export default function ModalBasket() {
             console.error("Error fetching photos:", error);
         }
     }
+    const widthLap = '1020px';
+    const isLargeScreen = useMediaQuery(`(min-width: ${widthLap})`);
+
+    const DeleteProductsBasket = async () => {
+        const token = localStorage.getItem('token');
+        console.log('====================================');
+        console.log(token);
+        console.log('====================================');
+    }
 
     useEffect(() => {
         getProductsBasket()
@@ -33,10 +56,18 @@ export default function ModalBasket() {
     return (
         <div className="boxModalBasket">
             <div className="componentModal">
-                <div className="componentModalHeader">
-                    <h1>Корзина</h1>
-                    <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
-                </div>
+                {!isLargeScreen ?
+                    <div className="componentModalHeader">
+                        <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                        <h1>Корзина</h1>
+                        <button onClick={DeleteProductsBasket}>Очистить</button>
+                    </div>
+                    :
+                    <div className="componentModalHeader">
+                        <h1>Корзина</h1>
+                        <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                    </div>}
+
                 <div className="productsBasket">
                     <ItemModalBasket products={photos} />
                 </div>
