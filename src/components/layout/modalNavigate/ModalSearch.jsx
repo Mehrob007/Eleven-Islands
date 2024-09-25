@@ -9,8 +9,10 @@ export default function ModalBasket() {
         <div className="boxModalBasket">
             <div className="componentModal">
                 <div className="componentModalHeader">
-                    <div>Поиск</div>
-                    <button onClick={() => setModalStateSeatch(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                    <div style={{ maxWidth: '383px' }}>
+                        <div>Поиск</div>
+                        <button onClick={() => setModalStateSeatch(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                    </div>
                 </div>
                 <div className="searchBox">
                     <div className="iconImgSearch">

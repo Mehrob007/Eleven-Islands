@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import Box2 from './pageElements/Box2';
 import NewCollection from '../../../assets/icon/NewCollection.svg'
 import lineyka from '../../../assets/icon/lineyka.svg'
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // NewCollection.svg
 
 
@@ -227,12 +228,21 @@ export default function Prodect() {
                   {isOpenDiscrip ? (<PiMinus />) : (<PiPlus />)}
                 </span>
               </div>
-
+              {/* 
               {isOpenDiscrip && (
                 <div className='info-d-product' style={{ padding: '10px 0' }}>
                   <div dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
                 </div>
-              )}
+              )} */}
+              <TransitionGroup style={{ height: 'auto' }}>
+                {isOpenDiscrip && (
+                  <CSSTransition timeout={300} classNames="fade" >
+                    <div className='info-d-product' style={{ padding: '10px 0' }}>
+                      <div dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                    </div>
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
             </div>
           </div>
           {/* item.attributes[0].text_prompt == 'true' */}

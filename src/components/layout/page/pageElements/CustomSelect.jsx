@@ -2,8 +2,16 @@ import { useEffect, useState } from "react"
 import StrelkaBottom from '../../../../assets/iconCustomElement/StrelkaBottom.svg'
 import CheckTrue from '../../../../assets/iconCustomElement/CheckTrue.svg'
 
-export default function CustomSelect({ resetValue = false, title = '', value = [], colors = false, phone = false }) {
-    const [selectState, setSelectState] = useState(false)
+export default function CustomSelect({ 
+    resetValue = false, 
+    title = '', 
+    value = [], 
+    colors = false, 
+    phone = false, 
+    open,
+    toggle
+
+}) {
     const [vlaueSelect, setValueSelect] = useState({
         value: value[0]?.value == 'all' && value[0]?.value || '',
         label: value[0]?.value == 'all' && value[0]?.label || ''
@@ -19,15 +27,15 @@ export default function CustomSelect({ resetValue = false, title = '', value = [
     if (!phone) {
         return (
             <div className="custom-select">
-                <button onClick={() => setSelectState(!selectState)} className="flex items-center gap-[7px]">
+                <button onClick={toggle} className="flex items-center gap-[7px]">
                     {vlaueSelect.value ? vlaueSelect.label : title} <img src={StrelkaBottom} alt="StrelkaBottom" />
                 </button>
-                {selectState &&
-                    <ul className="customUl p-[20px] bg-white text-black w-[250px] flex flex-col gap-[15px]">
+                {open &&
+                    <ul className={`${title == 'Сортировать по' && 'right-0'} customUl p-[20px] bg-white text-black w-[250px] flex flex-col gap-[15px]`}>
                         {value && value?.map((el) => (
                             <li onClick={() => {
                                 setValueSelect(el)
-                                setSelectState(false)
+                                toggle()
                             }} className="cursor-pointer flex gap-[10px] items-center" key={el.value}>
                                 <div className="check-box-custom">
                                     {vlaueSelect.value == el.value ? <img src={CheckTrue} alt="CheckTrue" /> : ''}
@@ -47,7 +55,6 @@ export default function CustomSelect({ resetValue = false, title = '', value = [
                 {value && value?.map((el) => (
                     <li onClick={() => {
                         setValueSelect(el)
-                        setSelectState(false)
                     }} className="cursor-pointer flex gap-[10px] items-center" key={el.value}>
                         <div className="check-box-custom">
                             {vlaueSelect.value == el.value ? <img src={CheckTrue} alt="CheckTrue" /> : ''}

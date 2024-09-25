@@ -58,9 +58,11 @@ export default function ModalBasket() {
             <div className="componentModal">
                 {!isLargeScreen ?
                     <div className="componentModalHeader">
-                        <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
-                        <h1>Корзина</h1>
-                        <button onClick={DeleteProductsBasket}>Очистить</button>
+                        <div style={{ width: '383px' }}>
+                            <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                            <h1>Корзина</h1>
+                            <button onClick={DeleteProductsBasket}>Очистить</button>
+                        </div>
                     </div>
                     :
                     <div className="componentModalHeader">

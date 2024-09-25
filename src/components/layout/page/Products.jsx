@@ -27,6 +27,7 @@ export default function Products() {
     const [selectedSizes, setSelectedSizes] = useState([]);
     const { modalStateFilter, setModalStateFilter } = useModalFilter()
     const { setModalStateReset, modalStateReset } = useModalReset()
+    const [openSelect, setOpenSelect] = useState(null);
 
     const sizes = [
         { label: 'XS', value: '0' },
@@ -74,6 +75,9 @@ export default function Products() {
     ];
     const widthLap = '1020px';
     const isLargeScreen = useMediaQuery(`(min-width: ${widthLap})`);
+    const toggleSelect = (selectName) => {
+        setOpenSelect(openSelect === selectName ? null : selectName);
+    };
 
 
     return (
@@ -82,9 +86,9 @@ export default function Products() {
                 <h1>Каталог</h1>
                 <div> {isLargeScreen ?
                     <div className='filterProbucts'>
-                        <CustomSelect title='Тип продукции' value={typeSelect} />
-                        <CustomSelect title='Цвет' value={''} />
-                        <CustomSelect title='Размер' value={sizes} onChange={handleSizeChange} />
+                        <CustomSelect title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect} />
+                        <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} />
+                        <CustomSelect title='Размер' value={sizes} onChange={handleSizeChange} open={openSelect === "size"} toggle={() => toggleSelect("size")} />
                     </div>
                     : <button onClick={() => setModalStateFilter(true)} className='btn-filter-phone'>
                         <img src={iconFilter} alt="iconFilter" />
@@ -92,7 +96,7 @@ export default function Products() {
                     </button>}
                     {isLargeScreen ?
                         <div className='max-w-auto'>
-                            <CustomSelect title='Сортировать по' value={arrSort} />
+                            <CustomSelect title='Сортировать по' value={arrSort} open={openSelect === "sort"} toggle={() => toggleSelect("sort")} />
                         </div>
                         :
                         <><button onClick={() => setModalStateReset(true)} className='btn-filter-phone'>
