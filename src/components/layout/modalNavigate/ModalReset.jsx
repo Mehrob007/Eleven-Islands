@@ -12,7 +12,7 @@ const arrSort = [
 export default function ModalReset() {
     const { setModalStateReset } = useModalReset()
     return (
-        <div className="boxModalBasket" style={{ justifyContent: 'center', paddingTop: '214px', }}>
+        <div className="boxModalBasket" style={{ zIndex: '1', position: 'absolute', background: 'transparent', justifyContent: 'end', paddingTop: '125px', paddingRight   : '19px' }}>
             <div className="componentModalReset">
                 <div className="componentModalHeaderReset">
                     <div></div>

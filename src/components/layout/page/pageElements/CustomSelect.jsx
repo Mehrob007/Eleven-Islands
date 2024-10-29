@@ -2,28 +2,45 @@ import { useEffect, useState } from "react"
 import StrelkaBottom from '../../../../assets/iconCustomElement/StrelkaBottom.svg'
 import CheckTrue from '../../../../assets/iconCustomElement/CheckTrue.svg'
 
-export default function CustomSelect({ 
-    resetValue = false, 
-    title = '', 
-    value = [], 
-    colors = false, 
-    phone = false, 
+export default function CustomSelect({
+    resetValue = false,
+    title = '',
+    value = [],
+    colors = false,
+    phone = false,
     open,
-    toggle
-
+    toggle,
+    onClick = () => { }
 }) {
-    const [vlaueSelect, setValueSelect] = useState({
-        value: value[0]?.value == 'all' && value[0]?.value || '',
-        label: value[0]?.value == 'all' && value[0]?.label || ''
-    })
-    useEffect(() => {
-        if (resetValue) {
-            setValueSelect({
-                value: value[0]?.value == 'all' && value[0]?.value || '',
-                label: value[0]?.value == 'all' && value[0]?.label || ''
-            })
+    const [vlaueSelect, setValueSelect] = useState(
+        title === "Размер" ? {
+            label: 'Размер', value: '*'
+            // ['XS', 'S', 'M', 'L', 'XL']
         }
-    }, [resetValue])
+            :
+            {
+                value: value?.[0]?.value || '',
+                label: value?.[0]?.label || ''
+            })
+    // useEffect(() => {
+    //     if (resetValue) {
+    //         setValueSelect({
+    //             value: value?.[0]?.value || '',
+    //             label: value?.[0]?.label || ''
+    //         })
+    //     }
+    // }, [resetValue])
+
+
+    useEffect(() => {
+        if (vlaueSelect) {
+            if (vlaueSelect.value === "*") {
+                onClick(['XS', 'S', 'M', 'L', 'XL'])
+            } else {
+                onClick(vlaueSelect.value)
+            }
+        }
+    }, [vlaueSelect])
     if (!phone) {
         return (
             <div className="custom-select">
@@ -34,6 +51,7 @@ export default function CustomSelect({
                     <ul className={`${title == 'Сортировать по' && 'right-0'} customUl p-[20px] bg-white text-black w-[250px] flex flex-col gap-[15px]`}>
                         {value && value?.map((el) => (
                             <li onClick={() => {
+
                                 setValueSelect(el)
                                 toggle()
                             }} className="cursor-pointer flex gap-[10px] items-center" key={el.value}>

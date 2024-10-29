@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Пример работы виджета ПВЗ</title>
+  <script src="https://cdn.jsdelivr.net/npm/@cdek-it/widget@3" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime" type="text/javascript"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css" rel="stylesheet">
+  <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+          new window.CDEKWidget({
+                                    apiKey: 'f4e034c2-8c37-4168-8b97-99b6b3b268d7',
+                                    defaultLocation: 'Новосибирск',
+                                    root: 'dev-container',
+                                });
+      });
+  </script>
+</head>
+<body>
+  <p class="m-2">Виджет использует существующий элемент на странице, потому что задан параметр root</p>
+  <div id="dev-container" class="w-full h-[600px] mt-5"></div>
+</body>
+</html>

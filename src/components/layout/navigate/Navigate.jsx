@@ -47,7 +47,7 @@ export default function Navigate() {
           <li className='Catalog'>
             <Link to='/products/all'>Каталог</Link>
           </li>
-          <Link to=''>LookBook</Link>
+          <Link to='/gelary'>LookBook</Link>
         </ul>
       ) : (
         <div onClick={() => handleNavClick()}>
@@ -58,7 +58,7 @@ export default function Navigate() {
       <Link to='/' className='logoNav'>
         {isLargeScreen ? (
           <>
-            <img src={VectorLogo} alt="VectorLogo" />
+          <img src={VectorLogo} alt="VectorLogo" />
             <div className='logoSm'>
               <img src={logoSmoleTit} alt="logoSmoleTit" />
               <img className='anim' src={logoSmole} alt="logoSmole" />
@@ -68,11 +68,11 @@ export default function Navigate() {
         ) : (
           <img src={EIPhone} alt='EIPhone' />
         )}
-      </Link>
+      </Link> 
 
       <div className='paramsNav'>
         <div className='comParams'>
-          <img src={iconSearch} onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
+          <img src={iconSearch}  onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
           <img src={iconShoping} onClick={() => setModalState(true)} alt="iconShoping" />
           {isLargeScreen && (
           <Link to='/login'>

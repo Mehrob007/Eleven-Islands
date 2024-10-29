@@ -40,10 +40,10 @@ export default function RecoveryPassword() {
 
     setErrorValidata(errors);
 
-    // Если ошибок нет, выполняем запрос
     if (!errors.error_naw_password_1 && !errors.error_naw_password_2) {
+      
       console.log('====================================');
-      console.log('запрос!');
+      console.log(`запрос! ${fetchData}`);
       console.log('====================================');
     }
   };

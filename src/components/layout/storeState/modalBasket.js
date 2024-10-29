@@ -20,3 +20,20 @@ export const useModalNav = create((set) => ({
     modalStateNav: false,
     setModalStateNav: (status) => set({ modalStateNav: status }),
 }))
+export const dataBasketItems = create((set) => ({
+    dataBasket: [],
+    setDataBasket: (status) => set({ dataBasket: status }),
+}))
+const loadFromLocalStorage = () => {
+    const savedData = localStorage.getItem('dataGelary');
+    return savedData ? JSON.parse(savedData) : [];
+  };
+  
+  export const dataGelaryStore = create((set) => ({
+    dataGelary: loadFromLocalStorage(),
+    setDataGelary: (status) => {
+      set({ dataGelary: status });
+      // Сохраняем в localStorage
+      localStorage.setItem('dataGelary', JSON.stringify(status));
+    },
+  }));

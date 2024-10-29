@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Box2 from './pageElements/Box2';
 import SendEmail from './pageElements/SendEmail';
@@ -6,31 +6,123 @@ import SendEmail from './pageElements/SendEmail';
 import comRightColl from '../../../assets/icon/comRightColl.svg';
 import elementBox1Logo from '../../../assets/icon/elementBox1Logo.svg';
 import element2Box1Logo from '../../../assets/icon/element2Box1Logo.svg';
-import StrelkaRight from '../../../assets/icon/StrelkaRight.svg';
-import StrelkaLeft from '../../../assets/icon/StrelkaLeft.svg';
+
 
 import imgSlider from '../../../assets/img/imgSlidr.png';
 import imgBlog from '../../../assets/img/blogContent.png';
 
-import { Helmet } from 'react-helmet';
+// import { Helmet } from 'react-helmet';
 import { usePhotoStore } from '../storeState/store';
 import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
+import Box3 from './pageElements/Box3';
+
 // import "slick-carousel/slick/slick-theme.css";
 
+import IMG_1233 from "../../../assets/img/Сжатые фото/IMG_1233.jpg"
+import IMG_1243 from "../../../assets/img/Сжатые фото/IMG_1243.jpg"
+import IMG_1248 from "../../../assets/img/Сжатые фото/IMG_1248.jpg"
+import IMG_1249 from "../../../assets/img/Сжатые фото/IMG_1249.jpg"
+import IMG_1258 from "../../../assets/img/Сжатые фото/IMG_1258.jpg"
+import IMG_1259 from "../../../assets/img/Сжатые фото/IMG_1259.jpg"
+import IMG_1261 from "../../../assets/img/Сжатые фото/IMG_1261.jpg"
+import IMG_1262 from "../../../assets/img/Сжатые фото/IMG_1262.jpg"
+import IMG_1270 from "../../../assets/img/Сжатые фото/IMG_1270.jpg"
+import IMG_1273 from "../../../assets/img/Сжатые фото/IMG_1273.jpg"
+import IMG_1274 from "../../../assets/img/Сжатые фото/IMG_1274.jpg"
+import IMG_1278 from "../../../assets/img/Сжатые фото/IMG_1278.jpg"
+import IMG_1280 from "../../../assets/img/Сжатые фото/IMG_1280.jpg"
+import IMG_1281 from "../../../assets/img/Сжатые фото/IMG_1281.jpg"
+import IMG_1282 from "../../../assets/img/Сжатые фото/IMG_1282.jpg"
+import IMG_1285 from "../../../assets/img/Сжатые фото/IMG_1285.jpg"
+import IMG_1286 from "../../../assets/img/Сжатые фото/IMG_1286.jpg"
+import IMG_1295 from "../../../assets/img/Сжатые фото/IMG_1295.jpg"
+import IMG_1297 from "../../../assets/img/Сжатые фото/IMG_1297.jpg"
+import IMG_1300 from "../../../assets/img/Сжатые фото/IMG_1300.jpg"
+import IMG_1302 from "../../../assets/img/Сжатые фото/IMG_1302.jpg"
+import IMG_1303 from "../../../assets/img/Сжатые фото/IMG_1303.jpg"
+import IMG_1309 from "../../../assets/img/Сжатые фото/IMG_1309.jpg"
+import IMG_1313 from "../../../assets/img/Сжатые фото/IMG_1313.jpg"
+import IMG_1366 from "../../../assets/img/Сжатые фото/IMG_1366.jpg"
+import IMG_1373 from "../../../assets/img/Сжатые фото/IMG_1373.jpg"
+import IMG_1385 from "../../../assets/img/Сжатые фото/IMG_1385.jpg"
+import IMG_1387 from "../../../assets/img/Сжатые фото/IMG_1387.jpg"
+import IMG_1388 from "../../../assets/img/Сжатые фото/IMG_1388.jpg"
+import IMG_1390 from "../../../assets/img/Сжатые фото/IMG_1390.jpg"
+import IMG_1418 from "../../../assets/img/Сжатые фото/IMG_1418.jpg"
+import IMG_1420 from "../../../assets/img/Сжатые фото/IMG_1420.jpg"
+import IMG_1437 from "../../../assets/img/Сжатые фото/IMG_1437.jpg"
+import IMG_1455 from "../../../assets/img/Сжатые фото/IMG_1455.jpg"
+import IMG_1468 from "../../../assets/img/Сжатые фото/IMG_1468.jpg"
+import IMG_1471 from "../../../assets/img/Сжатые фото/IMG_1471.jpg"
+import IMG_1480 from "../../../assets/img/Сжатые фото/IMG_1480.jpg"
+import IMG_1490 from "../../../assets/img/Сжатые фото/IMG_1490.jpg"
+import IMG_1501 from "../../../assets/img/Сжатые фото/IMG_1501.jpg"
+import IMG_1504 from "../../../assets/img/Сжатые фото/IMG_1504.jpg"
+import IMG_1512 from "../../../assets/img/Сжатые фото/IMG_1512.jpg"
+import IMG_1522 from "../../../assets/img/Сжатые фото/IMG_1522.jpg"
+import IMG_1529 from "../../../assets/img/Сжатые фото/IMG_1529.jpg"
+import IMG_1535 from "../../../assets/img/Сжатые фото/IMG_1535.jpg"
+import IMG_1555 from "../../../assets/img/Сжатые фото/IMG_1555.jpg"
+import IMG_1556 from "../../../assets/img/Сжатые фото/IMG_1556.jpg"
+import IMG_1560 from "../../../assets/img/Сжатые фото/IMG_1560.jpg"
+import IMG_1563 from "../../../assets/img/Сжатые фото/IMG_1563.jpg"
+import IMG_1566 from "../../../assets/img/Сжатые фото/IMG_1566.jpg"
+import IMG_1586 from "../../../assets/img/Сжатые фото/IMG_1586.jpg"
 
 const images = [
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
-  imgSlider,
+  IMG_1233,
+  IMG_1243,
+  IMG_1248,
+  IMG_1249,
+  IMG_1258,
+  IMG_1259,
+  IMG_1261,
+  IMG_1262,
+  IMG_1270,
+  IMG_1273,
+  IMG_1274,
+  IMG_1278,
+  IMG_1280,
+  IMG_1281,
+  IMG_1282,
+  IMG_1285,
+  IMG_1286,
+  IMG_1295,
+  IMG_1297,
+  IMG_1300,
+  IMG_1302,
+  IMG_1303,
+  IMG_1309,
+  IMG_1313,
+  IMG_1366,
+  IMG_1373,
+  IMG_1385,
+  IMG_1387,
+  IMG_1388,
+  IMG_1390,
+  IMG_1418,
+  IMG_1420,
+  IMG_1437,
+  IMG_1455,
+  IMG_1468,
+  IMG_1471,
+  IMG_1480,
+  IMG_1490,
+  IMG_1501,
+  IMG_1504,
+  IMG_1512,
+  IMG_1522,
+  IMG_1529,
+  IMG_1535,
+  IMG_1555,
+  IMG_1556,
+  IMG_1560,
+  IMG_1563,
+  IMG_1566,
+  IMG_1586,
 ];
+
+
 const BlogData = [
   {
     image: imgBlog,
@@ -46,14 +138,6 @@ const BlogData = [
   }
 ]
 
-const ogData = {
-  title: 'ELEVEN ISLANDS',
-  description: 'Eleven Islands — онлайн-магазин модной одежды, предлагающий уникальные коллекции для мужчин и женщин. Откройте для себя стильные и качественные наряды, вдохновленные красотой природы и современными трендами. Совершайте покупки онлайн и подчеркивайте свою индивидуальность с Eleven Islands.',
-  url: 'https://eleven-islands.netlify.app',
-  image: 'https://cotton-road.com/images/detskie-futbolki/37-temno-zelenaya.jpg',
-  siteName: 'ELEVEN ISLANDS',
-  keywords: 'модная одежда, стильная одежда, онлайн-магазин одежды, женская мода, мужская мода, эксклюзивная одежда, дизайнерская одежда, Eleven Islands, тренды моды, покупки онлайн, аксессуары, стиль'
-};
 
 
 const useMediaQuery = (query) => {
@@ -78,58 +162,27 @@ const useMediaQuery = (query) => {
 export default function MainPage() {
   const widthLap = '1020px'
 
-  const imageListRef = useRef(null);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
+
 
   const { photos, currentPage, fetching, fetchPhotos } = usePhotoStore();
-
   console.log(photos);
 
-
-  const scrollSlider = (direction) => {
-    if (imageListRef.current) {
-      const scrollAmount = imageListRef.current.clientWidth * direction;
-      imageListRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-  const updateButtonState = () => {
-    if (imageListRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = imageListRef.current;
-      setIsAtStart(scrollLeft === 0);
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 10);
-    }
-  };
   useEffect(() => {
-    fetchPhotos(4, currentPage);
+    fetchPhotos({ limit: 50, page: currentPage });
   }, []);
   useEffect(() => {
     if (fetching) {
-      fetchPhotos(4, currentPage);
+      fetchPhotos({ limit: 50, page: currentPage });
     }
   }, [fetching]);
 
-  useEffect(() => {
-    updateButtonState();
-    const currentRef = imageListRef.current;
 
-    if (currentRef) {
-      currentRef.addEventListener('scroll', updateButtonState);
-    }
-
-    return () => {
-      if (currentRef) {
-        currentRef.removeEventListener('scroll', updateButtonState);
-      }
-    };
-  }, []);
 
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
   const settings = {
-    className: "slider variable-width",
+    className: "slider variable-width slider-blog",
     dots: true,
     infinite: true,
     centerMode: true,
@@ -137,27 +190,10 @@ export default function MainPage() {
     slidesToScroll: 1,
     variableWidth: true
   };
-  const settingsGelary = {
-    className: "slider Gelary variable-width",
-    dots: true,
-    infinite: true,
-    centerMode: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true
-  };
+
   return (
     <>
-      <Helmet>
-        <meta property="og:title" content={ogData.title} />
-        <meta property="og:description" content={ogData.description} />
-        <meta property="og:url" content={ogData.url} />
-        <meta property="og:image" content={ogData.image} />
-        <meta property="og:site_name" content={ogData.siteName} />
-        <meta name="description" content={ogData.description} />
-        <meta name="keywords" content={ogData.keywords} />
-        <title>{ogData.title}</title>
-      </Helmet>
+
       <div className='box1'>
         <div className="box1newCollection">
           <div className='newCollection'>
@@ -165,15 +201,18 @@ export default function MainPage() {
               <img src={element2Box1Logo} alt="element2Box1Logo" className='element2Box1Logo' />
               <img src={elementBox1Logo} className='elementBox1Logo' alt="elementBox1Logo" />
             </div>
+
             <div className="comRightColl">
-              <img src={comRightColl} alt="comRightColl" />
+              <h1>New collection</h1>
+              <h1>ESSENTIAL</h1>
+              {/* <img src={comRightColl} alt="comRightColl" /> */}
             </div>
           </div>
         </div>
       </div>
       <div className="header headerBox2 ">
         <div className='headerCom1'>
-          <h1>Летняя коллекция</h1>
+          <h1>Essential collection</h1>
         </div>
         {useMediaQuery(`(min-width: ${widthLap})`) &&
           <div className='headerCom2'>
@@ -191,9 +230,9 @@ export default function MainPage() {
         </div>
       }
       {useMediaQuery(`(min-width: ${widthLap})`) &&
-        <SendEmail />
-      }
-      <div>
+        <SendEmail />}
+      <Box3 images={images.filter((_, i) => i < 10)} title={'Фотогалерея'} />
+      {/* <div>
         <div className="box3">
           <div className="header">
             <div className='headerCom1'>
@@ -238,18 +277,18 @@ export default function MainPage() {
               ))}
             </Slider >
 
-
+              
           }
         </div>
-        {useMediaQuery(`(min-width: ${widthLap})`) &&
-        <div className='allPhotoButton'>
-          <h3>Вся фотогалерея</h3>
-        </div>}
-      </div>
+        
+          <div style={{ paddingTop: useMediaQuery(`(min-width: ${widthLap})`) && '20px' }} className='allPhotoButton'>
+            <h3>Вся фотогалерея</h3>
+          </div>
+      </div> */}
       {useMediaQuery(`(max-width: ${widthLap})`) &&
         <SendEmail />
       }
-      <div className="box4">
+      {/* <div className="box4">
         <div className="header">
           <div className='headerCom1'>
             <h1>Блог</h1>
@@ -279,15 +318,7 @@ export default function MainPage() {
             ))}
           </Slider >
         }
-        {/* {useMediaQuery(`(max-width: ${widthLap})`) &&
-          <div className='navigate-btn-slider'>
-            <div>
-
-            </div>
-          </div> 
-          } */}
-
-      </div>
+      </div> */}
     </>
   );
 }

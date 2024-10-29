@@ -4,6 +4,7 @@ import CustomSelect from "../page/pageElements/CustomSelect";
 import { useEffect, useState } from "react";
 
 const sizes = [
+    { label: 'all', value: 'all' },
     { label: 'XS', value: '0' },
     { label: 'S', value: '1' },
     { label: 'M', value: '2' },
@@ -45,7 +46,7 @@ export default function ModalFilter() {
                 <div className="FilterBox">
                     <CustomSelect resetValue={resetValue} phone={true} title='Размер' value={sizes} />
                     <CustomSelect resetValue={resetValue} phone={true} title='Тип продукции' value={typeSelect} />
-                    <CustomSelect resetValue={resetValue} phone={true} title='Цвет' colors={''} />
+                    {/* <CustomSelect resetValue={resetValue} phone={true} title='Цвет' colors={''} /> */}
                 </div>
                 {/*<div className="endPrice">
                     <h1>Итого:</h1>

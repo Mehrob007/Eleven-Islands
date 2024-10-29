@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import Box2 from './pageElements/Box2';
 import NewCollection from '../../../assets/icon/NewCollection.svg'
 import lineyka from '../../../assets/icon/lineyka.svg'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { dataGelaryStore } from '../../layout/storeState/modalBasket'
 // NewCollection.svg
 
 
@@ -11,23 +12,60 @@ import SendEmail from './pageElements/SendEmail';
 
 import { usePhotoStore } from '../storeState/store';
 import { PiMinus, PiPlus } from 'react-icons/pi';
-import axios from 'axios';
+// import axios from 'axios';
+import Slider from 'react-slick';
+import ImageCom from './pageElements/ImageCom';
+import { Helmet } from 'react-helmet';
+
+const useMediaQuery = (query) => {
+  const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+
+    const listener = () => setMatches(media.matches);
+
+    media.addEventListener('change', listener);
+
+    return () => media.removeEventListener('change', listener);
+  }, [query]);
+
+  return matches;
+};
+
 
 export default function Prodect() {
   const { id } = useParams()
   const { findeElement, findeProduct } = usePhotoStore()
-  const [colorVibor, setColorVibor] = useState('')
-  const [sizeVibor, setSizeVibor] = useState('')
-  const [isOpenDiscrip, setIsOpenDiscrip] = useState(false);
-  // const sizeDef = ['XS', 'S', 'M', 'L', 'XL']
+  const [colorVibor, setColorVibor] = useState(() => {
+    return localStorage.getItem('colorVibor') || '';
+  });
+  // useEffect(() => {
+    
+  // }, [colorVibor]);
+  const [isOpenDiscrip, setIsOpenDiscrip] = useState(true);
+  const [isOpenDiscrip2, setIsOpenDiscrip2] = useState(false);
+  const { dataGelary, setDataGelary } = dataGelaryStore()
   const sizeDef = ['XXS', 'XS', 'S', 'L', 'XL', 'XXL']
   const [haveSize, setHaveSize] = useState([])
   const { photos, fetchPhotos } = usePhotoStore();
-
+  const [sizeVibor, setSizeVibor] = useState(haveSize[0])
+  const [modalOpen, setModalOpen] = useState({
+    open: false,
+    img: null
+  })
 
   useEffect(() => {
-    fetchPhotos(4, 1);
+    fetchPhotos({ limit: 50, page: 1 });
   }, []);
+
+  useEffect(() => {
+    if (haveSize.length > 0) {
+      setSizeVibor(haveSize[0])
+      setColorVibor(findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values[0].name)
+    }
+  }, [haveSize, findeElement])
 
   const toggleOpenDiscrip = () => {
     setIsOpenDiscrip(!isOpenDiscrip);
@@ -36,7 +74,7 @@ export default function Prodect() {
   useEffect(() => {
     findeProduct(id)
   }, [])
-  console.log(findeElement && findeElement);
+  // console.log(findeElement && findeElement);
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
@@ -53,78 +91,150 @@ export default function Prodect() {
       setHaveSize(arrSize)
     }
   }, [findeElement?.attributes])
-  console.log(photos);
+  // console.log(photos);
 
-  const addToBasket = async (id) => {
-    const token = localStorage.getItem('token');
-    const customerId = localStorage.getItem('customerId');
+  const addToBasket = (id) => {
+    setDataGelary([
+      ...dataGelary,
+      {
+        id: id,
+        title: findeElement?.name,
+        name: findeElement?.short_description,
+        price: findeElement?.price,
+        size: sizeVibor, count: 1,
+        titleImg: findeElement.images[0],
+        countPrice: findeElement?.price,
+      }])
+    // const token = localStorage.getItem('token');
+    // const customerId = localStorage.getItem('customerId');
 
 
-    if (!token) {
-      console.warn("No token available. Cannot fetch photos.");
-      return;
-    }
-    try {
-      const response = await axios.post(`https://elevenislands.ru/api/shopping_cart_items`, {
-        shopping_cart_item: {
-          product_id: id,
-          product_attributes: [
-            {
-              value: colorVibor,
-              id: 1
-            },
-            {
-              value: sizeVibor,
-              id: 2
-            }
-          ],
-          customer_id: customerId
-        }
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      console.log(response.data);
-      console.log({
-        shopping_cart_item: {
-          product_id: id,
-          product_attributes: [
-            {
-              value: colorVibor,
-              id: 1
-            },
-            {
-              value: sizeVibor,
-              id: 2
-            }
-          ],
-          customer_id: customerId
-        }
-      });
+    // if (!token) {
+    //   console.warn("No token available. Cannot fetch photos.");
+    //   return;
+    // }
+    // try {
+    //   // const response = await axios.post(`https://elevenislands.ru/api/shopping_cart_items`, {
+    //   //   shopping_cart_item: {
+    //   //     product_id: id,
+    //   //     product_attributes: [
+    //   //       {
+    //   //         value: colorVibor,
+    //   //         id: 1
+    //   //       },
+    //   //       {
+    //   //         value: sizeVibor,
+    //   //         id: 2
+    //   //       }
+    //   //     ],
+    //   //     customer_id: customerId
+    //   //   }
+    //   // }, {
+    //   //   headers: {
+    //   //     Authorization: `Bearer ${token}`
+    //   //   }
+    //   // });
+    //   // console.log(response.data);
 
-    } catch (error) {
-      console.error("Error fetching photos:", error);
-    }
+
+    //     // {
+    //     //   product_id: id,
+    //     //   product_attributes: [
+    //     //     {
+    //     //       value: colorVibor,
+    //     //       id: 1
+    //     //     },
+    //     //     {
+    //     //       value: sizeVibor,
+    //     //       id: 2
+    //     //     }
+    //     //   ],
+    //     //   customer_id: customerId,
+    //     //   count: 1,
+    //     //   price: findeElement?.price
+    //     // }
+    //   ])
+
+    // } catch (error) {
+    //   console.error("Error fetching photos:", error);
+    // }
   }
+  console.log('====================================');
+  console.log(dataGelary);
+  console.log('====================================');
+  const widthLap = '1020px'
+  const settingsGelary = {
+    className: "slider1 product-gelary variable-width-menu",
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+  const location = useLocation();
+  // console.log(findeElement?.images?.[0]?.src);
+
+  const ogData = {
+    title: findeElement?.meta_title,
+    description: findeElement?.meta_keywords,
+    url: location?.pathname,
+    image: findeElement?.images?.[0]?.src,
+    siteName: 'ELEVEN ISLANDS',
+    keywords: findeElement?.meta_descriptioт
+  };
+
+  console.log('====================================');
+  console.log(findeElement);
+  console.log('====================================');
 
 
   return (<>
+    <Helmet>
+      <meta property="og:title" content={ogData.title} />
+      <meta property="og:description" content={ogData.description} />
+      <meta property="og:url" content={ogData.url} />
+      <meta property="og:image" content={ogData.image} />
+      <meta property="og:site_name" content={ogData.siteName} />
+      <meta name="description" content={ogData.description} />
+      <meta name="keywords" content={ogData.keywords} />
+      <title>{ogData.title}</title>
+    </Helmet>
     {findeElement && <>
       <div className='contectProductId'>
-        <div className='contectProductId__img'>
+        {useMediaQuery(`(min-width: ${widthLap})`) && <div className='contectProductId__img'>
           {/* {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev, i) => (
             <img key={i} src={prev} alt="imgProduct" />
           ))} */}
           {findeElement.images && findeElement?.images.map((prev, i) => (
-            <img key={i} src={prev.src} alt="imgProduct" />
+            <img onClick={() => setModalOpen({
+              open: true,
+              img: prev.src
+            })} key={i} src={prev.src} alt="imgProduct" />
           ))}
-        </div>
+        </div>}
+        {useMediaQuery(`(max-width: ${widthLap})`) &&
+          <div className='contectProductId_phone'>
+            <Slider {...settingsGelary}>
+              {findeElement.images && findeElement?.images.map((prev, i) => (
+                <img
+                  // style={{
+                  //   minHeight: '630px', 
+                  //   maxHeight: '630px', 
+                  //   objectFit: 'cover' 
+                  // }}
+                  className='img_phone_items'
+                  key={i}
+                  src={prev.src}
+                  alt="imgProduct"
+                />
+              ))}
+            </Slider >
+          </div>}
         <div className='contectProductId__info'>
           {/* Prodect{id} */}
           <div className='header-div-product'>
             <img src={NewCollection} alt="NewCollection" />
-            <div>
+            <div style={{ width: '300px' }}>
               <h1>{findeElement?.name}</h1>
               <p>{findeElement?.short_description}</p>
             </div>
@@ -137,16 +247,23 @@ export default function Prodect() {
             <h1>Другие цвета</h1>
             <div>
               {findeElement?.attributes && findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
-                <div key={i} style={{ borderColor: colorVibor == el.name && '#000' }}>
-                  <nav onClick={() => setColorVibor(el.name)} style={{ background: el.name }}></nav>
-                </div>
+                <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
+                  <nav onClick={() => {
+                    localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                    setColorVibor(el.name.split("|")[0])
+                    document.location.href = `/product/${el.name.split("|")[1]}`
+                    }} style={{ background: el.name.split("|")[0] }}></nav>
+                </a>
               ))}
             </div>
 
 
           </div>
           <div className='size-div-product'>
-            <h1>Размер</h1>
+            <nav className='size-div-product-nav'>
+              <h1>Размер</h1>
+              {useMediaQuery(`(max-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
+            </nav>
             <div>
               {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map((el, i) => {
                 return (
@@ -177,11 +294,11 @@ export default function Prodect() {
                 </nav>
               ))} */}
             </div>
-            <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>
+            {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
           </div>
           <div className='button-div-product'>
-            <button className='add-to-basket' onClick={() => addToBasket(findeElement.id)}>Добавить в корзину</button>
-            <button className='on-click-buy'>Купить в один клик</button>
+            <button className='add-to-basket button-product' onClick={() => addToBasket(findeElement.id)}>Добавить в корзину</button>
+            <Link to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '20px ' }}>
             {/* <div className='dop-info-product'>
@@ -228,17 +345,40 @@ export default function Prodect() {
                   {isOpenDiscrip ? (<PiMinus />) : (<PiPlus />)}
                 </span>
               </div>
-              {/* 
-              {isOpenDiscrip && (
-                <div className='info-d-product' style={{ padding: '10px 0' }}>
-                  <div dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
-                </div>
-              )} */}
               <TransitionGroup style={{ height: 'auto' }}>
                 {isOpenDiscrip && (
                   <CSSTransition timeout={300} classNames="fade" >
                     <div className='info-d-product' style={{ padding: '10px 0' }}>
-                      <div dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                      <div style={{ fontSize: '12px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                    </div>
+                  </CSSTransition>
+                )}
+              </TransitionGroup>
+            </div>
+            <div className='dop-info-product'>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  cursor: 'pointer',
+                  padding: '10px 0'
+                }}
+                onClick={() => setIsOpenDiscrip2(!isOpenDiscrip2)}
+              >
+                <h2 style={{ margin: 0 }}>Доставка и возврат</h2>
+                <span style={{ fontSize: '24px' }}>
+                  {isOpenDiscrip2 ? (<PiMinus />) : (<PiPlus />)}
+                </span>
+              </div>
+              <TransitionGroup style={{ height: 'auto' }}>
+                {isOpenDiscrip2 && (
+                  <CSSTransition timeout={300} classNames="fade" >
+                    <div className='info-d-product' style={{ padding: '10px 0' }}>
+                      Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
+                      дополнительную плату и займет 1-3 рабочих дня.
+                      Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
+                      Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
                     </div>
                   </CSSTransition>
                 )}
@@ -249,16 +389,18 @@ export default function Prodect() {
         </div>
       </div>
       <div>
-        <div className="header headerBox2">
+        <div className="header headerBox2 headerBoxProbucts">
           <div className='headerCom1'>
             <h1>Дополни свой образ</h1>
           </div>
           <div className='headerCom2'>
           </div>
         </div>
-        <Box2 arrDataImg={photos.filter((_, i) => i < 12)} />
+        <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />
         <SendEmail />
       </div>
     </>}
+    {modalOpen.open &&
+      <ImageCom img={modalOpen.img} setImg={setModalOpen} />}
   </>)
 }

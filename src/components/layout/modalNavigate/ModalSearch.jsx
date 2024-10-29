@@ -8,8 +8,8 @@ export default function ModalBasket() {
     return (
         <div className="boxModalBasket">
             <div className="componentModal">
-                <div className="componentModalHeader">
-                    <div style={{ maxWidth: '383px' }}>
+                <div className="componentModalHeaderSearch">
+                    <div style={{ maxWidth: '100%' }}>
                         <div>Поиск</div>
                         <button onClick={() => setModalStateSeatch(false)}><img src={CloasModal} alt="CloasModal" /></button>
                     </div>
