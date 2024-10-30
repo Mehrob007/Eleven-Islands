@@ -62,7 +62,7 @@ export default function Box3({ images, title }) {
 
     const settingsGelary = {
         className: "slider Gelary variable-width",
-        dots: true,
+        // dots: true,
         infinite: true,
         centerMode: true,
         slidesToShow: 1,
@@ -113,7 +113,7 @@ export default function Box3({ images, title }) {
                                 <img src={el} alt={`img-${i}`} className="image-item" />
                             </div>
                         ))}
-                    </Slider >
+                    </Slider>
                 }
             </div>
             <div className='allPhotoButton'>

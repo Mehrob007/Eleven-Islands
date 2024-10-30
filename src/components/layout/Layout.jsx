@@ -48,7 +48,7 @@ export default function Layout() {
         })
         localStorage.setItem('token', res.data.access_token)
         localStorage.setItem('customerId', res.data.customer_id)
-        console.log(res.data);
+        
 
       }
       catch (error) {
@@ -80,7 +80,7 @@ export default function Layout() {
           }
         }
         )
-        console.log(res);
+      
         setEmail_user('')
       }
       catch (e) {
@@ -123,9 +123,9 @@ export default function Layout() {
         <title>{ogData.title}</title>
       </Helmet>
       <div className="advertising">
-        <h1 className='advertising-h1-1'>Скидка 25% по промокоду SHOP24</h1>
-        <h1>Скидка 25% по промокоду SHOP24</h1>
-        <h1 className='advertising-h1-1'>Скидка 25% по промокоду SHOP24</h1>
+        <h1 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h1>
+        <h1>Скидка 10% по промокоду WELCOME10</h1>
+        <h1 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h1>
       </div>
       <header style={headerStyle}>
         <Navigate />

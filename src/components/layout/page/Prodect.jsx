@@ -41,8 +41,9 @@ export default function Prodect() {
   const [colorVibor, setColorVibor] = useState(() => {
     return localStorage.getItem('colorVibor') || '';
   });
+
   // useEffect(() => {
-    
+
   // }, [colorVibor]);
   const [isOpenDiscrip, setIsOpenDiscrip] = useState(true);
   const [isOpenDiscrip2, setIsOpenDiscrip2] = useState(false);
@@ -74,7 +75,7 @@ export default function Prodect() {
   useEffect(() => {
     findeProduct(id)
   }, [])
-  // console.log(findeElement && findeElement);
+
   useEffect(() => {
     window.scroll(0, 0)
   }, [])
@@ -83,17 +84,57 @@ export default function Prodect() {
     if (findeElement?.attributes) {
       const arrSize = []
       findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map(el => {
-        // console.log(el.name);
+
         arrSize.push(el.name)
 
       })
-      // console.log(arrSize);
+
       setHaveSize(arrSize)
     }
   }, [findeElement?.attributes])
-  // console.log(photos);
+
+  // const addToBasket = (id) => {
+  //   // Получаем данные из localStorage и парсим их в массив, либо создаем пустой массив, если ничего нет
+  //   const dataGelaryLS = JSON.parse(localStorage.getItem('dataGelary')) || [];
+
+  //   // Проверяем, существует ли уже товар с данным id
+  //   const findeElement = dataGelaryLS.find(item => item.id === id);
+
+  //   let updatedDataGelary;
+
+  //   if (findeElement) {
+  //     // Если товар уже существует, увеличиваем его count и обновляем countPrice
+  //     updatedDataGelary = dataGelaryLS.map(item =>
+  //       item.id === id
+  //         ? {
+  //           ...item,
+  //           count: item.count + 1,
+  //           countPrice: item.countPrice + item.price,
+  //         }
+  //         : item
+  //     );
+  //   } else {
+  //     // Если товара нет, добавляем его как новый элемент
+  //     const newItem = {
+  //       id: id,
+  //       title: findeElement?.name,
+  //       name: findeElement?.short_description,
+  //       price: findeElement?.price,
+  //       size: sizeVibor, count: 1,
+  //       titleImg: findeElement.images[0],
+  //       countPrice: findeElement?.price,
+  //     };
+
+  //     updatedDataGelary = [...dataGelaryLS, newItem];
+  //   }
+
+  //   // Обновляем состояние и localStorage
+  //   setDataGelary(updatedDataGelary);
+  //   localStorage.setItem('dataGelary', JSON.stringify(updatedDataGelary));
+  // };
 
   const addToBasket = (id) => {
+
     setDataGelary([
       ...dataGelary,
       {
@@ -134,7 +175,7 @@ export default function Prodect() {
     //   //     Authorization: `Bearer ${token}`
     //   //   }
     //   // });
-    //   // console.log(response.data);
+
 
 
     //     // {
@@ -159,9 +200,6 @@ export default function Prodect() {
     //   console.error("Error fetching photos:", error);
     // }
   }
-  console.log('====================================');
-  console.log(dataGelary);
-  console.log('====================================');
   const widthLap = '1020px'
   const settingsGelary = {
     className: "slider1 product-gelary variable-width-menu",
@@ -172,7 +210,7 @@ export default function Prodect() {
     slidesToScroll: 1,
   };
   const location = useLocation();
-  // console.log(findeElement?.images?.[0]?.src);
+
 
   const ogData = {
     title: findeElement?.meta_title,
@@ -183,9 +221,12 @@ export default function Prodect() {
     keywords: findeElement?.meta_descriptioт
   };
 
-  console.log('====================================');
-  console.log(findeElement);
-  console.log('====================================');
+  useEffect(() => {
+    if (findeElement?.attributes?.find(atr => atr?.product_attribute_id == 1)?.attribute_values?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]) {
+      localStorage.setItem('colorVibor', findeElement?.attributes?.find(atr => atr?.product_attribute_id == 1)?.attribute_values?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]);
+    }
+  }, [findeElement])
+
 
 
   return (<>
@@ -199,91 +240,99 @@ export default function Prodect() {
       <meta name="keywords" content={ogData.keywords} />
       <title>{ogData.title}</title>
     </Helmet>
-    {findeElement && <>
-      <div className='contectProductId'>
-        {useMediaQuery(`(min-width: ${widthLap})`) && <div className='contectProductId__img'>
-          {/* {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev, i) => (
+    {findeElement &&
+      <>
+        <div className='contectProductId'>
+          {useMediaQuery(`(min-width: ${widthLap})`) && <div className='contectProductId__img'>
+            {/* {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev, i) => (
             <img key={i} src={prev} alt="imgProduct" />
           ))} */}
-          {findeElement.images && findeElement?.images.map((prev, i) => (
-            <img onClick={() => setModalOpen({
-              open: true,
-              img: prev.src
-            })} key={i} src={prev.src} alt="imgProduct" />
-          ))}
-        </div>}
-        {useMediaQuery(`(max-width: ${widthLap})`) &&
-          <div className='contectProductId_phone'>
-            <Slider {...settingsGelary}>
-              {findeElement.images && findeElement?.images.map((prev, i) => (
-                <img
-                  // style={{
-                  //   minHeight: '630px', 
-                  //   maxHeight: '630px', 
-                  //   objectFit: 'cover' 
-                  // }}
-                  className='img_phone_items'
-                  key={i}
-                  src={prev.src}
-                  alt="imgProduct"
-                />
-              ))}
-            </Slider >
+            {findeElement.images &&
+              findeElement?.images.map((prev, i) => (
+                <img onClick={() => setModalOpen({
+                  open: true,
+                  img: prev.src
+                })} key={i} src={prev.src} alt="imgProduct" />
+              )
+              )
+            }
           </div>}
-        <div className='contectProductId__info'>
-          {/* Prodect{id} */}
-          <div className='header-div-product'>
-            <img src={NewCollection} alt="NewCollection" />
-            <div style={{ width: '300px' }}>
-              <h1>{findeElement?.name}</h1>
-              <p>{findeElement?.short_description}</p>
+          {useMediaQuery(`(max-width: ${widthLap})`) &&
+            <div className='contectProductId_phone'>
+              <Slider {...settingsGelary}>
+                {findeElement?.images?.map((prev, i) => {
+                  console.log(prev.src)
+                  return (
+                    <img
+                      // style={{
+                      //   minHeight: '630px', 
+                      //   maxHeight: '630px', 
+                      //   objectFit: 'cover' 
+                      // }}
+                      className='img_phone_items'
+                      key={i}
+                      src={prev.src}
+                      alt="imgProduct"
+                    />
+                  )
+                }
+                )}
+              </Slider >
+            </div>}
+          <div className='contectProductId__info'>
+            {/* Prodect{id} */}
+            <div className='header-div-product'>
+              <img src={NewCollection} alt="NewCollection" />
+              <div style={{ width: '300px' }}>
+                <h1>{findeElement?.name}</h1>
+                <p>{findeElement?.short_description}</p>
+              </div>
+              <div className='price-product'>
+                {findeElement.old_price != 0 && <h4 className='skitka'> <>{findeElement?.old_price} ₽</></h4>}
+                <h4><span>{findeElement?.price}</span> ₽</h4>
+              </div>
             </div>
-            <div className='price-product'>
-              {findeElement.old_price != 0 && <h4 className='skitka'> <>{findeElement?.old_price} ₽</></h4>}
-              <h4><span>{findeElement?.price}</span> ₽</h4>
-            </div>
-          </div>
-          <div className="color-div-product">
-            <h1>Другие цвета</h1>
-            <div>
-              {findeElement?.attributes && findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
-                <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
-                  <nav onClick={() => {
-                    localStorage.setItem('colorVibor', el.name.split("|")[0]);
-                    setColorVibor(el.name.split("|")[0])
-                    document.location.href = `/product/${el.name.split("|")[1]}`
+            <div className="color-div-product">
+              <h1>Другие цвета</h1>
+              <div>
+                {findeElement?.attributes && findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
+                  <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
+                    <nav onClick={() => {
+                      localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                      setColorVibor(el.name.split("|")[0])
+                      document.location.href = `/product/${el.name.split("|")[1]}`
                     }} style={{ background: el.name.split("|")[0] }}></nav>
-                </a>
-              ))}
+                  </a>
+                ))}
+              </div>
+
+
             </div>
+            <div className='size-div-product'>
+              <nav className='size-div-product-nav'>
+                <h1>Размер</h1>
+                {useMediaQuery(`(max-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
+              </nav>
+              <div>
+                {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map((el, i) => {
+                  return (
+                    <nav className={el.quantity == 0 && `size-none`} key={i} onClick={() => { el.quantity != 0 && setSizeVibor(el.name) }} style={{ background: el.name == sizeVibor && '#408759', color: el.name == sizeVibor && '#fff', borderColor: el.name == sizeVibor && 'transparent' }}>
+                      {el.name}
+                    </nav>
+                  )
+                }
 
-
-          </div>
-          <div className='size-div-product'>
-            <nav className='size-div-product-nav'>
-              <h1>Размер</h1>
-              {useMediaQuery(`(max-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
-            </nav>
-            <div>
-              {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map((el, i) => {
-                return (
-                  <nav className={el.quantity == 0 && `size-none`} key={i} onClick={() => { el.quantity != 0 && setSizeVibor(el.name) }} style={{ background: el.name == sizeVibor && '#408759', color: el.name == sizeVibor && '#fff', borderColor: el.name == sizeVibor && 'transparent' }}>
-                    {el.name}
+                )}
+                {findeElement?.attributes && sizeDef.filter(item => !haveSize.includes(item)).map((size) =>
+                (
+                  <nav className='size-none' key={size}>
+                    {size}
                   </nav>
                 )
-              }
-                // console.log(el.name)
-              )}
-              {findeElement?.attributes && sizeDef.filter(item => !haveSize.includes(item)).map((size) =>
-              (
-                <nav className='size-none' key={size}>
-                  {size}
-                </nav>
-              )
-                // console.log(findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.includes(item.name))
 
-              )}
-              {/* {arrDataImgFind[id].content.size.map((size) => (
+
+                )}
+                {/* {arrDataImgFind[id].content.size.map((size) => (
                 <div key={size} onClick={() => setSizeVibor(size)} style={{ background: size == sizeVibor && '#408759', color: size == sizeVibor && '#fff', borderColor: size == sizeVibor && 'transparent' }} >
                   {size}
                 </div>
@@ -293,15 +342,15 @@ export default function Prodect() {
                   {size}
                 </nav>
               ))} */}
+              </div>
+              {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
             </div>
-            {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
-          </div>
-          <div className='button-div-product'>
-            <button className='add-to-basket button-product' onClick={() => addToBasket(findeElement.id)}>Добавить в корзину</button>
-            <Link to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '20px ' }}>
-            {/* <div className='dop-info-product'>
+            <div className='button-div-product'>
+              <button className='add-to-basket button-product' onClick={() => addToBasket(findeElement.id)}>Добавить в корзину</button>
+              <Link onClick={() => addToBasket(findeElement.id)} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '20px ' }}>
+              {/* <div className='dop-info-product'>
               <div
                 style={{
                   display: 'flex',
@@ -329,77 +378,80 @@ export default function Prodect() {
                 </div>
               )}
             </div> */}
-            <div className='dop-info-product'>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  padding: '10px 0'
-                }}
-                onClick={toggleOpenDiscrip}
-              >
-                <h2 style={{ margin: 0 }}>Описание</h2>
-                <span style={{ fontSize: '24px' }}>
-                  {isOpenDiscrip ? (<PiMinus />) : (<PiPlus />)}
-                </span>
+              <div className='dop-info-product'>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    padding: '10px 0'
+                  }}
+                  onClick={toggleOpenDiscrip}
+                >
+                  <h2 style={{ margin: 0 }}>Описание</h2>
+                  <span style={{ fontSize: '24px' }}>
+                    {isOpenDiscrip ? (<PiMinus />) : (<PiPlus />)}
+                  </span>
+                </div>
+                <TransitionGroup style={{ height: 'auto' }}>
+                  {isOpenDiscrip && (
+                    <CSSTransition timeout={300} classNames="fade" >
+                      <div className='info-d-product' style={{ padding: '10px 0' }}>
+                        <div style={{ fontSize: '12px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                      </div>
+                    </CSSTransition>
+                  )}
+                </TransitionGroup>
               </div>
-              <TransitionGroup style={{ height: 'auto' }}>
-                {isOpenDiscrip && (
-                  <CSSTransition timeout={300} classNames="fade" >
-                    <div className='info-d-product' style={{ padding: '10px 0' }}>
-                      <div style={{ fontSize: '12px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
-                    </div>
-                  </CSSTransition>
-                )}
-              </TransitionGroup>
-            </div>
-            <div className='dop-info-product'>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  padding: '10px 0'
-                }}
-                onClick={() => setIsOpenDiscrip2(!isOpenDiscrip2)}
-              >
-                <h2 style={{ margin: 0 }}>Доставка и возврат</h2>
-                <span style={{ fontSize: '24px' }}>
-                  {isOpenDiscrip2 ? (<PiMinus />) : (<PiPlus />)}
-                </span>
+              <div className='dop-info-product'>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    padding: '10px 0'
+                  }}
+                  onClick={() => setIsOpenDiscrip2(!isOpenDiscrip2)}
+                >
+                  <h2 style={{ margin: 0 }}>Доставка и возврат</h2>
+                  <span style={{ fontSize: '24px' }}>
+                    {isOpenDiscrip2 ? (<PiMinus />) : (<PiPlus />)}
+                  </span>
+                </div>
+                <TransitionGroup style={{ height: 'auto' }}>
+                  {isOpenDiscrip2 && (
+                    <CSSTransition timeout={300} classNames="fade" >
+                      <div className='info-d-product' style={{ padding: '10px 0' }}>
+                        <div style={{ fontSize: 12 }}>
+                          Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
+                          дополнительную плату и займет 1-3 рабочих дня.
+                          Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
+                          Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
+                        </div>
+                      </div>
+                    </CSSTransition>
+                  )}
+                </TransitionGroup>
               </div>
-              <TransitionGroup style={{ height: 'auto' }}>
-                {isOpenDiscrip2 && (
-                  <CSSTransition timeout={300} classNames="fade" >
-                    <div className='info-d-product' style={{ padding: '10px 0' }}>
-                      Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
-                      дополнительную плату и займет 1-3 рабочих дня.
-                      Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
-                      Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
-                    </div>
-                  </CSSTransition>
-                )}
-              </TransitionGroup>
             </div>
-          </div>
-          {/* item.attributes[0].text_prompt == 'true' */}
-        </div>
-      </div>
-      <div>
-        <div className="header headerBox2 headerBoxProbucts">
-          <div className='headerCom1'>
-            <h1>Дополни свой образ</h1>
-          </div>
-          <div className='headerCom2'>
+            {/* item.attributes[0].text_prompt == 'true' */}
           </div>
         </div>
-        <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />
-        <SendEmail />
-      </div>
-    </>}
+        <div>
+          <div className="header headerBox2 headerBoxProbucts" style={{ marginTop: '60px' }}>
+            <div className='headerCom1'>
+              <h1>Дополни свой образ</h1>
+            </div>
+            <div className='headerCom2'>
+            </div>
+          </div>
+          <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />
+          <SendEmail />
+        </div>
+      </>
+    }
     {modalOpen.open &&
       <ImageCom img={modalOpen.img} setImg={setModalOpen} />}
   </>)

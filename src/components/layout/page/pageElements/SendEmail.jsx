@@ -14,7 +14,6 @@ export default function SendEmail() {
 
     const sendEmail = async (e) => {
         e.preventDefault();
-        console.log(email_user);
         if (!validata(email_user)) {
             setEmail_error('Введите корректный email!')
         } else {
@@ -28,7 +27,6 @@ export default function SendEmail() {
                     }
                 }
                 )
-                console.log(res);
                 setEmail_user('')
             }
             catch (e) {

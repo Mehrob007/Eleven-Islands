@@ -78,15 +78,18 @@ export default function Products() {
     const getTypeElement = async () => {
         const token = localStorage.getItem('token')
         try {
-            const response = await apiClient.get(`products?Limit=${100}&Page=${1}`, {
+            const response = await apiClient.get(`categories?Limit=${100}&Page=${1}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const newPhotos = response.data.products;
+            const newPhotos = response.data.categories;
+            // console.log('==============111======================');
+            // console.log(newPhotos);
+            // console.log('====================================');
             setTypeSelect([{ label: 'Все типы', value: '' }, ...newPhotos.map((e) => ({
-                label: e.name, value: e.id
-            }))])
+                    label: e.name, value: e.id
+                }))])
         } catch (error) {
             console.error("Error fetching photos:", error);
         }
@@ -148,19 +151,39 @@ export default function Products() {
     }, [photos, count, selectedSizes]);
 
 
+    const [isFetching, setIsFetching] = useState(false);
+
     useEffect(() => {
         const handleScroll = () => {
             const scrollPosition = window.innerHeight + window.scrollY;
-            const threshold = document.documentElement.offsetHeight - 20;
+            const threshold = document.documentElement.offsetHeight - 100;
 
-            if (scrollPosition >= threshold) {
+            if (scrollPosition >= threshold && !isFetching) {
+                setIsFetching(true);
                 setCount(prevCount => prevCount + 1);
             }
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isFetching]);
+
+    useEffect(() => {
+        // Запрос данных при изменении count
+        const fetchData = async () => {
+            // Загрузка данных
+            await fetchPhotos({
+                limit: 50,
+                page: count
+            });
+            setIsFetching(false); // Сбрасываем флаг после загрузки
+        };
+
+        if (isFetching) {
+            fetchData();
+        }
+    }, [count, isFetching]);
+
     useEffect(() => {
         setdataGetSearsh(prevState =>
             prevState.filter(el =>
@@ -191,6 +214,11 @@ export default function Products() {
         });
     }, [stemsSort]);
 
+    // const resFilterType = typeSelect.filter((item, index, self) => index === self.findIndex(other => other.value === item.value))
+
+    console.log('21312312');
+    console.log(typeSelect);
+    
 
 
     return (
@@ -199,15 +227,14 @@ export default function Products() {
                 <h1>Каталог</h1>
                 <div> {isLargeScreen ?
                     <div className='filterProbucts'>
-                        {typeSelect.length > 0 &&
+                        {
                             <CustomSelect
                                 onClick={(id) => {
                                     setCount(0)
                                     setdataGetSearsh([])
                                     setDateSearch({ ...dateSearch, CategoryId: id })
                                 }}
-                                title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect}
-                            />}
+                                title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect} />}
                         {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
                         <CustomSelect
                             onClick={(id) => {
@@ -243,9 +270,9 @@ export default function Products() {
             </div>
             <div className="contentProducts">
                 {/* {fetching && <h1 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h1>}  */}
-                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i < 12)} />
+                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
                 <SendEmail />
-                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i > 12)} />
+                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />
             </div>
             {modalStateFilter && <ModalFilter />}
 

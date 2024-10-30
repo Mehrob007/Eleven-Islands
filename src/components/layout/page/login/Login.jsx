@@ -42,7 +42,6 @@ export default function Login() {
 
 
     if (!errors.emailError && !errors.passwordError) {
-      console.log("Данные для входа: ", formState);
       try {
         const res = await axios.post('https://elevenislands.ru/token',
           {
@@ -56,7 +55,6 @@ export default function Login() {
               Authorization: `Bearer ${token}`
             }
           });
-        console.log(res.data.access_token);
         localStorage.setItem('token', res.data.access_token);
       } catch (e) {
         console.error(e);

@@ -45,7 +45,6 @@ export default function Registration() {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     };
-    console.log(formData);
 
     // Функция для валидации и отправки формы
     const loginFunction = async (e) => {
@@ -87,7 +86,7 @@ export default function Registration() {
 
         // Если ошибок нет, можно отправлять форму
         if (Object.keys(validationErrors).length === 0) {
-            console.log('Форма валидна, данные отправлены:', formData);
+            // console.log('Форма валидна, данные отправлены:', formData);
             const token = localStorage.getItem('token');
             try {
                 const res = await apiClient.post('/customers', { customer: formData }, {
@@ -97,7 +96,7 @@ export default function Registration() {
                 }
                 )
                 navigate('/login')
-                console.log(res);
+                // console.log(res);
             }
             catch (e) {
                 console.error(e);

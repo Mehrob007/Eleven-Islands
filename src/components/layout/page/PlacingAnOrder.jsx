@@ -56,7 +56,6 @@ export default function PlacingAnOrder() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      console.log(formState);
       setErrors({});
     }
   };
@@ -72,23 +71,23 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__div__1" style={{ gap: '12px' }}>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="name">Имя*</label>
-                <input type="text" id="name" onChange={e => onChange('name', e.target.value)} />
-                {errors.name && <p style={{ color: 'red', position: 'absolute', bottom: '0px' }}>{errors.name}</p>}
+                <input style={{borderColor: errors.name && 'red'}} type="text" id="name" onChange={e => onChange('name', e.target.value)} />
+                {errors.name && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.name}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="sorname">Фамилия*</label>
-                <input type="text" id="sorname" onChange={e => onChange('sorname', e.target.value)} />
-                {errors.sorname && <p style={{ color: 'red', position: 'absolute', bottom: '0px' }}>{errors.sorname}</p>}
+                <input style={{borderColor: errors.sorname && 'red'}} type="text" id="sorname" onChange={e => onChange('sorname', e.target.value)} />
+                {errors.sorname && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.sorname}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="number">Телефон*</label>
-                <input type="text" id="number" onChange={e => onChange('number', e.target.value)} />
-                {errors.number && <p style={{ color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
+                <input style={{borderColor: errors.number && 'red'}} type="text" id="number" onChange={e => onChange('number', e.target.value)} />
+                {errors.number && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="email">Email*</label>
-                <input type="text" id="email" onChange={e => onChange('email', e.target.value)} />
-                {errors.email && <p style={{ color: 'red', position: 'absolute', bottom: '0px' }}>{errors.email}</p>}
+                <input style={{borderColor: errors.email && 'red'}} type="text" id="email" onChange={e => onChange('email', e.target.value)} />
+                {errors.email && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.email}</p>}
               </div>
             </div>
           </div>
@@ -107,8 +106,8 @@ export default function PlacingAnOrder() {
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="adres">Адрес*</label>
-                <input type="text" id="adres" onChange={e => onChange('adres', e.target.value)} />
-                {errors.adres && <p style={{ color: 'red', position: 'absolute', bottom: '0px' }}>{errors.adres}</p>}
+                <input style={{borderColor: errors.adres && 'red'}} type="text" id="adres" onChange={e => onChange('adres', e.target.value)} />
+                {errors.adres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.adres}</p>}
               </div>
             </div>
           </div>

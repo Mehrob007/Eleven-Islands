@@ -165,7 +165,6 @@ export default function MainPage() {
 
 
   const { photos, currentPage, fetching, fetchPhotos } = usePhotoStore();
-  console.log(photos);
 
   useEffect(() => {
     fetchPhotos({ limit: 50, page: currentPage });

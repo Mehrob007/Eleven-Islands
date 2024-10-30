@@ -5,9 +5,7 @@ import logoAnim2 from '../../assets/icon/Union2.svg'
 import logoAnimTit1 from '../../assets/icon/UnionTit.svg'
 import logoAnimTit2 from '../../assets/icon/UnionTit2.svg'
 
-export default function Loading({ isLoading }) {
-  console.log(isLoading);
-  
+export default function Loading({ isLoading }) {  
   return (
     // <div className={styles.box}>
     <>

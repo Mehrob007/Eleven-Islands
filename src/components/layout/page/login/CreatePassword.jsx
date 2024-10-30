@@ -13,7 +13,7 @@ export default function CreatePassword() {
       setEmailError("Введите корректный email!");
     } else {
       setEmailError('');
-      console.log("Восстановление пароля для:", email_user);
+      // console.log("Восстановление пароля для:", email_user);
     }
   };
 

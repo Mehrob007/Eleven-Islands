@@ -7,7 +7,7 @@ import axios from 'axios';
 import { dataBasketItems } from '../storeState/modalBasket';
 import { dataGelaryStore } from '../../layout/storeState/modalBasket'
 
-export default function ItemModalBasket({ setPrice = () => {}, see = false}) {
+export default function ItemModalBasket({ setPrice = () => { }, see = false }) {
     const { dataGelary, setDataGelary } = dataGelaryStore()
     // const { setDataBasket } = dataBasketItems()
     // const [products, setProducts] = useState([
@@ -52,7 +52,7 @@ export default function ItemModalBasket({ setPrice = () => {}, see = false}) {
         setDataGelary(
             dataGelary.map((product, i) =>
                 i === index
-                    ? { ...product, count: Math.max(product.count + delta, 1), countPrice: product.price * Math.max(product.count + delta, 1)  }
+                    ? { ...product, count: Math.max(product.count + delta, 1), countPrice: product.price * Math.max(product.count + delta, 1) }
                     : product
             )
         );
@@ -60,16 +60,11 @@ export default function ItemModalBasket({ setPrice = () => {}, see = false}) {
     const deleteElement = (id) => {
         setDataGelary(dataGelary.filter((product) => product.id != id));
     }
-    console.log('====================================');
-    console.log(see);
-    console.log('====================================');
+
 
     useEffect(() => {
         setPrice(dataGelary?.reduce((total, item) => total + item?.countPrice, 0))
     }, [dataGelary])
-    console.log('====================================');
-    console.log(dataGelary);
-    console.log('====================================');
     // if (loading) return <p>Loading...</p>;
     if (dataGelary.length === 0) return <h1>нет товаров!</h1>;
 
@@ -84,21 +79,21 @@ export default function ItemModalBasket({ setPrice = () => {}, see = false}) {
                     <p>Цена: <span style={{ color: '#262626' }}>{product.price} руб</span></p>
                     <p>Размер: <span style={{ color: '#262626' }}>{product.size}</span></p>
                 </div>
-                {!see ? 
-                <div className='count'>
-                    <button onClick={() => updateProductCount(index, -1)}>
-                        <img src={minus} alt='minus' />
-                    </button>
-                    <p>{product.count}</p>
-                    <button onClick={() => updateProductCount(index, 1)}>
-                        <img src={plus} alt='plus' />
-                    </button>
-                </div> : <div className='info' style={{ height: '17px' }}>
-                    <p>Количество: <span style={{ color: '#262626' }}>{product.count}</span></p>
-                </div> }
+                {!see ?
+                    <div className='count'>
+                        <button onClick={() => updateProductCount(index, -1)}>
+                            <img src={minus} alt='minus' />
+                        </button>
+                        <p>{product.count}</p>
+                        <button onClick={() => updateProductCount(index, 1)}>
+                            <img src={plus} alt='plus' />
+                        </button>
+                    </div> : <div className='info' style={{ height: '17px' }}>
+                        <p>Количество: <span style={{ color: '#262626' }}>{product.count}</span></p>
+                    </div>}
             </div>
-            {!see && 
-            <RiDeleteBin6Fill className='delete-button-modal-basket' onClick={() => deleteElement(product.id)} />}
+            {!see &&
+                <RiDeleteBin6Fill className='delete-button-modal-basket' onClick={() => deleteElement(product.id)} />}
         </div>
     ));
 }

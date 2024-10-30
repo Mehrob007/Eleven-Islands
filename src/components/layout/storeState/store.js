@@ -74,7 +74,6 @@ export const usePhotoStore = create((set, get) => ({
                 }
             });
             const data = response.data.products[0];
-            // console.log(data);
             set({ findeElement: data });
         } catch (e) {
             console.error(e);
