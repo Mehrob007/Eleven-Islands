@@ -1800,6 +1800,7 @@ input[type="checkbox"] {
 
 
 @media screen and (max-width: 1020px) {
+   
     .newCollection{
         margin: 0;
     }
@@ -2023,7 +2024,7 @@ input[type="checkbox"] {
     }
     .add-product-btn{
         top: 55%;
-        right: 7%;
+        right: 5%;
         margin: 0;
     }
     .navigate-btn-slider{
@@ -2097,7 +2098,7 @@ input[type="checkbox"] {
         
     }
     .itemBox2{
-        width: 105%;
+        width: 100%;
         min-width: none;
         max-height: 350px;
         min-height: none;
@@ -2531,18 +2532,19 @@ input[type="checkbox"] {
    .comRightColl{
         gap: 12px;
    }
+   .slick-dots li{
+    width: 20px ;
+    height: 20px ;
+}
    
     
 }
 
-@media screen and (max-width: 667px) {
+@media screen and (max-width: 330px) {
     .slider1 > .slick-dots{
         bottom: 10px;
     }
-    .slick-dots li button{
-        width: 16px;
-        height: 16px;
-    }
+  
     .contectProductId__info{
         margin-top: -10px;
     }
@@ -2579,6 +2581,13 @@ input[type="checkbox"] {
   .slick-dots li button{
     margin: 0;
     padding: 0;
+    width: 13px;
+    height: 15px;
+  }
+  .slick-active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   /* Стили для каждой точки */
   .slick-dots li button::before {
@@ -2588,7 +2597,10 @@ input[type="checkbox"] {
     left: 0;
     margin: 0;
     padding: 0;
+    width: 10px;
+    height: 10px;
   }
+
   
   /* Стили для активной точки */
   .slick-dots li.slick-active button::before {

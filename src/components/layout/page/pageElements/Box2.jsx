@@ -52,7 +52,7 @@ export default function Box2({ arrDataImg, loading }) {
     <div className="box2">
       <div className="contentBox2">
         <h2 className="sr-only">Products</h2>
-        <div className="grid grid-cols-2 gap-x-[10px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"  style={{ gap: useMediaQuery(`(max-width: ${widthLap})`) && '15px 0' }}>
+        <div className="grid grid-cols-2 gap-x-[10px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"  style={{ gap: useMediaQuery(`(max-width: ${widthLap})`) && '15px 5px' }}>
           {arrDataImg.length > 0 ? arrDataImg?.map((item, i) => (<>
             <div key={i} className='itemBox2 aspect-h-1 mx-auto aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative'>
               {/* <Link

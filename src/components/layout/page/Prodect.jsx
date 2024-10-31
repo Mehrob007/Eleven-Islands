@@ -450,8 +450,7 @@ export default function Prodect() {
             <div className='headerCom2'>
             </div>
           </div>
-          {photos.length > 0 &&
-          <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />}
+          <Box2 arrDataImg={photos?.filter((_, i) => i < 9 && i > 4)} />
           <SendEmail />
         </div>
       </>
