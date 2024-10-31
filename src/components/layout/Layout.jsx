@@ -11,6 +11,7 @@ import creatorFactory from '../../assets/icon/creatorFactory.svg'
 import axios from 'axios'
 import apiClient from '../../utils/api'
 import { Helmet } from 'react-helmet'
+import { usePhotoStore } from './storeState/store'
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -36,6 +37,11 @@ export default function Layout() {
   const location = useLocation();
   const [email_user, setEmail_user] = useState('')
   const [email_error, setEmail_error] = useState('')
+  const { fetchPhotos } = usePhotoStore();
+
+  useEffect(() => {
+    fetchPhotos({ limit: 100, page: 1 });
+  }, []);
 
   const headerStyle = {
     background: location.pathname == '/' ? scrollY >= 100 ? '#408759' : 'transparent' : '#408759'
@@ -48,7 +54,7 @@ export default function Layout() {
         })
         localStorage.setItem('token', res.data.access_token)
         localStorage.setItem('customerId', res.data.customer_id)
-        
+
 
       }
       catch (error) {
@@ -80,7 +86,7 @@ export default function Layout() {
           }
         }
         )
-      
+
         setEmail_user('')
       }
       catch (e) {

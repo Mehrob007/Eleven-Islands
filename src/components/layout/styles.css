@@ -1793,6 +1793,11 @@ input[type="checkbox"] {
     gap: 40px;
     justify-content: center;
   }
+  /* Скрыть кнопки зума на CDEK карте */
+#cdek-map .ymaps-2-1-79-controls__control {
+    display: none !important;
+}
+
 
 @media screen and (max-width: 1020px) {
     .newCollection{

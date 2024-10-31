@@ -57,9 +57,9 @@ export default function Prodect() {
     img: null
   })
 
-  useEffect(() => {
-    fetchPhotos({ limit: 50, page: 1 });
-  }, []);
+  // useEffect(() => {
+  //   fetchPhotos({ limit: 32, page: 1 });
+  // }, []);
 
   useEffect(() => {
     if (haveSize.length > 0) {
@@ -226,6 +226,9 @@ export default function Prodect() {
       localStorage.setItem('colorVibor', findeElement?.attributes?.find(atr => atr?.product_attribute_id == 1)?.attribute_values?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]);
     }
   }, [findeElement])
+
+  console.log(photos);
+  
 
 
 
@@ -447,7 +450,8 @@ export default function Prodect() {
             <div className='headerCom2'>
             </div>
           </div>
-          <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />
+          {photos.length > 0 &&
+          <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />}
           <SendEmail />
         </div>
       </>

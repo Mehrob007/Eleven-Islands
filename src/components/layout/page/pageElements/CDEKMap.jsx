@@ -2,18 +2,11 @@ import { useEffect } from 'react';
 
 const CDEKMap = () => {
     useEffect(() => {
-        // Load CDEK Widget script
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
         cdekScript.charset = 'utf-8';
         document.head.appendChild(cdekScript);
 
-        // Load Yandex Maps API script with your API key
-        const yandexScript = document.createElement('script');
-        yandexScript.src = 'https://api-maps.yandex.ru/2.1/?apikey=269cf3f0-3414-4a8f-82a9-97c20c42ce92&lang=ru_RU';
-        document.head.appendChild(yandexScript);
-
-        // Initialize the CDEK widget after both scripts load
         const initializeCDEKWidget = () => {
             if (window.CDEKWidget) {
                 new window.CDEKWidget({
@@ -28,13 +21,13 @@ const CDEKMap = () => {
                     apiKey: '269cf3f0-3414-4a8f-82a9-97c20c42ce92',
                     servicePath: 'https://elevenislands.ru/cdek/service.php',
                     hideFilters: {
-                        have_cashless: false,
-                        have_cash: false,
-                        is_dressing_room: false,
-                        type: false,
+                        have_cashless: true,
+                        have_cash: true,
+                        is_dressing_room: true,
+                        type: true,
                     },
                     hideDeliveryOptions: {
-                        office: false,
+                        office: true,
                         door: false,
                     },
                     debug: false,
@@ -54,38 +47,41 @@ const CDEKMap = () => {
                         door: [233, 137, 139],
                     },
                     onReady() {
-                        alert('Виджет загружен');
+                        console.log('Виджет CDEK загружен');
                     },
                     onCalculate() {
-                        alert('Расчет стоимости доставки произведен');
+                        console.log('Расчет стоимости доставки произведен');
                     },
                     onChoose() {
-                        alert('Доставка выбрана');
+                        console.log('Доставка выбрана');
                     },
                 });
             }
         };
 
-        // Wait for both scripts to load, then initialize the widget
-        cdekScript.onload = () => {
-            if (window.ymaps) {
-                initializeCDEKWidget();
-            }
-        };
-        yandexScript.onload = () => {
-            if (window.CDEKWidget) {
-                initializeCDEKWidget();
-            }
-        };
+        cdekScript.onload = initializeCDEKWidget;
 
-        // Cleanup scripts when component unmounts
         return () => {
             document.head.removeChild(cdekScript);
-            document.head.removeChild(yandexScript);
         };
     }, []);
 
-    return <div id="cdek-map" style={{ width: '100%', height: '300px' }}></div>;
+    return (
+        <>
+            <style>
+                {`
+                    /* Скрытие всех кнопок управления на CDEK карте */
+                    .ymaps-2-1-79-controls__control,
+                    .ymaps-2-1-79-copyright,
+                    .ymaps3x0--control, .ymaps3x0--control__background,
+                    .ymaps-2-1-79-copyright__link {
+                        display: none !important;
+                    }
+                `}
+            </style>
+            <div id="cdek-map" style={{ width: '100%', height: '100%' }}></div>
+        </>
+    );
 };
 
 export default CDEKMap;

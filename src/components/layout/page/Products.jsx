@@ -113,12 +113,6 @@ export default function Products() {
         setOpenSelect(openSelect === selectName ? null : selectName);
     };
     useEffect(() => {
-        fetchPhotos({
-            limit: 50,
-            page: count
-        });
-    }, []);
-    useEffect(() => {
         getDataStaffs()
     }, [count, dateSearch]);
 

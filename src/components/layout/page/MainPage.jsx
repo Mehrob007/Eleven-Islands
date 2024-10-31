@@ -161,25 +161,9 @@ const useMediaQuery = (query) => {
 
 export default function MainPage() {
   const widthLap = '1020px'
+  const { photos } = usePhotoStore();
 
 
-
-  const { photos, currentPage, fetching, fetchPhotos } = usePhotoStore();
-
-  useEffect(() => {
-    fetchPhotos({ limit: 50, page: currentPage });
-  }, []);
-  useEffect(() => {
-    if (fetching) {
-      fetchPhotos({ limit: 50, page: currentPage });
-    }
-  }, [fetching]);
-
-
-
-  useEffect(() => {
-    window.scroll(0, 0)
-  }, [])
   const settings = {
     className: "slider variable-width slider-blog",
     dots: true,
@@ -189,6 +173,14 @@ export default function MainPage() {
     slidesToScroll: 1,
     variableWidth: true
   };
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
+  // useEffect(() => {
+  //   if (fetching) {
+  //     fetchPhotos({ limit: 50, page: 1 });
+  //   }
+  // }, [fetching]);
 
   return (
     <>
@@ -219,7 +211,7 @@ export default function MainPage() {
           </div>
         }
       </div>
-      <Box2 arrDataImg={photos.filter((prev) => prev.show_on_home_page)} />
+      <Box2 arrDataImg={photos.filter((prev, i) => prev.show_on_home_page && i < 32)} />
 
       {useMediaQuery(`(max-width: ${widthLap})`) &&
         <div className="header headerBox2 " style={{ display: 'flex', justifyContent: 'center' }}>
