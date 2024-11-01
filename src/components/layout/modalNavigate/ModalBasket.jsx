@@ -2,7 +2,6 @@ import { dataBasketItems, useModalStore } from "../storeState/modalBasket"
 import CloasModal from '../../../assets/icon/CloasModal.svg';
 import ItemModalBasket from "./ItemModalBasket";
 // import { usePhotoStore } from '../storeState/store'
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { dataGelaryStore } from '../../layout/storeState/modalBasket'
@@ -27,6 +26,7 @@ export default function ModalBasket() {
     const { setModalState } = useModalStore()
     const [price, setPrice] = useState(0);
     const { setDataGelary } = dataGelaryStore()
+  
     // const getProductsBasket = async () => {
     //     const token = localStorage.getItem('token');
     //     if (!token) {
@@ -71,9 +71,9 @@ export default function ModalBasket() {
                     </div>
                     :
                     <div className="componentModalHeader">
-                            <button onClick={DeleteProductsBasket}>Очистить</button>
-                            <h1>Корзина</h1>
-                            <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
+                        <button onClick={DeleteProductsBasket}>Очистить</button>
+                        <h1>Корзина</h1>
+                        <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
                     </div>}
 
                 <div className="productsBasket">
@@ -84,7 +84,8 @@ export default function ModalBasket() {
                     <p>{price} руб</p>
                 </div>
                 {price > 0 &&
-                    <Link to={'/placing-an-order'} className="place-an-order-btn" onClick={() => {setModalState(false)
+                    <Link to={'/placing-an-order'} className="place-an-order-btn" onClick={() => {
+                        setModalState(false)
                         localStorage.setItem('price', price)
                     }} ><button >Оформить заказ</button></Link>}
             </div>

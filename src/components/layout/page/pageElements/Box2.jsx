@@ -63,8 +63,8 @@ export default function Box2({ arrDataImg, loading }) {
                 // onClick={() => navogate(0)}
                 className='hoverable-item'
               > */}
-              <Link
-                to={`/product/${item?.id}`}
+              <a
+                href={`/product/${item?.id}`}
                 key={item?.id}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -77,7 +77,7 @@ export default function Box2({ arrDataImg, loading }) {
                     }}>
                   </div>
                 </div>
-              </Link>
+              </a>
               <div className='color-product'>
                 {/* <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
                   <nav onClick={() => {
@@ -105,8 +105,8 @@ export default function Box2({ arrDataImg, loading }) {
                 <h1 className='productTitle'>{item?.short_description}</h1>
                 <h1 className='productPrice'>{item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
               </div>
-              <Link
-                to={`/product/${item?.id}`}
+              <a
+                href={`/product/${item?.id}`}
               >
                 <label className='add-product-btn'>
                   <input type="checkbox" id="checkbox2" />
@@ -114,7 +114,7 @@ export default function Box2({ arrDataImg, loading }) {
                     <FiPlus />
                   </span>
                 </label>
-              </Link>
+              </a>
 
               {/* </Link> */}
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const CDEKMap = () => {
+const CDEKMap = ({ sity }) => {
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
@@ -9,11 +9,16 @@ const CDEKMap = () => {
 
         const initializeCDEKWidget = () => {
             if (window.CDEKWidget) {
-                new window.CDEKWidget({
+                // Удаляем предыдущий виджет, если он существует
+                if (window.cdekMapInstance) {
+                    window.cdekMapInstance.destroy();
+                }
+
+                window.cdekMapInstance = new window.CDEKWidget({
                     from: {
                         country_code: 'RU',
-                        city: 'Новосибирск',
-                        postal_code: 630009,
+                        city: sity || 'Москва',
+                        postal_code: 101000,
                         code: 270,
                         address: 'ул. Большевистская, д. 101',
                     },
@@ -24,11 +29,11 @@ const CDEKMap = () => {
                         have_cashless: true,
                         have_cash: true,
                         is_dressing_room: true,
-                        type: true,
+                        type: false,
                     },
                     hideDeliveryOptions: {
-                        office: true,
-                        door: false,
+                        office: false,
+                        door: true,
                     },
                     debug: false,
                     goods: [
@@ -39,21 +44,22 @@ const CDEKMap = () => {
                             weight: 10,
                         },
                     ],
-                    defaultLocation: [55.0415, 82.9346],
+                    defaultLocation: [37.6156, 55.7522],
                     lang: 'rus',
                     currency: 'RUB',
                     tariffs: {
-                        office: [234, 136, 138],
-                        door: [233, 137, 139],
+                        office: [139, 138],
+                        door: [],
                     },
                     onReady() {
-                        console.log('Виджет CDEK загружен');
+                        // console.log('Виджет CDEK загружен');
                     },
                     onCalculate() {
-                        console.log('Расчет стоимости доставки произведен');
+                        // Логика расчета доставки
                     },
-                    onChoose() {
+                    onChoose(e, a) {
                         console.log('Доставка выбрана');
+                        console.log(a);
                     },
                 });
             }
@@ -62,9 +68,14 @@ const CDEKMap = () => {
         cdekScript.onload = initializeCDEKWidget;
 
         return () => {
+            // Очистка: удаление скрипта и уничтожение виджета
             document.head.removeChild(cdekScript);
+            if (window.cdekMapInstance) {
+                window.cdekMapInstance.destroy();
+                window.cdekMapInstance = null; // Убираем ссылку на экземпляр
+            }
         };
-    }, []);
+    }, [sity]); // Зависимость от sity для повторной инициализации
 
     return (
         <>

@@ -28,15 +28,38 @@ const useMediaQuery = (query) => {
   return matches;
 };
 
-
 export default function Navigate() {
+  const [lengthCount, setLengthCount] = useState(0);
   const { modalState, setModalState } = useModalStore();
   const { modalStateSeatch, setModalStateSeatch } = useModalSeatch();
   const { modalStateNav, setModalStateNav } = useModalNav();
-  
+
   const handleNavClick = () => {
     setModalStateNav(true);
   };
+
+
+  useEffect(() => {
+    const updateLengthCount = () => {
+      const storedData = localStorage.getItem('dataGelary');
+      const parsedData = storedData ? JSON.parse(storedData) : [];
+      setLengthCount(parsedData.length);
+    };
+
+
+    updateLengthCount();
+
+
+    window.addEventListener('storage', updateLengthCount);
+
+    const intervalId = setInterval(updateLengthCount, 1000); 
+
+    return () => {
+      window.removeEventListener('storage', updateLengthCount);
+      clearInterval(intervalId); 
+    };
+  }, []);
+
   const widthLap = '1020px';
   const isLargeScreen = useMediaQuery(`(min-width: ${widthLap})`);
 
@@ -58,7 +81,7 @@ export default function Navigate() {
       <Link to='/' className='logoNav'>
         {isLargeScreen ? (
           <>
-          <img src={VectorLogo} alt="VectorLogo" />
+            <img src={VectorLogo} alt="VectorLogo" />
             <div className='logoSm'>
               <img src={logoSmoleTit} alt="logoSmoleTit" />
               <img className='anim' src={logoSmole} alt="logoSmole" />
@@ -68,16 +91,19 @@ export default function Navigate() {
         ) : (
           <img src={EIPhone} alt='EIPhone' />
         )}
-      </Link> 
+      </Link>
 
       <div className='paramsNav'>
         <div className='comParams'>
-          <img src={iconSearch}  onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
-          <img src={iconShoping} onClick={() => setModalState(true)} alt="iconShoping" />
+          <img src={iconSearch} onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
+          <div className='comParamsDiv'>
+            {lengthCount > 0 && <span>{lengthCount}</span>}
+            <img src={iconShoping} onClick={() => setModalState(true)} alt="iconShoping" />
+          </div>
           {isLargeScreen && (
-          <Link to='/login'>
-            <img src={iconPerson} alt="iconPerson" />
-          </Link>
+            <Link to='/login'>
+              <img src={iconPerson} alt="iconPerson" />
+            </Link>
           )}
         </div>
       </div>

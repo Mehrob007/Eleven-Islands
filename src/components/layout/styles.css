@@ -157,6 +157,29 @@ header{
     align-items: center;
     position: relative;
 }
+.comParamsDiv{
+    position: relative;
+}
+.comParamsDiv > span {
+    position: absolute;
+    background-color: white;
+    font-size: 6px;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #408759;
+    font-family: "Unbounded", sans-serif;
+    border-radius: 20px;
+    bottom: 0px;
+    right: 0;
+    font-size: 5px;
+    font-weight: 900;
+    line-height: 6.2px;
+    text-align: center;
+
+}
 .search-product{
     position: absolute;
     left: -212px;
@@ -173,7 +196,7 @@ header{
     z-index: 1;
     opacity: 1;
 }
-.comParams > img, .comParams > a > img{
+.comParams > img, .comParams > a > img, .comParams > div > img{
     cursor: pointer;
     width: 20px;
     height: 20px;
@@ -1006,6 +1029,7 @@ select{
     background: #2b5a3c;
 }
 .productsBasket{
+    overflow-y: auto;
     max-width: 450px;
     width: 100%;
     min-height: 0;
@@ -2377,9 +2401,14 @@ input[type="checkbox"] {
         left: -135px;
         bottom: -165px;
     }
-    .comParams > img, .comParams > a > img{
-        width: 18px;
+    .comParams > img, .comParams > a > img, .comParams > div > img{
+        min-width: 18px !important;
         height: 18px;
+    }
+    .comParams > div > span{
+        width: 8px;
+        height: 8px;
+        font-size: 5px;
     }
     .contectProductId{
         flex-wrap: wrap;

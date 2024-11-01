@@ -3,11 +3,14 @@ import activeCheckbox from '../../../assets/icon/activeCheckbox.svg'
 import iconRadeoButton from '../../../assets/icon/iconRadeoButton.svg'
 import banckCart from '../../../assets/icon/banckCart.svg'
 import Branding from '../../../assets/icon/Branding.svg'
+import Papa from 'papaparse';
 import ItemModalBasket from "../modalNavigate/ItemModalBasket";
 import CDEKMap from "./pageElements/CDEKMap";
+import { ArrCity } from "../../../assets/processed_city";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
 
   useEffect(() => {
     const media = window.matchMedia(query);
@@ -22,6 +25,7 @@ const useMediaQuery = (query) => {
 const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
+  const [sity, setSity] = useState("")
   const [price, setPrice] = useState(localStorage.getItem('price'))
   const [formState, setFormState] = useState({
     name: '',
@@ -71,22 +75,22 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__div__1" style={{ gap: '12px' }}>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="name">Имя*</label>
-                <input style={{borderColor: errors.name && 'red'}} type="text" id="name" onChange={e => onChange('name', e.target.value)} />
+                <input style={{ borderColor: errors.name && 'red' }} type="text" id="name" onChange={e => onChange('name', e.target.value)} />
                 {errors.name && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.name}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="sorname">Фамилия*</label>
-                <input style={{borderColor: errors.sorname && 'red'}} type="text" id="sorname" onChange={e => onChange('sorname', e.target.value)} />
+                <input style={{ borderColor: errors.sorname && 'red' }} type="text" id="sorname" onChange={e => onChange('sorname', e.target.value)} />
                 {errors.sorname && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.sorname}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="number">Телефон*</label>
-                <input style={{borderColor: errors.number && 'red'}} type="text" id="number" onChange={e => onChange('number', e.target.value)} />
+                <input style={{ borderColor: errors.number && 'red' }} type="text" id="number" onChange={e => onChange('number', e.target.value)} />
                 {errors.number && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="email">Email*</label>
-                <input style={{borderColor: errors.email && 'red'}} type="text" id="email" onChange={e => onChange('email', e.target.value)} />
+                <input style={{ borderColor: errors.email && 'red' }} type="text" id="email" onChange={e => onChange('email', e.target.value)} />
                 {errors.email && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.email}</p>}
               </div>
             </div>
@@ -97,18 +101,23 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="sity">Город*</label>
-                <select name="sity" id="sity" onChange={e => onChange('sity', e.target.value)}>
+                <select name="sity" id="sity" onChange={e => setSity(e.target.value)}>
                   <option value={null}>Выберите город</option>
-                  <option value="Москва">Москва</option>
-                  <option value="Санкт-Петербург">Санкт-Петербург</option>
+                  {ArrCity.map(el => (
+                    <option key={el.id}>
+                      {el.name}
+                    </option>
+                  ))}
+                  {/* <option value="Москва">Москва</option> */}
                   {/* Другие города */}
                 </select>
               </div>
-              <div style={{ position: 'relative', height: '90px' }}>
-                <label htmlFor="adres">Адрес*</label>
-                <input style={{borderColor: errors.adres && 'red'}} type="text" id="adres" onChange={e => onChange('adres', e.target.value)} />
-                {errors.adres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.adres}</p>}
-              </div>
+              {formState.check_box_1 &&
+                <div style={{ position: 'relative', height: '90px' }}>
+                  <label htmlFor="adres">Адрес*</label>
+                  <input style={{ borderColor: errors.adres && 'red' }} type="text" id="adres" onChange={e => onChange('adres', e.target.value)} />
+                  {errors.adres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.adres}</p>}
+                </div>}
             </div>
           </div>
 
@@ -131,7 +140,7 @@ export default function PlacingAnOrder() {
 
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap />
+              <CDEKMap sity={sity} />
             </div>
           </div>}
 
