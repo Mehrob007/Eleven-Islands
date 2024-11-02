@@ -332,6 +332,7 @@ header{
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .itemImgProduct > div{
     width: 100%;
@@ -1064,6 +1065,27 @@ select{
     height: 100%;
     object-fit: cover;
 }
+.dontProductBusket{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 95%;
+    gap: 10px;
+}
+.dontProductBusket > h1{
+    font-family: AGAvantGardeCyr;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 21.34px;
+    text-align: left;
+    color: #B3B3B3;
+}
+.dontProductBusket > img{
+    width: 28px;
+    height: 30px;
+}
 .modalBasketInfo{
     width: 127px;
     height: 130px;
@@ -1105,8 +1127,8 @@ select{
     font-size: 17px;
 }
 .add-product-btn{
-    width: 20px;
-    height: 20px;
+    width: 27px;
+    height: 27px;
     background: #EAEAEA;
     display: flex;
     align-items: center;
@@ -1118,10 +1140,11 @@ select{
     top: 72%;
     right: 7px;
 }
-.add-product-btn > svg{
+.custom-checkbox > svg{
      /* margin-left: -0.050px;
     margin-bottom: -0.4px; */
-    font-size: 15px;
+    font-size: 18px;
+    margin-left: 0.3px;
     /* margin: 0 auto; */
 }
 /* .add-product-btn:hover{
@@ -1147,8 +1170,8 @@ input[type="checkbox"] {
 
   /* Стили для квадратного чекбокса */
   .custom-checkbox {
-    width: 20px;
-    height: 20px;
+    min-width: 27px;
+    height: 27px;
     border: 2px solid #ccc;
     display: inline-block;
     position: relative;
@@ -1369,6 +1392,24 @@ input[type="checkbox"] {
     flex-direction: column;
     gap: 20px;
 }
+.count-product{
+    display: flex;
+    align-items: center;
+    height: 45px !important;
+    margin-top: -30px !important;
+    font-family: AGAvantGardeCyr !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 19.4px !important;
+    text-align: center !important;
+}
+.count-product > span {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.count-product > button{
+    width: 20px;
+}
 .color-div-product > h1{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
@@ -1412,7 +1453,7 @@ input[type="checkbox"] {
 }
 .size-div-product{
     width: 420px;
-    height: 126px;
+    min-height: 126px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1472,7 +1513,8 @@ input[type="checkbox"] {
     display: flex;
     gap: 6px;
 }
-.button-div-product > .button-product{
+
+.button-product{
     width: 207px;
     height: 100%;
     font-family: AGAvantGardeCyr;
@@ -1556,8 +1598,11 @@ input[type="checkbox"] {
     gap: 8px;
 }
 .color-product > div{
-    width: 22px;
-    height: 22px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
 }
 .color-product > div > nav{
@@ -2047,7 +2092,7 @@ input[type="checkbox"] {
         overflow-x:hidden ;
     }
     .add-product-btn{
-        top: 55%;
+        top: 53%;
         right: 5%;
         margin: 0;
     }
@@ -2356,7 +2401,7 @@ input[type="checkbox"] {
         align-items: start;
         flex-wrap: wrap; */
         display: grid;
-        grid-template-columns: repeat(3, 41px);
+        grid-template-columns: repeat(3, auto);
         gap: 15px 44px;
         width: 210px;
     }
@@ -2504,10 +2549,11 @@ input[type="checkbox"] {
     }
     .size-div-product > div{
         flex-wrap: wrap;
+        justify-content: center;
         max-width: 100%;
     }
     .size-div-product{
-        min-height: 71px;
+        min-height: 120px;
         max-width: 100%;
     }
     .button-div-product{
@@ -2565,7 +2611,43 @@ input[type="checkbox"] {
     width: 20px ;
     height: 20px ;
 }
-   
+.dontProductBusket{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.dontProductBusket > h1{
+    font-family: AGAvantGardeCyr;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 15.52px;
+    text-align: left;
+}
+.dontProductBusket > img{
+    width: 23.47px;
+    height: 25px;
+}
+.count-product{
+    display: flex;
+    align-items: center;
+    height: 45px !important;
+    margin-top: -20px !important;
+    font-family: AGAvantGardeCyr !important;
+    font-size: 20px !important;
+    font-weight: 400 !important;
+    line-height: 19.4px !important;
+    text-align: center !important;
+    width: 100%;
+}
+.count-product > span {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+.count-product > button{
+    width: 20px;
+}
     
 }
 
@@ -2582,10 +2664,9 @@ input[type="checkbox"] {
         max-height: 300px;
         justify-content: start;
         gap: 5px !important;
-           
     }
     .itemImgProduct{
-        max-width: 148px;
+        width: auto;
         max-height: 190px;
         gap: 1px !important;
     }

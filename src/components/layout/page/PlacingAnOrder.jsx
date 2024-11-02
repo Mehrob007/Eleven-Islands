@@ -7,6 +7,7 @@ import Papa from 'papaparse';
 import ItemModalBasket from "../modalNavigate/ItemModalBasket";
 import CDEKMap from "./pageElements/CDEKMap";
 import { ArrCity } from "../../../assets/processed_city";
+import { useNavigate } from "react-router-dom";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -26,6 +27,7 @@ const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
   const [sity, setSity] = useState("")
+  const navigate = useNavigate()
   const [price, setPrice] = useState(localStorage.getItem('price'))
   const [formState, setFormState] = useState({
     name: '',
@@ -40,6 +42,17 @@ export default function PlacingAnOrder() {
   });
   const [errors, setErrors] = useState({});
 
+  const scrollToSection = (id, offset = 0) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - offset,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const onChange = (key, value) => {
     setFormState((prevFormState) => ({ ...prevFormState, [key]: value }));
   };
@@ -51,8 +64,15 @@ export default function PlacingAnOrder() {
     if (!formState.number) newErrors.number = 'Телефон обязателен';
     if (!formState.email) newErrors.email = 'Email обязателен';
     if (!formState.adres) newErrors.adres = 'Адрес обязателен';
+
+    scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.adres && 'adres', 120)
+
+    // navigate(`/placing-an-order/#`)
+
+
     return newErrors;
   };
+
 
   const placingAnOrder = (e) => {
     e.preventDefault();
@@ -120,7 +140,6 @@ export default function PlacingAnOrder() {
                 </div>}
             </div>
           </div>
-
           <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__3">
               <div>

@@ -22,7 +22,7 @@ const useMediaQuery = (query) => {
 
 
 
-export default function Box2({ arrDataImg, loading }) {
+export default function Box2({ arrDataImg }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   // const navogate = useNavigate()
 
@@ -52,7 +52,7 @@ export default function Box2({ arrDataImg, loading }) {
     <div className="box2">
       <div className="contentBox2">
         <h2 className="sr-only">Products</h2>
-        <div className="grid grid-cols-2 gap-x-[10px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8"  style={{ gap: useMediaQuery(`(max-width: ${widthLap})`) && '15px 5px' }}>
+        <div className="grid grid-cols-2 gap-x-[10px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8" style={{ gap: useMediaQuery(`(max-width: ${widthLap})`) && '15px 5px' }}>
           {arrDataImg.length > 0 ? arrDataImg?.map((item, i) => (<>
             <div key={i} className='itemBox2 aspect-h-1 mx-auto aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative'>
               {/* <Link
@@ -63,21 +63,22 @@ export default function Box2({ arrDataImg, loading }) {
                 // onClick={() => navogate(0)}
                 className='hoverable-item'
               > */}
-              <a
-                href={`/product/${item?.id}`}
+              <Link
+                to={`/product/${item?.id}`}
                 key={item?.id}
                 onMouseEnter={() => setHoveredIndex(i)}
                 onMouseLeave={() => setHoveredIndex(null)}
               // className='hoverable-item'
               >
-                <div className='itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'>
-                  <div className='h-full w-full object-cover object-center group-hover:opacity-75'
-                    style={{
-                      background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / cover no-repeat`,
-                    }}>
-                  </div>
+                <div className='itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'
+                  style={{
+                    background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / 100% 100% no-repeat`,
+                  }}>
+                  {/* <div className='h-full w-full object-cover object-center group-hover:opacity-75'
+                    
+                  </div> */}
                 </div>
-              </a>
+              </Link>
               <div className='color-product'>
                 {/* <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
                   <nav onClick={() => {
@@ -88,13 +89,21 @@ export default function Box2({ arrDataImg, loading }) {
                 </a> */}
 
                 {item?.attributes.find(atr => atr?.product_attribute_id == 1)?.attribute_values.map((el, i) => (
-                  <div
-                    key={i}
-                    style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}
-                  // style={{ background: el?.name?.split("|")[0] }}
-                  >
+                  // <div
+                  //   key={i}
+                  //   style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}
+                  // // style={{ background: el?.name?.split("|")[0] }}
+                  // >
+                  //   <nav onClick={() => {
+                  //     localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                  //     document.location.href = `/product/${el.name.split("|")[1]}`
+                  //   }} style={{ background: el.name.split("|")[0] }}></nav>
+                  // </div>
+
+                  <div key={i} style={{ border: '1px solid', padding: '1px', borderColor: item.id == el.name.split("|")[1] ? '#000' : 'transparent' }}>
                     <nav onClick={() => {
-                      localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                      // localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                      // setColorVibor(el.name.split("|")[0])
                       document.location.href = `/product/${el.name.split("|")[1]}`
                     }} style={{ background: el.name.split("|")[0] }}></nav>
                   </div>
@@ -105,8 +114,8 @@ export default function Box2({ arrDataImg, loading }) {
                 <h1 className='productTitle'>{item?.short_description}</h1>
                 <h1 className='productPrice'>{item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
               </div>
-              <a
-                href={`/product/${item?.id}`}
+              <Link
+                to={`/product/${item?.id}`}
               >
                 <label className='add-product-btn'>
                   <input type="checkbox" id="checkbox2" />
@@ -114,13 +123,13 @@ export default function Box2({ arrDataImg, loading }) {
                     <FiPlus />
                   </span>
                 </label>
-              </a>
+              </Link>
 
               {/* </Link> */}
 
             </div>
           </>)) : <h1>Loading...</h1>}
-          {loading && <h1 style={{ textAlign: 'center' }}>loading...</h1>}
+          {/* {loading && <h1 style={{ textAlign: 'center' }}>loading...</h1>} */}
         </div>
       </div>
     </div>

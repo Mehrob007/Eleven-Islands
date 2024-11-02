@@ -23,8 +23,9 @@ const useMediaQuery = (query) => {
     return matches;
 };
 
+
 export default function Products() {
-    const { photos, fetchPhotos, loading } = usePhotoStore();
+    const { photos, fetchPhotos } = usePhotoStore();
     const [selectedSizes, setSelectedSizes] = useState('');
     const { modalStateFilter, setModalStateFilter } = useModalFilter()
     const { setModalStateReset, modalStateReset } = useModalReset()
@@ -64,12 +65,6 @@ export default function Products() {
         })
     }
 
-
-
-
-
-
-
     const arrSort = [
         { label: 'По убыванию цены', value: '1' },
         { label: 'По возрастанию цены', value: '2' }
@@ -88,8 +83,8 @@ export default function Products() {
             // console.log(newPhotos);
             // console.log('====================================');
             setTypeSelect([{ label: 'Все типы', value: '' }, ...newPhotos.map((e) => ({
-                    label: e.name, value: e.id
-                }))])
+                label: e.name, value: e.id
+            }))])
         } catch (error) {
             console.error("Error fetching photos:", error);
         }
@@ -97,6 +92,10 @@ export default function Products() {
 
     useEffect(() => {
         getTypeElement()
+    }, [])
+
+    useEffect(() => {
+        getDataStaffs()
     }, [])
     // const typeSelect = [
     //     { label: 'Все типы', value: 'all' },
@@ -117,32 +116,25 @@ export default function Products() {
     }, [count, dateSearch]);
 
     useEffect(() => {
-        setdataGetSearsh(prevData => [
-            ...prevData,
-            ...photos
-                .filter(el => !prevData.some(prevEl => prevEl.id === el.id)) // Filter out duplicates by ID
-                .map(el => ({
-                    ...el,
-                    jobpositions: el.jobpositions
-                        ?.filter(prev => prev.end_date)
-                        ?.sort((a, b) => {
-                            const dateA = parseInt(a.end_date.replace(/-/g, ''), 10);
-                            const dateB = parseInt(b.end_date.replace(/-/g, ''), 10);
-                            return dateB - dateA;
-                        }),
-                }))
-        ]);
-        setdataGetSearsh(prevState =>
-            prevState.filter(el =>
-                el.attributes?.some(attr =>
-                    attr.product_attribute_id == 2 &&
-                    attr.attribute_values.some(attrValue =>
-                        Array.isArray(selectedSizes) ? selectedSizes.includes(attrValue.name) : attrValue.name === selectedSizes
-                    )
-                )
-            )
-        );
-    }, [photos, count, selectedSizes]);
+        if (photos.length > 0) {
+            setdataGetSearsh(prevData => [
+                ...prevData,
+                ...photos
+                    .filter(el => !prevData.some(prevEl => prevEl.id === el.id))
+                    .map(el => ({
+                        ...el,
+                        jobpositions: el.jobpositions
+                            ?.filter(prev => prev.end_date)
+                            ?.sort((a, b) => {
+                                const dateA = parseInt(a.end_date.replace(/-/g, ''), 10);
+                                const dateB = parseInt(b.end_date.replace(/-/g, ''), 10);
+                                return dateB - dateA;
+                            }),
+                    }))
+            ]);
+        }
+    }, [photos]);
+
 
 
     const [isFetching, setIsFetching] = useState(false);
@@ -210,9 +202,6 @@ export default function Products() {
 
     // const resFilterType = typeSelect.filter((item, index, self) => index === self.findIndex(other => other.value === item.value))
 
-    console.log('21312312');
-    console.log(typeSelect);
-    
 
 
     return (
@@ -264,11 +253,15 @@ export default function Products() {
             </div>
             <div className="contentProducts">
                 {/* {fetching && <h1 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h1>}  */}
-                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
+                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
                 <SendEmail />
-                <Box2 loading={loading} arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />
+                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />
             </div>
-            {modalStateFilter && <ModalFilter />}
+            {modalStateFilter && <ModalFilter setdataGetSearsh={(data) => {
+                console.log("Filtered data:", data); // Debugging line
+                setdataGetSearsh(data);
+            }} />}
+
 
         </>
     );

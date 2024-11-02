@@ -62,6 +62,9 @@ export default function ModalNav() {
         <div className="boxModalBasket">
             {!isLargeScreen ? <div className="componentModal">
                 {/* <Navigate /> */}
+                <div className="advertising">
+                    <h1>Скидка 10% по промокоду WELCOME10</h1>
+                </div>
                 <div className="componentModalHeaderNav" >
                     <div className="navigation">
                         <button onClick={() => setModalStateNav(false)}><img src={iconClouseBlack} alt="iconClouseBlack" /></button>

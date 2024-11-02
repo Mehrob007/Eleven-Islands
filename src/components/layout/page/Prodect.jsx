@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Box2 from './pageElements/Box2';
 import NewCollection from '../../../assets/icon/NewCollection.svg'
 import lineyka from '../../../assets/icon/lineyka.svg'
@@ -36,8 +36,10 @@ const useMediaQuery = (query) => {
 
 
 export default function Prodect() {
+  const navigate = useNavigate()
   const { id } = useParams()
   const { findeElement, findeProduct } = usePhotoStore()
+  const [count, setCount] = useState(null)
   const [colorVibor, setColorVibor] = useState(() => {
     return localStorage.getItem('colorVibor') || '';
   });
@@ -74,19 +76,20 @@ export default function Prodect() {
 
   useEffect(() => {
     findeProduct(id)
-  }, [])
-
-  useEffect(() => {
-    window.scroll(0, 0)
-  }, [])
+    const element = document.getElementById("topSity");
+    // window.scroll(0, 0)
+    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition - 100,
+        behavior: 'smooth',
+      });
+  }, [id])
 
   useEffect(() => {
     if (findeElement?.attributes) {
       const arrSize = []
       findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map(el => {
-
         arrSize.push(el.name)
-
       })
 
       setHaveSize(arrSize)
@@ -102,7 +105,7 @@ export default function Prodect() {
 
   //   let updatedDataGelary;
 
-  //   if (findeElement) {
+  //   if (findeElement) {id
   //     // Если товар уже существует, увеличиваем его count и обновляем countPrice
   //     updatedDataGelary = dataGelaryLS.map(item =>
   //       item.id === id
@@ -134,7 +137,6 @@ export default function Prodect() {
   // };
 
   const addToBasket = (id) => {
-
     setDataGelary([
       ...dataGelary,
       {
@@ -142,10 +144,11 @@ export default function Prodect() {
         title: findeElement?.name,
         name: findeElement?.short_description,
         price: findeElement?.price,
-        size: sizeVibor, count: 1,
+        size: sizeVibor, count: count,
         titleImg: findeElement.images[0],
         countPrice: findeElement?.price,
       }])
+      navigate('/products/all')
     // const token = localStorage.getItem('token');
     // const customerId = localStorage.getItem('customerId');
 
@@ -227,8 +230,8 @@ export default function Prodect() {
     }
   }, [findeElement])
 
-  console.log(photos);
-  
+  console.log(count);
+
 
 
 
@@ -245,7 +248,7 @@ export default function Prodect() {
     </Helmet>
     {findeElement &&
       <>
-        <div className='contectProductId'>
+        <div className='contectProductId' id='topSity'>
           {useMediaQuery(`(min-width: ${widthLap})`) && <div className='contectProductId__img'>
             {/* {arrDataImgFind[id] && arrDataImgFind[id].content.image.map((prev, i) => (
             <img key={i} src={prev} alt="imgProduct" />
@@ -299,13 +302,12 @@ export default function Prodect() {
               <h1>Другие цвета</h1>
               <div>
                 {findeElement?.attributes && findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
-                  <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
+                  <Link to={`/product/${el.name.split("|")[1]}`} key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
                     <nav onClick={() => {
                       localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       setColorVibor(el.name.split("|")[0])
-                      document.location.href = `/product/${el.name.split("|")[1]}`
                     }} style={{ background: el.name.split("|")[0] }}></nav>
-                  </a>
+                  </Link>
                 ))}
               </div>
 
@@ -349,9 +351,24 @@ export default function Prodect() {
               {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
             </div>
             <div className='button-div-product'>
-              <button className='add-to-basket button-product' onClick={() => addToBasket(findeElement.id)}>Добавить в корзину</button>
-              <Link onClick={() => addToBasket(findeElement.id)} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
+              <button className='add-to-basket button-product' onClick={() => {
+                if (count) {
+                  addToBasket(findeElement.id)
+                }
+                setCount(1)
+              }
+              }>Добавить в корзину</button>
+              <Link onClick={() => {
+                addToBasket(findeElement.id)
+              }} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
+
             </div>
+            {count &&
+              <div className='add-to-basket button-product count-product'>
+                <button onClick={() => { if (count > 1) { return setCount(count - 1) } }}>-</button>
+                <span>{count}</span>
+                <button onClick={() => setCount(count + 1)}>+</button>
+              </div>}
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '20px ' }}>
               {/* <div className='dop-info-product'>
               <div

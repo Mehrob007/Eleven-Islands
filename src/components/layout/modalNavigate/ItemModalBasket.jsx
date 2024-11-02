@@ -66,7 +66,7 @@ export default function ItemModalBasket({ setPrice = () => { }, see = false }) {
         setPrice(dataGelary?.reduce((total, item) => total + item?.countPrice, 0))
     }, [dataGelary])
     // if (loading) return <p>Loading...</p>;
-    if (dataGelary.length === 0) return <h1>нет товаров!</h1>;
+    // if (dataGelary.length === 0) return <h1>нет товаров!</h1>;
 
     return dataGelary.map((product, index) => (
         <div className='itemModalBasket' key={index}>
