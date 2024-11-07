@@ -162,13 +162,20 @@ const useMediaQuery = (query) => {
 export default function MainPage() {
   const widthLap = '1020px'
   const { photos, fetchPhotos } = usePhotoStore();
+  useEffect(() => {
+    setTimeout(() => {
+      if (photos?.length > 0) {
+        fetchPhotos({
+          page: 1,
+          limit: 50,
+        });
+        console.log('====================================');
+        console.log("fetching");
+        console.log('====================================');
+      }
+    }, 5000);
+  }, []);
 
-  // useEffect(() => {
-  //   fetchPhotos({
-  //     page: 1,
-  //     limit: 50,
-  //   })
-  // }, [])
 
 
 
