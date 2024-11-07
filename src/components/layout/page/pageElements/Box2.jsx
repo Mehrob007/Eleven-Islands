@@ -54,7 +54,7 @@ export default function Box2({ arrDataImg }) {
         <h2 className="sr-only">Products</h2>
         <div className="grid grid-cols-2 gap-x-[10px] gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8" style={{ gap: useMediaQuery(`(max-width: ${widthLap})`) && '15px 5px' }}>
           {arrDataImg.length > 0 ? arrDataImg?.map((item, i) => (<>
-            <div key={i} className='itemBox2 aspect-h-1 mx-auto aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative'>
+            <div key={i} className='itemBox2 aspect-h-1 mx-auto aspect-w-1 xl:aspect-h-8 xl:aspect-w-7 relative '>
               {/* <Link
                 to={`/product/${item?.id}`}
                 key={item?.id}
@@ -72,7 +72,7 @@ export default function Box2({ arrDataImg }) {
               >
                 <div className='itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'
                   style={{
-                    background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / 100% 100% no-repeat`,
+                    background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / cover no-repeat`,
                   }}>
                   {/* <div className='h-full w-full object-cover object-center group-hover:opacity-75'
                     
@@ -114,16 +114,14 @@ export default function Box2({ arrDataImg }) {
                 <h1 className='productTitle'>{item?.short_description}</h1>
                 <h1 className='productPrice'>{item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
               </div>
-              <Link
-                to={`/product/${item?.id}`}
-              >
+              {/* <Link to={`/product/${item?.id}`}>
                 <label className='add-product-btn'>
                   <input type="checkbox" id="checkbox2" />
                   <span className="custom-checkbox">
                     <FiPlus />
                   </span>
                 </label>
-              </Link>
+              </Link> */}
 
               {/* </Link> */}
 

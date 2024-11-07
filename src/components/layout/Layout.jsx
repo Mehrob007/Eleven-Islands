@@ -204,10 +204,6 @@ export default function Layout() {
                     © 2024 Eleven Islands <br />
                     Все права защищены.
                   </p>
-                  <div className='creatorCom'>
-                    <h1>Made in</h1>
-                    <img src={creatorFactory} alt="creatorFactory" />
-                  </div>
                 </div>
               }
             </div>
@@ -245,12 +241,6 @@ export default function Layout() {
                   <a href="#"><img src={vk} alt="whatsapp" /></a>
                   <a href="#"><img src={Tetegram} alt="Tetegram" /></a>
                   <a href="#"><img src={p} alt="youtube" /></a>
-                </div>
-              }
-              {useMediaQuery(`(min-width: ${widthLap})`) &&
-                <div className='creatorCom'>
-                  <h1>Made in</h1>
-                  <img src={creatorFactory} alt="creatorFactory" />
                 </div>
               }
             </div>

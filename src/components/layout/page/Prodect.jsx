@@ -39,7 +39,7 @@ export default function Prodect() {
   const navigate = useNavigate()
   const { id } = useParams()
   const { findeElement, findeProduct } = usePhotoStore()
-  const [count, setCount] = useState(null)
+  const [count, setCount] = useState(0)
   const [colorVibor, setColorVibor] = useState(() => {
     return localStorage.getItem('colorVibor') || '';
   });
@@ -79,10 +79,10 @@ export default function Prodect() {
     const element = document.getElementById("topSity");
     // window.scroll(0, 0)
     const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - 100,
-        behavior: 'smooth',
-      });
+    window.scrollTo({
+      top: elementPosition - 100,
+      behavior: 'smooth',
+    });
   }, [id])
 
   useEffect(() => {
@@ -137,18 +137,29 @@ export default function Prodect() {
   // };
 
   const addToBasket = (id) => {
-    setDataGelary([
-      ...dataGelary,
-      {
-        id: id,
-        title: findeElement?.name,
-        name: findeElement?.short_description,
-        price: findeElement?.price,
-        size: sizeVibor, count: count,
-        titleImg: findeElement.images[0],
-        countPrice: findeElement?.price,
-      }])
-      navigate('/products/all')
+    // const dataBasket = JSON.parse(localStorage.getItem("dataGelary"))
+    console.log(dataGelary);
+    const existingProduct = dataGelary.find(product => product.id === id);
+    console.log(existingProduct);
+
+
+    if (existingProduct) {
+      const dataDeform = dataGelary.filter(el => el.id !== existingProduct.id)
+      setDataGelary([...dataDeform, { ...existingProduct, count: count + 1 }])
+    } else {
+      setDataGelary([
+        ...dataGelary,
+        {
+          id: id,
+          title: findeElement?.name,
+          name: findeElement?.short_description,
+          price: findeElement?.price,
+          size: sizeVibor, count: count || 1,
+          titleImg: findeElement.images[0],
+          countPrice: findeElement?.price,
+        }])
+    }
+    // navigate('/products/all')
     // const token = localStorage.getItem('token');
     // const customerId = localStorage.getItem('customerId');
 
@@ -325,10 +336,8 @@ export default function Prodect() {
                       {el.name}
                     </nav>
                   )
-                }
-
-                )}
-                {findeElement?.attributes && sizeDef.filter(item => !haveSize.includes(item)).map((size) =>
+                })}
+                {/* {findeElement?.attributes && sizeDef.filter(item => !haveSize.includes(item)).map((size) =>
                 (
                   <nav className='size-none' key={size}>
                     {size}
@@ -336,7 +345,7 @@ export default function Prodect() {
                 )
 
 
-                )}
+                )} */}
                 {/* {arrDataImgFind[id].content.size.map((size) => (
                 <div key={size} onClick={() => setSizeVibor(size)} style={{ background: size == sizeVibor && '#408759', color: size == sizeVibor && '#fff', borderColor: size == sizeVibor && 'transparent' }} >
                   {size}
@@ -351,24 +360,44 @@ export default function Prodect() {
               {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
             </div>
             <div className='button-div-product'>
-              <button className='add-to-basket button-product' onClick={() => {
-                if (count) {
-                  addToBasket(findeElement.id)
-                }
-                setCount(1)
-              }
-              }>Добавить в корзину</button>
+              <div>
+                {count ?
+                  <div className='add-to-basket button-product count-product'>
+                    <button onClick={() => {
+                      if (count > 1) { return setCount(count - 1) }
+                      addToBasket(findeElement.id)
+                    }}>-</button>
+                    <span>{count}</span>
+                    <button onClick={() => {
+                      setCount(count + 1)
+                      addToBasket(findeElement.id)
+                    }}>+</button>
+                  </div> :
+                  <button className='add-to-basket button-product' onClick={() => {
+                    addToBasket(findeElement.id)
+                    setCount(1)
+                  }
+                  }>Добавить в корзину</button>}
+                {/* {useMediaQuery(`(max-width: ${widthLap})`) && count &&
+                  <div className='add-to-basket button-product count-product'>
+                    <button onClick={() => { if (count > 1) { return setCount(count - 1) } }}>-</button>
+                    <span>{count}</span>
+                    <button onClick={() => setCount(count + 1)}>+</button>
+                  </div>
+                } */}
+              </div>
               <Link onClick={() => {
                 addToBasket(findeElement.id)
               }} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
 
             </div>
-            {count &&
+            {/* {!useMediaQuery(`(max-width: ${widthLap})`) && count &&
               <div className='add-to-basket button-product count-product'>
                 <button onClick={() => { if (count > 1) { return setCount(count - 1) } }}>-</button>
                 <span>{count}</span>
                 <button onClick={() => setCount(count + 1)}>+</button>
-              </div>}
+              </div>
+            } */}
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%', gap: '20px ' }}>
               {/* <div className='dop-info-product'>
               <div
@@ -418,7 +447,7 @@ export default function Prodect() {
                   {isOpenDiscrip && (
                     <CSSTransition timeout={300} classNames="fade" >
                       <div className='info-d-product' style={{ padding: '10px 0' }}>
-                        <div style={{ fontSize: '12px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                        <div style={{ fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
                       </div>
                     </CSSTransition>
                   )}
@@ -444,7 +473,7 @@ export default function Prodect() {
                   {isOpenDiscrip2 && (
                     <CSSTransition timeout={300} classNames="fade" >
                       <div className='info-d-product' style={{ padding: '10px 0' }}>
-                        <div style={{ fontSize: 12 }}>
+                        <div style={{ fontSize: 14 }}>
                           Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
                           дополнительную плату и займет 1-3 рабочих дня.
                           Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.

@@ -61,7 +61,6 @@ export default function Products() {
         fetchPhotos({
             page: count,
             limit: 50,
-            CategoryId: dateSearch?.CategoryId,
         })
     }
 

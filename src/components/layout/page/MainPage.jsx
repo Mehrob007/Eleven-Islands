@@ -161,7 +161,15 @@ const useMediaQuery = (query) => {
 
 export default function MainPage() {
   const widthLap = '1020px'
-  const { photos } = usePhotoStore();
+  const { photos, fetchPhotos } = usePhotoStore();
+
+  // useEffect(() => {
+  //   fetchPhotos({
+  //     page: 1,
+  //     limit: 50,
+  //   })
+  // }, [])
+
 
 
   const settings = {

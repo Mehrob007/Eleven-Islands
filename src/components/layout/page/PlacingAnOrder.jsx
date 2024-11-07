@@ -26,19 +26,23 @@ const useMediaQuery = (query) => {
 const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
-  const [sity, setSity] = useState("")
-  const navigate = useNavigate()
+  // const [sity, setSity] = useState("")
+  const [sity, setSity] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
   const [price, setPrice] = useState(localStorage.getItem('price'))
   const [formState, setFormState] = useState({
-    name: '',
-    sorname: '',
-    number: '',
-    email: '',
-    adres: '',
+    name: '', // *
+    sorname: '',// *
+    number: '',// *
+    email: '',// *
+    addres: '',
     message: '',
     check_box_1: false,
-    check_box_3: false,
-    radio_box: false,
+    check_box_3: false,// *
+    radio_box: false,// *
+    price: price,// *
   });
   const [errors, setErrors] = useState({});
 
@@ -63,27 +67,41 @@ export default function PlacingAnOrder() {
     if (!formState.sorname) newErrors.sorname = 'Фамилия обязательна';
     if (!formState.number) newErrors.number = 'Телефон обязателен';
     if (!formState.email) newErrors.email = 'Email обязателен';
-    if (!formState.adres) newErrors.adres = 'Адрес обязателен';
+    if (formState.check_box_1) {
+      if (!formState.addres) newErrors.addres = 'Адрес обязателен';
+    }
 
-    scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.adres && 'adres', 120)
-
-    // navigate(`/placing-an-order/#`)
-
-
+    scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.addres && 'addres', 120)
     return newErrors;
   };
 
 
   const placingAnOrder = (e) => {
     e.preventDefault();
-    const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      setErrors({});
+    if (formState.check_box_3) {
+      const newErrors = validate();
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+      } else {
+        setErrors({});
+        if (formState.check_box_3) {
+          console.log('====================================');
+          console.log(formState);
+          console.log(sity);
+          console.log('====================================');
+        }
+      }
     }
   };
+  const filteredCities = ArrCity.filter(city =>
+    city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
+  const handleSelectCity = (cityName) => {
+    setSity(cityName);
+    setSearchQuery(cityName);
+    setShowDropdown(false);
+  };
 
   return (
     <div className="PlacingAnOrder">
@@ -121,22 +139,49 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="sity">Город*</label>
-                <select name="sity" id="sity" onChange={e => setSity(e.target.value)}>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="text"
+                    placeholder="Поиск города"
+                    value={searchQuery}
+                    onChange={e => {
+                      setSearchQuery(e.target.value);
+                      setShowDropdown(true);
+                    }}
+                    onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+                    onFocus={() => setShowDropdown(true)}
+                  />
+
+                  {showDropdown && filteredCities.length > 0 && (
+                    <ul style={{ border: '1px solid #ccc', padding: '0', margin: '0', top: '95%', zIndex: '99999', listStyle: 'none', position: 'absolute', backgroundColor: 'white', maxHeight: '220px', width: '100%', overflowY: "scroll" }}>
+                      {filteredCities.map(city => (
+                        <li
+                          key={city.id}
+                          onMouseDown={() => handleSelectCity(city.name)}
+                          style={{ padding: '5px', cursor: 'pointer' }}
+                        >
+                          {city.name}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {/* <select name="sity" id="sity" onChange={e => setSity(e.target.value)}>
                   <option value={null}>Выберите город</option>
                   {ArrCity.map(el => (
                     <option key={el.id}>
                       {el.name}
                     </option>
-                  ))}
-                  {/* <option value="Москва">Москва</option> */}
-                  {/* Другие города */}
-                </select>
+                  ))} */}
+                {/* <option value="Москва">Москва</option> */}
+                {/* Другие города */}
+                {/* </select> */}
               </div>
               {formState.check_box_1 &&
                 <div style={{ position: 'relative', height: '90px' }}>
-                  <label htmlFor="adres">Адрес*</label>
-                  <input style={{ borderColor: errors.adres && 'red' }} type="text" id="adres" onChange={e => onChange('adres', e.target.value)} />
-                  {errors.adres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.adres}</p>}
+                  <label htmlFor="addres">Адрес*</label>
+                  <input style={{ borderColor: errors.addres && 'red' }} type="text" id="addres" onChange={e => onChange('addres', e.target.value)} />
+                  {errors.addres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.addres}</p>}
                 </div>}
             </div>
           </div>
@@ -239,25 +284,28 @@ export default function PlacingAnOrder() {
                 <p>Сумма:</p>
                 <p>{price} руб</p>
               </div>
-              <div style={{ color: '#AA4D45' }}>
+              {/* <div style={{ color: '#AA4D45' }}>
                 <p>Скидка:</p>
                 <p>00000 руб</p>
-              </div>
+              </div> */}
             </div>
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
                 <p>{price} руб</p>
               </div>
-              <button className="button__placing__an__order" type="submit">Оформить заказ</button>
+
+              <button className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>
             </div>
           </div>
         </form>
-        {useMediaQuery(`(min-width: ${widthLap})`) &&
+        {
+          useMediaQuery(`(min-width: ${widthLap})`) &&
           <div className="PlacingAnOrder__basket">
             <ItemModalBasket see={true} />
-          </div>}
-      </div>
-    </div>
+          </div>
+        }
+      </div >
+    </div >
   );
 }

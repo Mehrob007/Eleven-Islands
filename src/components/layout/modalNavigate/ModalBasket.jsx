@@ -67,7 +67,7 @@ export default function ModalBasket() {
 
     return (
         <div className="boxModalBasket">
-            {JSON.parse(localStorage.getItem("dataGelary")).length > 0 ?
+            {JSON?.parse?.(localStorage?.getItem?.("dataGelary"))?.length > 0 ?
                 <div className="componentModal">
                     {!isLargeScreen ?
                         <div className="componentModalHeader">
