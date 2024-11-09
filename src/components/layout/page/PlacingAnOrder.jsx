@@ -12,6 +12,7 @@ const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
 
+
   useEffect(() => {
     const media = window.matchMedia(query);
     const listener = () => setMatches(media.matches);
@@ -25,6 +26,7 @@ const useMediaQuery = (query) => {
 const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
+  const [promo, setPromo] = useState({ type: null, procent: null, promocode: "", itogProcent: 0 })
   // const [sity, setSity] = useState("")
   const [city, setCity] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,7 +55,7 @@ export default function PlacingAnOrder() {
     message: '',
     check_box_1: false,
     check_box_3: false,// *
-    radio_box: false,// *
+    radio_box: true,// *
     price: amountPrice,// *
   });
   const [errors, setErrors] = useState({});
@@ -68,6 +70,7 @@ export default function PlacingAnOrder() {
       });
     }
   };
+
 
   const onChange = (key, value) => {
     setFormState((prevFormState) => ({ ...prevFormState, [key]: value }));
@@ -147,6 +150,21 @@ export default function PlacingAnOrder() {
       setShowDropdown(false);
   };
 
+
+  const onChangePromo = () => {
+    const code = promo.promocode.toUpperCase()
+    if (promo.type) {
+      setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
+    } else if (code === "WELCOME10") {
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10 })
+    } else if (code === "TEST90") {
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90 })
+    }
+    else {
+      setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })
+    }
+  }
+
   return (
     <div className="PlacingAnOrder">
       <h1>Оформление</h1>
@@ -204,7 +222,7 @@ export default function PlacingAnOrder() {
                       {filteredCities.map(city => (
                         <li
                           key={city.id}
-                          onMouseDown={() => handleSelectCity(city.name)}
+                          onMouseDown={() => handleSelectCity(city)}
                           style={{ padding: '5px', cursor: 'pointer' }}
                         >
                           {city.name}
@@ -311,19 +329,20 @@ export default function PlacingAnOrder() {
             </div>
           </div>
 
-          {/* <div className="PlacingAnOrder__form__1">
+          <div className="PlacingAnOrder__form__1">
             <h1>Ваш заказ</h1>
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="promo">Промокод или сертификат</label>
                 <div>
-                  <input type="text" id="promo" onChange={e => onChange('promo', e.target.value)} />
-                  <button>Применить</button>
+                  <input type="text" value={promo.promocode} id="promo" onChange={e => setPromo({ ...promo, promocode: e.target.value })} />
+                  <button onClick={onChangePromo} style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
                 </div>
-                <p style={{ color: '#408759' }}>Промокод активирован. Ваша скидка 450 руб.</p> 
+                {
+                  <p style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', marginTop: '-15px' }}>{promo.procent || '-'}</p>}
               </div>
             </div>
-          </div> */}
+          </div>
 
           <div className="PlacingAnOrder__form__price">
             <div className="PlacingAnOrder__form__raschot">
@@ -331,15 +350,15 @@ export default function PlacingAnOrder() {
                 <p>Сумма:</p>
                 <p>{amountPrice} руб</p>
               </div>
-              {/* <div style={{ color: '#AA4D45' }}>
+              <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
                 <p>Скидка:</p>
-                <p>00000 руб</p>
-              </div> */}
+                <p>{promo.itogProcent} руб</p>
+              </div>
             </div>
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{amountPrice} руб</p>
+                <p>{amountPrice - promo.itogProcent} руб</p>
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>

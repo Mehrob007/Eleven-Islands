@@ -9,6 +9,8 @@ import element2Box1Logo from '../../../assets/icon/element2Box1Logo.svg';
 
 
 import imgSlider from '../../../assets/img/imgSlidr.png';
+import VideoPc from '../../../assets/video/VideoPc.mp4';
+import VideoMobile from '../../../assets/video/VideoMobile.mp4';
 import imgBlog from '../../../assets/img/blogContent.png';
 
 // import { Helmet } from 'react-helmet';
@@ -163,18 +165,24 @@ export default function MainPage() {
   const widthLap = '1020px'
   const { photos, fetchPhotos } = usePhotoStore();
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (photos?.length > 0) {
+        console.log("products have !!:" + photos.length + ";");
+      } else {
         fetchPhotos({
           page: 1,
           limit: 50,
         });
         console.log('====================================');
-        console.log("fetching");
+        console.log("fetching !!");
         console.log('====================================');
       }
     }, 5000);
-  }, []);
+
+    // Clear the timeout if the component unmounts
+    return () => clearTimeout(timer);
+  }, [photos]);
+
 
 
 
@@ -199,8 +207,15 @@ export default function MainPage() {
 
   return (
     <>
-
+      {/* VideoPc
+  VideoMobile */}
       <div className='box1'>
+
+        <video autoPlay loop muted playsInline>
+          <source src={useMediaQuery(`(min-width: ${widthLap})`) ? VideoPc : VideoMobile} type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
+
         <div className="box1newCollection">
           <div className='newCollection'>
             <div className="comLeftColl">
