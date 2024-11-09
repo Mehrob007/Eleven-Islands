@@ -116,8 +116,8 @@ export default function PlacingAnOrder() {
           const body= {
             Email:formState.email,
             Discription:formState.message?.trim(),
-            Anmount:amountPrice,
-            Price:amountPrice,
+            Anmount:amountPrice * 100,
+            Price:amountPrice * 100,
             Items:items
           }
 
