@@ -37,7 +37,7 @@ const CDEKMap = ({ city }) => {
                         },
                         hideDeliveryOptions: {
                             office: false,
-                            door: true,
+                            door: false,
                         },
                         debug: false,
                         goods: [

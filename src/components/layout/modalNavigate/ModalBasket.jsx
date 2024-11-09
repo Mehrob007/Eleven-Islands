@@ -66,9 +66,13 @@ export default function ModalBasket() {
     console.log('====================================');
 
     return (
-        <div className="boxModalBasket">
+        <div id="cart_overlay" onClick={(e)=>{
+            if(e.target.id == "cart_overlay"){
+                setModalState(false)
+            }
+        }} className="boxModalBasket">
             {JSON?.parse?.(localStorage?.getItem?.("dataGelary"))?.length > 0 ?
-                <div className="componentModal">
+                <div onClick={()=>console.log(123)} className="componentModal">
                     {!isLargeScreen ?
                         <div className="componentModalHeader">
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
