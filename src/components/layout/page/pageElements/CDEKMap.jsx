@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const CDEKMap = ({ sity }) => {
+const CDEKMap = ({ sity }) => {    
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
@@ -17,7 +17,7 @@ const CDEKMap = ({ sity }) => {
                 window.cdekMapInstance = new window.CDEKWidget({
                     from: {
                         country_code: 'RU',
-                        city: sity || 'Москва',
+                        city: sity?.name || 'Москва',
                         postal_code: 101000,
                         code: 270,
                         address: 'ул. Большевистская, д. 101',
@@ -44,7 +44,7 @@ const CDEKMap = ({ sity }) => {
                             weight: 10,
                         },
                     ],
-                    defaultLocation: [37.6156, 55.7522],
+                    defaultLocation: sity?.gps || [37.6156, 55.7522],
                     lang: 'rus',
                     currency: 'RUB',
                     tariffs: {

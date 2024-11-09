@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Box2 from './pageElements/Box2';
 import NewCollection from '../../../assets/icon/NewCollection.svg'
 import lineyka from '../../../assets/icon/lineyka.svg'
+import popupPc from '../../../assets/icon/popup-pc.svg'
+// popupPc
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { dataGelaryStore } from '../../layout/storeState/modalBasket'
 // NewCollection.svg
@@ -327,7 +329,7 @@ export default function Prodect() {
             <div className='size-div-product'>
               <nav className='size-div-product-nav'>
                 <h1>Размер</h1>
-                {useMediaQuery(`(max-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
+                {useMediaQuery(`(max-width: ${widthLap})`) && <p style={{ cursor: 'pointer' }} onClick={() => setModalOpen({ open: true, img: popupPc })}><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
               </nav>
               <div>
                 {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map((el, i) => {
@@ -357,7 +359,7 @@ export default function Prodect() {
                 </nav>
               ))} */}
               </div>
-              {useMediaQuery(`(min-width: ${widthLap})`) && <p><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
+              {useMediaQuery(`(min-width: ${widthLap})`) && <p style={{ cursor: 'pointer' }} onClick={() => setModalOpen({ open: true, img: popupPc })} ><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
             </div>
             <div className='button-div-product'>
               <div>
@@ -478,7 +480,7 @@ export default function Prodect() {
                           дополнительную плату и займет 1-3 рабочих дня.
                           Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
                           Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
-                        </div>
+                        </div>  
                       </div>
                     </CSSTransition>
                   )}
