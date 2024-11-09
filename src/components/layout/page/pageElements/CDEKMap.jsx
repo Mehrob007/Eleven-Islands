@@ -1,81 +1,86 @@
 import { useEffect } from 'react';
 
-const CDEKMap = ({ sity }) => {
+const CDEKMap = ({ city }) => {
     useEffect(() => {
-        const cdekScript = document.createElement('script');
-        cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
-        cdekScript.charset = 'utf-8';
-        document.head.appendChild(cdekScript);
-
+        
+        // const cdekScript = document.createElement('script');
+        // cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
+        // cdekScript.charset = 'utf-8';
+        // cdekScript.async = true
+        // document.head.appendChild(cdekScript);
+        
         const initializeCDEKWidget = () => {
+            
             if (window.CDEKWidget) {
                 // Удаляем предыдущий виджет, если он существует
                 if (window.cdekMapInstance) {
                     window.cdekMapInstance.destroy();
                 }
 
-                window.cdekMapInstance = new window.CDEKWidget({
-                    from: {
-                        country_code: 'RU',
-                        city: sity || 'Москва',
-                        postal_code: 101000,
-                        code: 270,
-                        address: 'ул. Большевистская, д. 101',
-                    },
-                    root: 'cdek-map',
-                    apiKey: '269cf3f0-3414-4a8f-82a9-97c20c42ce92',
-                    servicePath: 'https://elevenislands.ru/cdek/service.php',
-                    hideFilters: {
-                        have_cashless: true,
-                        have_cash: true,
-                        is_dressing_room: true,
-                        type: false,
-                    },
-                    hideDeliveryOptions: {
-                        office: false,
-                        door: true,
-                    },
-                    debug: false,
-                    goods: [
-                        {
-                            width: 10,
-                            height: 10,
-                            length: 10,
-                            weight: 10,
+                setTimeout(() => {
+                    window.cdekMapInstance = new window.CDEKWidget({
+                        from: {
+                            country_code: 'RU',
+                            city: city,
+                            postal_code: 630009,
+                            code: 270,
+                            address: 'ул. Большевистская, д. 101',
                         },
-                    ],
-                    defaultLocation: [37.6156, 55.7522],
-                    lang: 'rus',
-                    currency: 'RUB',
-                    tariffs: {
-                        office: [139, 138],
-                        door: [],
-                    },
-                    onReady() {
-                        // console.log('Виджет CDEK загружен');
-                    },
-                    onCalculate() {
-                        // Логика расчета доставки
-                    },
-                    onChoose(e, a) {
-                        console.log('Доставка выбрана');
-                        console.log(a);
-                    },
-                });
+                        root: 'cdek-map',
+                        apiKey: '269cf3f0-3414-4a8f-82a9-97c20c42ce92',
+                        servicePath: 'https://elevenislands.ru/cdek/service.php',
+                        hideFilters: {
+                            have_cashless: true,
+                            have_cash: true,
+                            is_dressing_room: true,
+                            type: false,
+                        },
+                        hideDeliveryOptions: {
+                            office: false,
+                            door: true,
+                        },
+                        debug: false,
+                        goods: [
+                            {
+                                width: 10,
+                                height: 10,
+                                length: 10,
+                                weight: 10,
+                            },
+                        ],
+                        defaultLocation: city || "Москва",
+                        lang: 'rus',
+                        currency: 'RUB',
+                        tariffs: {
+                            office: [139, 138],
+                            door: [],
+                        },
+                        onReady() {
+                            // console.log('Виджет CDEK загружен');
+                        },
+                        onCalculate() {
+                            // Логика расчета доставки
+                        },
+                        onChoose(e, a) {
+                            console.log('Доставка выбрана');
+                            console.log(a);
+                        },
+                    });
+                }, 0);
             }
         };
-
-        cdekScript.onload = initializeCDEKWidget;
+        // document.addEventListener("DOMContentLoaded",()=> console.log("loaded"))
+        initializeCDEKWidget();
 
         return () => {
             // Очистка: удаление скрипта и уничтожение виджета
-            document.head.removeChild(cdekScript);
+            // document.head.removeChild(cdekScript);
             if (window.cdekMapInstance) {
                 window.cdekMapInstance.destroy();
                 window.cdekMapInstance = null; // Убираем ссылку на экземпляр
             }
         };
-    }, [sity]); // Зависимость от sity для повторной инициализации
+    }, [city]); // Зависимость от sity для повторной инициализации
 
     return (
         <>

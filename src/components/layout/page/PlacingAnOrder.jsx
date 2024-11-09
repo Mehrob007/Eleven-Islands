@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import activeCheckbox from '../../../assets/icon/activeCheckbox.svg'
 import iconRadeoButton from '../../../assets/icon/iconRadeoButton.svg'
 import banckCart from '../../../assets/icon/banckCart.svg'
-import Branding from '../../../assets/icon/Branding.svg'
-import Papa from 'papaparse';
 import ItemModalBasket from "../modalNavigate/ItemModalBasket";
 import CDEKMap from "./pageElements/CDEKMap";
 import { ArrCity } from "../../../assets/processed_city";
 import { useNavigate } from "react-router-dom";
-
+import InputMask from 'react-input-mask';
+import axios from "axios";
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
@@ -27,11 +26,24 @@ const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
   // const [sity, setSity] = useState("")
-  const [sity, setSity] = useState(null);
+  const [city, setCity] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [price, setPrice] = useState(localStorage.getItem('price'))
+  const [amountPrice, setAmountPrice] = useState(0)
+  const [paymentError,setPaymentError] = useState(false)
+  const [loading,setLoading] = useState(false)
+  useEffect(()=>{
+    const cartData = localStorage.getItem("dataGelary")
+    if(cartData){
+      const parse = JSON.parse(cartData)
+      let countPrice = 0
+      parse.forEach(v=>{
+        countPrice += v?.price * v.count
+      })
+      setAmountPrice(countPrice)
+    }
+  },[])
   const [formState, setFormState] = useState({
     name: '', // *
     sorname: '',// *
@@ -42,7 +54,7 @@ export default function PlacingAnOrder() {
     check_box_1: false,
     check_box_3: false,// *
     radio_box: false,// *
-    price: price,// *
+    price: amountPrice,// *
   });
   const [errors, setErrors] = useState({});
 
@@ -62,11 +74,12 @@ export default function PlacingAnOrder() {
   };
 
   const validate = () => {
+    const emailValidateRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const newErrors = {};
     if (!formState.name) newErrors.name = 'Имя обязательно';
     if (!formState.sorname) newErrors.sorname = 'Фамилия обязательна';
-    if (!formState.number) newErrors.number = 'Телефон обязателен';
-    if (!formState.email) newErrors.email = 'Email обязателен';
+    if (!formState.number || formState.number.replace(/[^\d]/g, '')?.length !== 11) newErrors.number = 'Телефон обязателен';
+    if (!formState.email || !emailValidateRegex.test(formState.email)) newErrors.email = 'Email обязателен';
     if (formState.check_box_1) {
       if (!formState.addres) newErrors.addres = 'Адрес обязателен';
     }
@@ -76,8 +89,9 @@ export default function PlacingAnOrder() {
   };
 
 
-  const placingAnOrder = (e) => {
+  const placingAnOrder = async(e) => {
     e.preventDefault();
+    setPaymentError(false)
     if (formState.check_box_3) {
       const newErrors = validate();
       if (Object.keys(newErrors).length > 0) {
@@ -85,10 +99,38 @@ export default function PlacingAnOrder() {
       } else {
         setErrors({});
         if (formState.check_box_3) {
-          console.log('====================================');
-          console.log(formState);
-          console.log(sity);
-          console.log('====================================');
+
+          let items = []
+          const cartData = localStorage.getItem("dataGelary")
+          if(cartData){
+            const parse = JSON.parse(cartData)
+           items =  parse.map(v=>({
+            Name:v?.name,
+            Quantity:v?.count,
+            Price:v?.price,
+            Amount:v?.price * v?.count,
+            Tax:"none",
+           }))
+          }
+
+          const body= {
+            Email:formState.email,
+            Discription:formState.message?.trim(),
+            Anmount:amountPrice,
+            Price:amountPrice,
+            Items:items
+          }
+
+          setLoading(true)
+        try {
+          const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          localStorage.removeItem("dataGelary")
+          window.open(data?.PaymentURL,"_self")
+        } catch (error) {
+          setPaymentError(true)
+        }finally{
+          setLoading(false)
+        }
         }
       }
     }
@@ -96,11 +138,13 @@ export default function PlacingAnOrder() {
   const filteredCities = ArrCity.filter(city =>
     city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  
 
   const handleSelectCity = (cityName) => {
-    setSity(cityName);
-    setSearchQuery(cityName);
-    setShowDropdown(false);
+
+      setCity(cityName);
+      setSearchQuery(cityName);
+      setShowDropdown(false);
   };
 
   return (
@@ -113,22 +157,25 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__div__1" style={{ gap: '12px' }}>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="name">Имя*</label>
-                <input style={{ borderColor: errors.name && 'red' }} type="text" id="name" onChange={e => onChange('name', e.target.value)} />
+                <input style={{ borderColor: errors.name && 'red' }} type="text" required id="name" onChange={e => onChange('name', e.target.value)} />
                 {errors.name && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.name}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="sorname">Фамилия*</label>
-                <input style={{ borderColor: errors.sorname && 'red' }} type="text" id="sorname" onChange={e => onChange('sorname', e.target.value)} />
+                <input style={{ borderColor: errors.sorname && 'red' }} type="text" required id="sorname" onChange={e => onChange('sorname', e.target.value)} />
                 {errors.sorname && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.sorname}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="number">Телефон*</label>
-                <input style={{ borderColor: errors.number && 'red' }} type="text" id="number" onChange={e => onChange('number', e.target.value)} />
+                <InputMask mask="9 (999) 9999 999" style={{ borderColor: errors.number && 'red' }} type="text" required id="number" onChange={e => onChange('number', e.target.value)} >
+                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.number && 'red' }} type="text" id="number"  />
+                }
+                </InputMask>
                 {errors.number && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="email">Email*</label>
-                <input style={{ borderColor: errors.email && 'red' }} type="text" id="email" onChange={e => onChange('email', e.target.value)} />
+                <input style={{ borderColor: errors.email && 'red' }} type="text" required id="email" onChange={e => onChange('email', e.target.value)} />
                 {errors.email && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.email}</p>}
               </div>
             </div>
@@ -204,7 +251,7 @@ export default function PlacingAnOrder() {
 
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap sity={sity} />
+              <CDEKMap city={city} />
             </div>
           </div>}
 
@@ -282,7 +329,7 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__raschot">
               <div>
                 <p>Сумма:</p>
-                <p>{price} руб</p>
+                <p>{amountPrice} руб</p>
               </div>
               {/* <div style={{ color: '#AA4D45' }}>
                 <p>Скидка:</p>
@@ -292,10 +339,11 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{price} руб</p>
+                <p>{amountPrice} руб</p>
               </div>
 
-              <button className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>
+              <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>
+                {paymentError ? <p className="text-red-700 text-2xl text-center">Ошибка при попытке оплаты</p>:""}
             </div>
           </div>
         </form>
