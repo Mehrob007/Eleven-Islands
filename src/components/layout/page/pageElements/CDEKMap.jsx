@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-
+import CDEKWidget from '@cdek-it/widget'
 const CDEKMap = ({ city }) => {
     useEffect(() => {
         
@@ -18,7 +18,7 @@ const CDEKMap = ({ city }) => {
                 }
 
                 setTimeout(() => {
-                    window.cdekMapInstance = new window.CDEKWidget({
+                    window.cdekMapInstance = new CDEKWidget({
                         from: {
                             country_code: 'RU',
                             city: city,
@@ -26,6 +26,7 @@ const CDEKMap = ({ city }) => {
                             code: 270,
                             address: 'ул. Большевистская, д. 101',
                         },
+                        
                         root: 'cdek-map',
                         apiKey: '269cf3f0-3414-4a8f-82a9-97c20c42ce92',
                         servicePath: 'https://elevenislands.ru/cdek/service.php',
@@ -37,7 +38,7 @@ const CDEKMap = ({ city }) => {
                         },
                         hideDeliveryOptions: {
                             office: false,
-                            door: false,
+                            door: true,
                         },
                         debug: false,
                         goods: [
@@ -54,6 +55,10 @@ const CDEKMap = ({ city }) => {
                         tariffs: {
                             office: [139, 138],
                             door: [],
+                        },
+                        tariff:{
+                            delivery_mode: 4,
+                        
                         },
                         onReady() {
                             // console.log('Виджет CDEK загружен');
