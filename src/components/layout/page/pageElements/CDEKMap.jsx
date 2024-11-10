@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import CDEKWidget from '@cdek-it/widget'
+import './cdekMapCSS.css'
 const CDEKMap = ({ city,setDeliveryData }) => {
     useEffect(() => {
         const cdekScript = document.createElement('script');
@@ -32,6 +33,9 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                     hideDeliveryOptions: {
                         office: false,
                         door: true,
+                    },
+                    forceFilters:{
+                        type:"PVZ"
                     },
                     // debug: false,
                     // canChoose:true,
