@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import CDEKWidget from '@cdek-it/widget'
-const CDEKMap = ({ city }) => {
+const CDEKMap = ({ city,setDeliveryData }) => {
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
@@ -62,6 +62,7 @@ const CDEKMap = ({ city }) => {
                     },
                     onChoose(...v) {
                         console.log('Доставка выбрана');
+                        setDeliveryData(v)
                         console.log(v);
                     },
                 });

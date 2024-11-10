@@ -33,6 +33,7 @@ export default function PlacingAnOrder() {
   const [amountPrice, setAmountPrice] = useState(0)
   const [paymentError,setPaymentError] = useState(false)
   const [loading,setLoading] = useState(false)
+  const [deliveryData,setDeliveryData] = useState([])
   useEffect(()=>{
     const cartData = localStorage.getItem("dataGelary")
     if(cartData){
@@ -88,6 +89,65 @@ export default function PlacingAnOrder() {
     return newErrors;
   };
 
+
+  const createCdekOrder = async () => {
+    let packagesItems = []
+    const cartData = localStorage.getItem("dataGelary")
+    if (cartData) {
+      const parse = JSON.parse(cartData)
+      packagesItems = parse.map((v) => ({
+        ware_key:v.id,
+        payment:{
+          value:v?.price
+        },
+        name: v?.name,
+        cost: v?.price,
+        amount: v?.price * v?.count,
+        weight: 100,
+        url: "https://elevenislands.ru",
+      }))
+    }
+
+    const body = {
+      tariff_code: 136,
+      comment: message?.trim(),
+      recipient: {
+        name: `${formState.name.trim()} ${formState.sorname?.trim()}`,
+        phones: [
+          {
+            number: formState.number.replace(/[^\d]/g, ""),
+          },
+        ],
+      },
+      to_location: {
+        code: deliveryData[2]?.city_code,
+        fias_guid: "",
+        postal_code: deliveryData[2]?.postal_code,
+        longitude: deliveryData[2]?.location[0],
+        latitude: deliveryData[2]?.location[1],
+        country_code: deliveryData[2]?.country_code,
+        region: deliveryData[2]?.region,
+        sub_region: "",
+        city: deliveryData[2]?.city,
+        kladr_code: "",
+        address: deliveryData[2]?.address,
+      },
+      packages: [
+        {
+          number: new Date().toISOString(),
+          comment: "Упаковка",
+          height: 10,
+          length: 10,
+          weight: 4000,
+          width: 10,
+          items: packagesItems,
+        },
+      ],
+      sender: {
+        name: "Петров Петр",
+      },
+    }
+  }
 
   const placingAnOrder = async(e) => {
     e.preventDefault();
@@ -251,7 +311,7 @@ export default function PlacingAnOrder() {
 
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap city={city} />
+              <CDEKMap setDeliveryData={setDeliveryData} city={city} />
             </div>
           </div>}
 
