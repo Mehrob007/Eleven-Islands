@@ -7,7 +7,8 @@ import LogoFooter from '../../assets/icon/LogoFooter.svg'
 import Tetegram from '../../assets/icon/Tetegram.svg'
 import p from '../../assets/icon/p.svg'
 import vk from '../../assets/icon/vk.svg'
-import creatorFactory from '../../assets/icon/creatorFactory.svg'
+import galochkaPopapModal from '../../assets/icon/galochkaPopapModal.svg'
+import xPopapModal from '../../assets/icon/xPopapModal.svg'
 import axios from 'axios'
 import apiClient from '../../utils/api'
 import { Helmet } from 'react-helmet'
@@ -15,6 +16,7 @@ import { usePhotoStore } from './storeState/store'
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
+
 
   useEffect(() => {
     const media = window.matchMedia(query);
@@ -38,6 +40,11 @@ export default function Layout() {
   const [email_user, setEmail_user] = useState('')
   const [email_error, setEmail_error] = useState('')
   const { fetchPhotos } = usePhotoStore();
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [itemsCount, setItemsCount] = useState(() => {
+    const savedItems = JSON.parse(localStorage.getItem('dataGelary')) || [];
+    return savedItems.length;
+  });
 
   useEffect(() => {
     fetchPhotos({ limit: 100, page: 1 });
@@ -54,12 +61,10 @@ export default function Layout() {
         })
         localStorage.setItem('token', res.data.access_token)
         localStorage.setItem('customerId', res.data.customer_id)
-
-
       }
       catch (error) {
-        console.error(error);
-        setErrorToken(error)
+        // console.error(error);
+        // setErrorToken(error)
       }
     }
   }
@@ -116,6 +121,33 @@ export default function Layout() {
     guestFun()
   }, [errorToken])
 
+
+  useEffect(() => {
+    if (isModalOpen) {
+      setTimeout(() => { setModalOpen(false) }, 5000)
+    }
+  }, [isModalOpen]);
+
+
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const products = JSON.parse(localStorage.getItem('dataGelary')) || [];
+      if (products.length > itemsCount) {
+        setItemsCount(products.length);  // Обновляем количество товаров
+        setModalOpen(true);  // Открываем модальное окно
+      }
+    }, 500); // Проверяем каждые 1 секунду
+
+    return () => clearInterval(interval); // Очищаем интервал при размонтировании
+  }, [itemsCount]);
+
+
+
   return (
     <div className='all-projact'>
       <Helmet>
@@ -141,7 +173,7 @@ export default function Layout() {
       <main className='bigBox' style={{ paddingTop: location.pathname != '/' && '70px' }}>
 
         <Outlet />
-        <footer>
+        <footer >
           <div className="footerContent">
             <div className="footerContentCom1">
               <img src={LogoFooter} alt="LogoFooter" />
@@ -247,8 +279,13 @@ export default function Layout() {
           </div>
         </footer>
       </main>
-
-
+      <div className="popapModalProduct" style={{ translate: `${isModalOpen ? '1% 0' : '150% 0'}` }}>
+        <div>
+          <img src={galochkaPopapModal} alt="galochkaPopapModal" />
+          <p>Товар добавлен в корзину</p>
+        </div>
+        <img onClick={closeModal} src={xPopapModal} alt="xPopapModal" />
+      </div>
     </div>
   )
 }
