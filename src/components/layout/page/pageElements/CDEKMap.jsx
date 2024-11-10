@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import CDEKWidget from '@cdek-it/widget'
 import './cdekMapCSS.css'
 const CDEKMap = ({ city,setDeliveryData }) => {
@@ -30,6 +30,7 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                   
                         type: false,
                     },
+                    
                     hideDeliveryOptions: {
                         office: false,
                         door: true,
