@@ -22,14 +22,14 @@ export default function CustomSelect({
                 value: value?.[0]?.value || '',
                 label: value?.[0]?.label || ''
             })
-    // useEffect(() => {
-    //     if (resetValue) {
-    //         setValueSelect({
-    //             value: value?.[0]?.value || '',
-    //             label: value?.[0]?.label || ''
-    //         })
-    //     }
-    // }, [resetValue])
+    useEffect(() => {
+        if (resetValue) {
+            setValueSelect({
+                value: value?.[0]?.value || '',
+                label: value?.[0]?.label || ''
+            })
+        }
+    }, [resetValue])
 
 
     useEffect(() => {

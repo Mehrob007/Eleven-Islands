@@ -52,7 +52,8 @@ export default function Prodect() {
   const [isOpenDiscrip, setIsOpenDiscrip] = useState(true);
   const [isOpenDiscrip2, setIsOpenDiscrip2] = useState(false);
   const { dataGelary, setDataGelary } = dataGelaryStore()
-  const sizeDef = ['XXS', 'XS', 'S', 'L', 'XL', 'XXL']
+  // const sizeDef = ['XXS', 'XS', 'S', 'L', 'XL', 'XXL']
+  // const [idProduct, setIdProduct] = useState(0)
   const [haveSize, setHaveSize] = useState([])
   const { photos, fetchPhotos } = usePhotoStore();
   const [sizeVibor, setSizeVibor] = useState(haveSize[0])
@@ -61,9 +62,8 @@ export default function Prodect() {
     img: null
   })
 
-  // useEffect(() => {
-  //   fetchPhotos({ limit: 32, page: 1 });
-  // }, []);
+
+
 
   useEffect(() => {
     if (haveSize.length > 0) {
@@ -98,56 +98,12 @@ export default function Prodect() {
     }
   }, [findeElement?.attributes])
 
-  // const addToBasket = (id) => {
-  //   // Получаем данные из localStorage и парсим их в массив, либо создаем пустой массив, если ничего нет
-  //   const dataGelaryLS = JSON.parse(localStorage.getItem('dataGelary')) || [];
-
-  //   // Проверяем, существует ли уже товар с данным id
-  //   const findeElement = dataGelaryLS.find(item => item.id === id);
-
-  //   let updatedDataGelary;
-
-  //   if (findeElement) {id
-  //     // Если товар уже существует, увеличиваем его count и обновляем countPrice
-  //     updatedDataGelary = dataGelaryLS.map(item =>
-  //       item.id === id
-  //         ? {
-  //           ...item,
-  //           count: item.count + 1,
-  //           countPrice: item.countPrice + item.price,
-  //         }
-  //         : item
-  //     );
-  //   } else {
-  //     // Если товара нет, добавляем его как новый элемент
-  //     const newItem = {
-  //       id: id,
-  //       title: findeElement?.name,
-  //       name: findeElement?.short_description,
-  //       price: findeElement?.price,
-  //       size: sizeVibor, count: 1,
-  //       titleImg: findeElement.images[0],
-  //       countPrice: findeElement?.price,
-  //     };
-
-  //     updatedDataGelary = [...dataGelaryLS, newItem];
-  //   }
-
-  //   // Обновляем состояние и localStorage
-  //   setDataGelary(updatedDataGelary);
-  //   localStorage.setItem('dataGelary', JSON.stringify(updatedDataGelary));
-  // };
-
-  const addToBasket = (id) => {
+  const addToBasket = () => {
     // const dataBasket = JSON.parse(localStorage.getItem("dataGelary"))
-    console.log(dataGelary);
     const existingProduct = dataGelary.find(product => product.id === id);
-    console.log(existingProduct);
-
-
     if (existingProduct) {
       const dataDeform = dataGelary.filter(el => el.id !== existingProduct.id)
-      setDataGelary([...dataDeform, { ...existingProduct, count: count + 1 }])
+      setDataGelary([...dataDeform, { ...existingProduct, count: count, countPrice: existingProduct.price * count }])
     } else {
       setDataGelary([
         ...dataGelary,
@@ -161,61 +117,11 @@ export default function Prodect() {
           countPrice: findeElement?.price,
         }])
     }
-    // navigate('/products/all')
-    // const token = localStorage.getItem('token');
-    // const customerId = localStorage.getItem('customerId');
-
-
-    // if (!token) {
-    //   console.warn("No token available. Cannot fetch photos.");
-    //   return;
-    // }
-    // try {
-    //   // const response = await axios.post(`https://elevenislands.ru/api/shopping_cart_items`, {
-    //   //   shopping_cart_item: {
-    //   //     product_id: id,
-    //   //     product_attributes: [
-    //   //       {
-    //   //         value: colorVibor,
-    //   //         id: 1
-    //   //       },
-    //   //       {
-    //   //         value: sizeVibor,
-    //   //         id: 2
-    //   //       }
-    //   //     ],
-    //   //     customer_id: customerId
-    //   //   }
-    //   // }, {
-    //   //   headers: {
-    //   //     Authorization: `Bearer ${token}`
-    //   //   }
-    //   // });
-
-
-
-    //     // {
-    //     //   product_id: id,
-    //     //   product_attributes: [
-    //     //     {
-    //     //       value: colorVibor,
-    //     //       id: 1
-    //     //     },
-    //     //     {
-    //     //       value: sizeVibor,
-    //     //       id: 2
-    //     //     }
-    //     //   ],
-    //     //   customer_id: customerId,
-    //     //   count: 1,
-    //     //   price: findeElement?.price
-    //     // }
-    //   ])
-
-    // } catch (error) {
-    //   console.error("Error fetching photos:", error);
-    // }
   }
+
+  useEffect(() => {
+    addToBasket()
+  }, [count])
   const widthLap = '1020px'
   const settingsGelary = {
     className: "slider1 product-gelary variable-width-menu",
@@ -367,16 +273,15 @@ export default function Prodect() {
                   <div className='add-to-basket button-product count-product'>
                     <button onClick={() => {
                       if (count > 1) { return setCount(count - 1) }
-                      addToBasket(findeElement.id)
                     }}>-</button>
                     <span>{count}</span>
                     <button onClick={() => {
                       setCount(count + 1)
-                      addToBasket(findeElement.id)
                     }}>+</button>
                   </div> :
                   <button className='add-to-basket button-product' onClick={() => {
-                    addToBasket(findeElement.id)
+                    // addToBasket(findeElement.id)
+                    // setIdProduct(findeElement.id)
                     setCount(1)
                   }
                   }>Добавить в корзину</button>}

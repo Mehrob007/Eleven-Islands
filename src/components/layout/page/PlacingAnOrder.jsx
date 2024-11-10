@@ -329,7 +329,7 @@ export default function PlacingAnOrder() {
             </div>
           </div>
 
-          <div className="PlacingAnOrder__form__1">
+          {formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <h1>Ваш заказ</h1>
             <div className="PlacingAnOrder__form__div__1">
               <div>
@@ -342,7 +342,7 @@ export default function PlacingAnOrder() {
                   <p style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', marginTop: '-15px' }}>{promo.procent || '-'}</p>}
               </div>
             </div>
-          </div>
+          </div>}
 
           <div className="PlacingAnOrder__form__price">
             <div className="PlacingAnOrder__form__raschot">

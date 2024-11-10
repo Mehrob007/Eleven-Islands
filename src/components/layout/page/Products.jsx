@@ -53,6 +53,7 @@ export default function Products() {
     // const handleSizeChange = (size) => {
 
     // };
+    const [isFetching, setIsFetching] = useState(false);
 
 
 
@@ -61,7 +62,9 @@ export default function Products() {
         fetchPhotos({
             page: count,
             limit: 50,
+            CategoryId: dateSearch?.CategoryId
         })
+
     }
 
     const arrSort = [
@@ -112,7 +115,7 @@ export default function Products() {
     };
     useEffect(() => {
         getDataStaffs()
-    }, [count, dateSearch]);
+    }, [count, selectedSizes, dateSearch, stemsSort]);
 
     useEffect(() => {
         if (photos.length > 0) {
@@ -136,13 +139,12 @@ export default function Products() {
 
 
 
-    const [isFetching, setIsFetching] = useState(false);
+
 
     useEffect(() => {
         const handleScroll = () => {
             const scrollPosition = window.innerHeight + window.scrollY;
             const threshold = document.documentElement.offsetHeight - 100;
-
             if (scrollPosition >= threshold && !isFetching) {
                 setIsFetching(true);
                 setCount(prevCount => prevCount + 1);
@@ -158,6 +160,7 @@ export default function Products() {
         const fetchData = async () => {
             // Загрузка данных
             await fetchPhotos({
+                CategoryId: dateSearch?.CategoryId,
                 limit: 50,
                 page: count
             });
@@ -170,34 +173,47 @@ export default function Products() {
     }, [count, isFetching]);
 
     useEffect(() => {
-        setdataGetSearsh(prevState =>
-            prevState.filter(el =>
+        if (selectedSizes === '*' || !selectedSizes) {
+            // If "All Sizes" is selected or selectedSizes is empty, reset to original data
+            setdataGetSearsh(photos);
+        } else {
+            // Filter by selectedSizes
+            setdataGetSearsh(prevState => prevState.filter(el =>
                 el.attributes?.some(attr =>
-                    attr.product_attribute_id == 2 &&
+                    attr.product_attribute_id === 2 &&
                     attr.attribute_values.some(attrValue =>
-                        Array.isArray(selectedSizes) ? selectedSizes.includes(attrValue.name) : attrValue.name === selectedSizes
+                        Array.isArray(selectedSizes)
+                            ? selectedSizes.includes(attrValue.name)
+                            : attrValue.name === selectedSizes
                     )
                 )
-            )
-        );
-    }, [selectedSizes]);
-    useEffect(() => {
-        setdataGetSearsh(prevState => {
-            // Copy the previous state to avoid direct mutation
-            const sortedData = [...prevState];
+            ));
+        }
+    }, [selectedSizes, photos]); // Ensure photos is a dependency to handle resets
 
-            // Check the sorting value in stemsSort and apply the appropriate sort
+    console.log('====================================');
+    console.log(dataGetSearsh);
+    console.log('====================================');
+    useEffect(() => {
+        console.log("Sorting triggered with stemsSort:", stemsSort);
+        console.log("Data before sorting:", dataGetSearsh);
+
+        if (dataGetSearsh && dataGetSearsh.length > 0) {
+            const sortedData = [...dataGetSearsh];
+
             if (stemsSort === '1') {
-                // Sort by descending price
                 sortedData.sort((a, b) => b.price - a.price);
             } else if (stemsSort === '2') {
-                // Sort by ascending price
                 sortedData.sort((a, b) => a.price - b.price);
             }
 
-            return sortedData;
-        });
+            setdataGetSearsh(sortedData);
+
+            console.log("Data after sorting:", sortedData);
+        }
     }, [stemsSort]);
+
+
 
     // const resFilterType = typeSelect.filter((item, index, self) => index === self.findIndex(other => other.value === item.value))
 
@@ -209,14 +225,13 @@ export default function Products() {
                 <h1>Каталог</h1>
                 <div> {isLargeScreen ?
                     <div className='filterProbucts'>
-                        {
-                            <CustomSelect
-                                onClick={(id) => {
-                                    setCount(0)
-                                    setdataGetSearsh([])
-                                    setDateSearch({ ...dateSearch, CategoryId: id })
-                                }}
-                                title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect} />}
+                        <CustomSelect
+                            onClick={(id) => {
+                                setCount(0)
+                                setdataGetSearsh([])
+                                setDateSearch({ ...dateSearch, CategoryId: id })
+                            }}
+                            title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect} />
                         {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
                         <CustomSelect
                             onClick={(id) => {
@@ -236,7 +251,6 @@ export default function Products() {
                             <CustomSelect
                                 onClick={(id) => {
                                     setCount(0)
-                                    setdataGetSearsh([])
                                     setItemsSort(id)
                                 }}
                                 title='Сортировать по' value={arrSort} open={openSelect === "sort"} toggle={() => toggleSelect("sort")} />
@@ -245,7 +259,12 @@ export default function Products() {
                         <><button onClick={() => setModalStateReset(true)} className='btn-filter-phone'>
                             Сортировать по
                         </button>
-                            {modalStateReset && <ModalReset />}
+                            <ModalReset element={<CustomSelect
+                                onClick={(id) => {
+                                    setCount(0)
+                                    setItemsSort(id)
+                                }}
+                                title='Сортировать по' value={arrSort} phone={true} />} modalStateReset={modalStateReset} />
                         </>}
                 </div>
 
@@ -254,14 +273,34 @@ export default function Products() {
                 {/* {fetching && <h1 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h1>}  */}
                 <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
                 <SendEmail />
-                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />
+                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i >= 8)} />
             </div>
-            {modalStateFilter && <ModalFilter setdataGetSearsh={(data) => {
-                console.log("Filtered data:", data); // Debugging line
-                setdataGetSearsh(data);
-            }} />}
-
-
+            <ModalFilter
+                modalStateFilter={modalStateFilter}
+                setModalStateFilter={setModalStateFilter}
+                componentDiv={(resetValue) => {
+                    return <>
+                        <CustomSelect
+                            onClick={(id) => {
+                                setCount(0)
+                                setdataGetSearsh([])
+                                setDateSearch({ ...dateSearch, CategoryId: id })
+                            }}
+                            resetValue={resetValue}
+                            title='Тип продукции' phone={true} value={typeSelect} />
+                        {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
+                        <CustomSelect
+                            onClick={(id) => {
+                                setSelectedSizes(id)
+                                setCount(0)
+                                // handleSizeChange(id)
+                                setDateSearch({ ...dateSearch, reset: !dateSearch.reset })
+                            }}
+                            resetValue={resetValue}
+                            title='Размер' value={sizes} phone={true} />
+                    </>
+                }}
+            />
         </>
     );
 }

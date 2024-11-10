@@ -7,7 +7,7 @@ import axios from 'axios';
 import { dataBasketItems } from '../storeState/modalBasket';
 import { dataGelaryStore } from '../../layout/storeState/modalBasket'
 
-export default function ItemModalBasket({ setPrice = () => { }, see = false }) {
+export default function ItemModalBasket({ see = false }) {
     const { dataGelary, setDataGelary } = dataGelaryStore()
     // const { setDataBasket } = dataBasketItems()
     // const [products, setProducts] = useState([
@@ -62,9 +62,9 @@ export default function ItemModalBasket({ setPrice = () => { }, see = false }) {
     }
 
 
-    useEffect(() => {
-        setPrice(dataGelary?.reduce((total, item) => total + item?.countPrice, 0))
-    }, [dataGelary])
+    // useEffect(() => {
+    //     setPrice(dataGelary?.reduce((total, item) => total + item?.countPrice, 0))
+    // }, [dataGelary])
     // if (loading) return <p>Loading...</p>;
     // if (dataGelary.length === 0) return <h1>нет товаров!</h1>;
 

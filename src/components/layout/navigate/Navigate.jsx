@@ -43,20 +43,17 @@ export default function Navigate() {
     const updateLengthCount = () => {
       const storedData = localStorage.getItem('dataGelary');
       const parsedData = storedData ? JSON.parse(storedData) : [];
-      setLengthCount(parsedData.length);
+      const countArr = parsedData?.map(el => el?.count)?.reduce((acc, current) => acc + current, 0)
+      setLengthCount(countArr);
     };
-
-
     updateLengthCount();
-
-
     window.addEventListener('storage', updateLengthCount);
 
-    const intervalId = setInterval(updateLengthCount, 1000); 
+    const intervalId = setInterval(updateLengthCount, 1000);
 
     return () => {
       window.removeEventListener('storage', updateLengthCount);
-      clearInterval(intervalId); 
+      clearInterval(intervalId);
     };
   }, []);
 

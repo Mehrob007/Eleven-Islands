@@ -56,23 +56,26 @@ export default function ModalBasket() {
         setDataGelary([])
     }
 
+    const dataGelary = JSON.parse(localStorage.getItem('dataGelary'))
     useEffect(() => {
+        setPrice(dataGelary?.reduce((total, item) => total + item?.countPrice, 0))
         // getProductsBasket()
         // setDataBasket(photos)
-    }, [])
+    }, [dataGelary])
+
 
     console.log('====================================');
     console.log();
     console.log('====================================');
 
     return (
-        <div id="cart_overlay" onClick={(e)=>{
-            if(e.target.id == "cart_overlay"){
+        <div id="cart_overlay" onClick={(e) => {
+            if (e.target.id == "cart_overlay") {
                 setModalState(false)
             }
         }} className="boxModalBasket">
             {JSON?.parse?.(localStorage?.getItem?.("dataGelary"))?.length > 0 ?
-                <div onClick={()=>console.log(123)} className="componentModal">
+                <div onClick={() => console.log(123)} className="componentModal">
                     {!isLargeScreen ?
                         <div className="componentModalHeader">
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
