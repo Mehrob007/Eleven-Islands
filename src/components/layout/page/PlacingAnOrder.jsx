@@ -180,22 +180,17 @@ export default function PlacingAnOrder() {
            items =  parse.map(v=>({
             Name:v?.name,
             Quantity:v?.count,
-            Price:v?.price * 100,
-            Amount:(v?.price * v?.count) * 100,
+            Price:(v?.price + (deliveryData?.[1]?.delivery_sum || 0)) *100,
+            Amount:((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100 ,
             Tax:"none",
            }))
           }
-        
-          let amount = 0
-          items?.forEach(v=>{
-            amount += v?.Amount
-          })
-          
-      
+
+
           const body= {
             Email:formState.email,
             Discription:formState.message || "",
-            Anmount:amount,
+            Anmount:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
             Price:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
             Items:items
           }
@@ -206,7 +201,7 @@ export default function PlacingAnOrder() {
           console.log("payment")
           // await createCdekOrder()
           console.log("order")
-          localStorage.removeItem("dataGelary")
+          // localStorage.removeItem("dataGelary")
           window.open(data?.PaymentURL,"_self")
         } catch (error) {
           console.log("error",error)
