@@ -61,10 +61,6 @@ export default function Prodect() {
     open: false,
     img: null
   })
-
-
-
-
   useEffect(() => {
     if (haveSize.length > 0) {
       setSizeVibor(haveSize[0])
@@ -105,23 +101,26 @@ export default function Prodect() {
       const dataDeform = dataGelary.filter(el => el.id !== existingProduct.id)
       setDataGelary([...dataDeform, { ...existingProduct, count: count, countPrice: existingProduct.price * count }])
     } else {
-      setDataGelary([
-        ...dataGelary,
-        {
-          id: id,
-          title: findeElement?.name,
-          name: findeElement?.short_description,
-          price: findeElement?.price,
-          size: sizeVibor, count: count || 1,
-          titleImg: findeElement.images[0],
-          countPrice: findeElement?.price,
-        }])
+      if (count) {
+        setDataGelary([
+          ...dataGelary,
+          {
+            id: id,
+            title: findeElement?.name,
+            name: findeElement?.short_description,
+            price: findeElement?.price,
+            size: sizeVibor, count: count,
+            titleImg: findeElement?.images?.[0],
+            countPrice: findeElement?.price,
+          }])
+      }
     }
   }
 
   useEffect(() => {
     addToBasket()
   }, [count])
+
   const widthLap = '1020px'
   const settingsGelary = {
     className: "slider1 product-gelary variable-width-menu",
@@ -385,7 +384,7 @@ export default function Prodect() {
                           дополнительную плату и займет 1-3 рабочих дня.
                           Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
                           Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
-                        </div>  
+                        </div>
                       </div>
                     </CSSTransition>
                   )}
