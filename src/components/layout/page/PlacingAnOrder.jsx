@@ -35,6 +35,7 @@ export default function PlacingAnOrder() {
   const [amountPrice, setAmountPrice] = useState(0)
   const [paymentError,setPaymentError] = useState(false)
   const [loading,setLoading] = useState(false)
+  const [deliveryData,setDeliveryData] = useState([])
   useEffect(()=>{
     const cartData = localStorage.getItem("dataGelary")
     if(cartData){
@@ -92,6 +93,83 @@ export default function PlacingAnOrder() {
   };
 
 
+  const createCdekOrder = async () => {
+    let packagesItems = []
+    const cartData = localStorage.getItem("dataGelary")
+    if (cartData) {
+      const parse = JSON.parse(cartData)
+      packagesItems = parse.map((v) => ({
+        WareKey:v.id?.toString(),
+        Payment:{
+          Value:v?.price
+        },
+        Name: v?.name,
+        Cost: v?.price,
+        Amount: v?.price * v?.count,
+        Weight: 100,
+        Url: "https://elevenislands.ru",
+      }))
+    }
+
+    const body = {
+      TariffCode: 136,
+      Comment: message?.trim(),
+      Recipient: {
+        Name: `${formState.name.trim()} ${formState.sorname?.trim()}`,
+        Phones: [
+          {
+            Number: formState.number.replace(/[^\d]/g, ""),
+          },
+        ],
+      },
+      ToLocation: {
+        Code: deliveryData[2]?.city_code,
+        FiasGuid: "",
+        PostalCode: deliveryData[2]?.postal_code,
+        Longitude: deliveryData[2]?.location[0],
+        Latitude: deliveryData[2]?.location[1],
+        CountryCode: deliveryData[2]?.country_code,
+        Region: deliveryData[2]?.region,
+        SubRegion: "",
+        City: deliveryData[2]?.city,
+        KladrCode: "",
+        Address: deliveryData[2]?.address,
+      },
+      FromLocation: {
+        Code: "string",
+        FiasGuid: "string",
+        PostalCode: "string",
+        Longitude: "string",
+        Latitude: "string",
+        CountryCode: "string",
+        Region: "string",
+        SubRegion: "string",
+        City: "string",
+        KladrCode: "string",
+        Address: "string",
+      },
+      Packages: [
+        {
+          Number: new Date().toISOString(),
+          Comment: "Упаковка",
+          Height: 10,
+          Length: 10,
+          Weight: 4000,
+          Width: 10,
+          Items: packagesItems,
+        },
+      ],
+      Sender: {
+        Name: "Петров Петр",
+      },
+      Services: [
+        {
+          Code: "string",
+        },
+      ],
+    }
+  }
+
   const placingAnOrder = async(e) => {
     e.preventDefault();
     setPaymentError(false)
@@ -119,8 +197,8 @@ export default function PlacingAnOrder() {
           const body= {
             Email:formState.email,
             Discription:formState.message?.trim(),
-            Anmount:amountPrice * 100,
-            Price:amountPrice * 100,
+            Anmount:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
+            Price:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
             Items:items
           }
 
@@ -144,9 +222,9 @@ export default function PlacingAnOrder() {
   
 
   const handleSelectCity = (cityName) => {
-
-      setCity(cityName);
-      setSearchQuery(cityName);
+      console.log("cityname",cityName?.name)
+      setCity(cityName?.name);
+      setSearchQuery(cityName?.name);
       setShowDropdown(false);
   };
 
@@ -269,7 +347,7 @@ export default function PlacingAnOrder() {
 
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap city={city} />
+              <CDEKMap setDeliveryData={setDeliveryData} city={city} />
             </div>
           </div>}
 
@@ -292,7 +370,7 @@ export default function PlacingAnOrder() {
                     <span>
                       {formState.radio_box ? <img src={iconRadeoButton} alt="iconRadeoButton" /> : <div></div>}
                     </span>
-                    Картой онлйн
+                    Картой онлайн
                   </div>
                   <div>
                     <img src={banckCart} alt="banckCart" />
@@ -339,7 +417,7 @@ export default function PlacingAnOrder() {
                   <button onClick={onChangePromo} style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
                 </div>
                 {
-                  <p style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', marginTop: '-15px' }}>{promo.procent || '-'}</p>}
+                  <p className="mt-2" style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', }}>{promo.procent || '-'}</p>}
               </div>
             </div>
           </div>}
@@ -350,6 +428,10 @@ export default function PlacingAnOrder() {
                 <p>Сумма:</p>
                 <p>{amountPrice} руб</p>
               </div>
+              <div>
+                <p>Стоимость доставки:</p>
+                <p>{deliveryData[1]?.delivery_sum || 0} руб</p>
+              </div>
               <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
                 <p>Скидка:</p>
                 <p>{promo.itogProcent} руб</p>
@@ -358,7 +440,7 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{amountPrice - promo.itogProcent} руб</p>
+                <p>{(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)} руб</p>
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>
