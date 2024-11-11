@@ -169,7 +169,7 @@ export default function PlacingAnOrder() {
     <div className="PlacingAnOrder">
       <h1>Оформление</h1>
       <div className="PlacingAnOrder__box">
-        <form onSubmit={placingAnOrder} className="PlacingAnOrder__form">
+        <form noValidate onSubmit={placingAnOrder} className="PlacingAnOrder__form">
           <div className="PlacingAnOrder__form__1">
             <h1>Получатель</h1>
             <div className="PlacingAnOrder__form__div__1" style={{ gap: '12px' }}>
