@@ -104,8 +104,8 @@ export default function PlacingAnOrder() {
           Value:v?.price
         },
         Name: v?.name,
-        Cost: v?.price,
-        Amount: v?.price * v?.count,
+        Cost: v?.price * 100,
+        Amount: (v?.price * v?.count) * 100,
         Weight: 100,
         Url: "https://elevenislands.ru",
       }))
@@ -180,17 +180,23 @@ export default function PlacingAnOrder() {
            items =  parse.map(v=>({
             Name:v?.name,
             Quantity:v?.count,
-            Price:v?.price,
-            Amount:v?.price * v?.count,
+            Price:v?.price * 100,
+            Amount:(v?.price * v?.count) * 100,
             Tax:"none",
            }))
           }
-
+        
+          let amount = 0
+          items?.forEach(v=>{
+            amount += v?.Amount
+          })
+          
+      
           const body= {
             Email:formState.email,
             Discription:formState.message || "",
-            Anmount:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
-            Price:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
+            Anmount:amount,
+            Price:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
             Items:items
           }
 
