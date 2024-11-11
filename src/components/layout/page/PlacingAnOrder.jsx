@@ -196,7 +196,7 @@ export default function PlacingAnOrder() {
 
           setLoading(true)
         try {
-          await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
           console.log("payment")
           // await createCdekOrder()
           console.log("order")
