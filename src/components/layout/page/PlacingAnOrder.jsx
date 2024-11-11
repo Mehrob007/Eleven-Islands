@@ -158,7 +158,9 @@ export default function PlacingAnOrder() {
      
     }
     console.log("body",body)
-    await axios.post("https://elevenislands.ru/api/Pay/create-order",body)
+    await fetch("https://elevenislands.ru/api/Pay/create-order",{
+      body:JSON.stringify(body)
+    })
   }
 
   const placingAnOrder = async(e) => {
@@ -195,8 +197,12 @@ export default function PlacingAnOrder() {
 
           setLoading(true)
         try {
-          await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          await fetch("https://elevenislands.ru/api/Pay/create-payment",{
+            body:JSON.stringify(body)
+          })
+          console.log("payment")
           await createCdekOrder()
+          console.log("order")
           localStorage.removeItem("dataGelary")
           // window.open(data?.PaymentURL,"_self")
         } catch (error) {
