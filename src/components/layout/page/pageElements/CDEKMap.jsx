@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import CDEKWidget from '@cdek-it/widget'
 import './cdekMapCSS.css'
 const CDEKMap = ({ city,setDeliveryData }) => {
+    console.log("city",city)
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
         cdekScript.charset = 'utf-8';
         document.head.appendChild(cdekScript);
-
         const initializeCDEKWidget = () => {
             if (window.CDEKWidget) {
                 // Удаляем предыдущий виджет, если он существует

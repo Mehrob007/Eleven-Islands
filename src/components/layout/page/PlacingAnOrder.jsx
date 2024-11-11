@@ -99,56 +99,74 @@ export default function PlacingAnOrder() {
     if (cartData) {
       const parse = JSON.parse(cartData)
       packagesItems = parse.map((v) => ({
-        ware_key:v.id,
-        payment:{
-          value:v?.price
+        WareKey:v.id?.toString(),
+        Payment:{
+          Value:v?.price
         },
-        name: v?.name,
-        cost: v?.price,
-        amount: v?.price * v?.count,
-        weight: 100,
-        url: "https://elevenislands.ru",
+        Name: v?.name,
+        Cost: v?.price,
+        Amount: v?.price * v?.count,
+        Weight: 100,
+        Url: "https://elevenislands.ru",
       }))
     }
 
     const body = {
-      tariff_code: 136,
-      comment: message?.trim(),
-      recipient: {
-        name: `${formState.name.trim()} ${formState.sorname?.trim()}`,
-        phones: [
+      TariffCode: 136,
+      Comment: message?.trim(),
+      Recipient: {
+        Name: `${formState.name.trim()} ${formState.sorname?.trim()}`,
+        Phones: [
           {
-            number: formState.number.replace(/[^\d]/g, ""),
+            Number: formState.number.replace(/[^\d]/g, ""),
           },
         ],
       },
-      to_location: {
-        code: deliveryData[2]?.city_code,
-        fias_guid: "",
-        postal_code: deliveryData[2]?.postal_code,
-        longitude: deliveryData[2]?.location[0],
-        latitude: deliveryData[2]?.location[1],
-        country_code: deliveryData[2]?.country_code,
-        region: deliveryData[2]?.region,
-        sub_region: "",
-        city: deliveryData[2]?.city,
-        kladr_code: "",
-        address: deliveryData[2]?.address,
+      ToLocation: {
+        Code: deliveryData[2]?.city_code,
+        FiasGuid: "",
+        PostalCode: deliveryData[2]?.postal_code,
+        Longitude: deliveryData[2]?.location[0],
+        Latitude: deliveryData[2]?.location[1],
+        CountryCode: deliveryData[2]?.country_code,
+        Region: deliveryData[2]?.region,
+        SubRegion: "",
+        City: deliveryData[2]?.city,
+        KladrCode: "",
+        Address: deliveryData[2]?.address,
       },
-      packages: [
+      FromLocation: {
+        Code: "string",
+        FiasGuid: "string",
+        PostalCode: "string",
+        Longitude: "string",
+        Latitude: "string",
+        CountryCode: "string",
+        Region: "string",
+        SubRegion: "string",
+        City: "string",
+        KladrCode: "string",
+        Address: "string",
+      },
+      Packages: [
         {
-          number: new Date().toISOString(),
-          comment: "Упаковка",
-          height: 10,
-          length: 10,
-          weight: 4000,
-          width: 10,
-          items: packagesItems,
+          Number: new Date().toISOString(),
+          Comment: "Упаковка",
+          Height: 10,
+          Length: 10,
+          Weight: 4000,
+          Width: 10,
+          Items: packagesItems,
         },
       ],
-      sender: {
-        name: "Петров Петр",
+      Sender: {
+        Name: "Петров Петр",
       },
+      Services: [
+        {
+          Code: "string",
+        },
+      ],
     }
   }
 
@@ -204,9 +222,9 @@ export default function PlacingAnOrder() {
   
 
   const handleSelectCity = (cityName) => {
-
-      setCity(cityName);
-      setSearchQuery(cityName);
+      console.log("cityname",cityName?.name)
+      setCity(cityName?.name);
+      setSearchQuery(cityName?.name);
       setShowDropdown(false);
   };
 
