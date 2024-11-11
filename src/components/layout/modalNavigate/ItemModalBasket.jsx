@@ -71,29 +71,29 @@ export default function ItemModalBasket({ see = false }) {
     return dataGelary.map((product, index) => (
         <div className='itemModalBasket' key={index}>
             <div className='modalBasketImg'>
-                <img src={product.titleImg.src || img} alt={product.title} />
+                <img src={product?.titleImg?.src || img} alt={product?.title} />
             </div>
             <div className='modalBasketInfo'>
                 <div className='info'>
-                    <h1 >{product.title}</h1>
-                    <p>Цена: <span style={{ color: '#262626' }}>{product.price} руб</span></p>
-                    <p>Размер: <span style={{ color: '#262626' }}>{product.size}</span></p>
+                    <h1 >{product?.title}</h1>
+                    <p>Цена: <span style={{ color: '#262626' }}>{product?.price} руб</span></p>
+                    <p>Размер: <span style={{ color: '#262626' }}>{product?.size}</span></p>
                 </div>
                 {!see ?
                     <div className='count'>
                         <button onClick={() => updateProductCount(index, -1)}>
                             <img src={minus} alt='minus' />
                         </button>
-                        <p>{product.count}</p>
+                        <p>{product?.count}</p>
                         <button onClick={() => updateProductCount(index, 1)}>
                             <img src={plus} alt='plus' />
                         </button>
                     </div> : <div className='info' style={{ height: '17px' }}>
-                        <p>Количество: <span style={{ color: '#262626' }}>{product.count}</span></p>
+                        <p>Количество: <span style={{ color: '#262626' }}>{product?.count}</span></p>
                     </div>}
             </div>
             {!see &&
-                <RiDeleteBin6Fill className='delete-button-modal-basket' onClick={() => deleteElement(product.id)} />}
+                <RiDeleteBin6Fill className='delete-button-modal-basket' onClick={() => deleteElement(product?.id)} />}
         </div>
     ));
 }
