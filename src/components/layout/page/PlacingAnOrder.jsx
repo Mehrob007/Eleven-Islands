@@ -168,6 +168,8 @@ export default function PlacingAnOrder() {
         },
       ],
     }
+
+    await axios.post("https://elevenislands.ru/api/Pay/create-order",body)
   }
 
   const placingAnOrder = async(e) => {
@@ -205,6 +207,7 @@ export default function PlacingAnOrder() {
           setLoading(true)
         try {
           const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          await createCdekOrder()
           localStorage.removeItem("dataGelary")
           window.open(data?.PaymentURL,"_self")
         } catch (error) {
@@ -222,7 +225,7 @@ export default function PlacingAnOrder() {
   
 
   const handleSelectCity = (cityName) => {
-      console.log("cityname",cityName?.name)
+      console.log("cityname",cityName)
       setCity(cityName?.name);
       setSearchQuery(cityName?.name);
       setShowDropdown(false);

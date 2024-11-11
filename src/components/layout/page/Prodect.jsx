@@ -113,7 +113,7 @@ export default function Prodect() {
           name: findeElement?.short_description,
           price: findeElement?.price,
           size: sizeVibor, count: count || 1,
-          titleImg: findeElement.images[0],
+          titleImg: findeElement?.images[0],
           countPrice: findeElement?.price,
         }])
     }
