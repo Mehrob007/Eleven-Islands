@@ -110,6 +110,7 @@ export default function PlacingAnOrder() {
         Url: "https://elevenislands.ru",
       }))
     }
+    console.log("packagesItems",packagesItems)
 
     const body = {
       TariffCode: 136,
@@ -159,7 +160,11 @@ export default function PlacingAnOrder() {
     }
     console.log("body",body)
     await fetch("https://elevenislands.ru/api/Pay/create-order",{
-      body:JSON.stringify(body)
+      body:JSON.stringify(body),
+      headers:{
+        'Content-Type':"application/json"
+      },
+      method:"POST"
     })
   }
 
@@ -173,7 +178,7 @@ export default function PlacingAnOrder() {
       } else {
         setErrors({});
         if (formState.check_box_3) {
-
+          console.log("TUT")
           let items = []
           const cartData = localStorage.getItem("dataGelary")
           if(cartData){
@@ -198,10 +203,11 @@ export default function PlacingAnOrder() {
           setLoading(true)
         try {
           await fetch("https://elevenislands.ru/api/Pay/create-payment",{
-            body:JSON.stringify(body)
+            body:JSON.stringify(body),
+            method:"POST"
           })
           console.log("payment")
-          await createCdekOrder()
+          // await createCdekOrder()
           console.log("order")
           localStorage.removeItem("dataGelary")
           // window.open(data?.PaymentURL,"_self")
