@@ -113,40 +113,33 @@ export default function PlacingAnOrder() {
 
     const body = {
       TariffCode: 136,
-      Comment: message?.trim(),
+      Comment: formState?.message,
       Recipient: {
-        Name: `${formState.name.trim()} ${formState.sorname?.trim()}`,
+        Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
         Phones: [
           {
-            Number: formState.number.replace(/[^\d]/g, ""),
+            Number: formState?.number?.replace(/[^\d]/g, ""),
           },
         ],
       },
       ToLocation: {
-        Code: deliveryData[2]?.city_code,
+        Code: deliveryData[2]?.city_code || "",
         FiasGuid: "",
-        PostalCode: deliveryData[2]?.postal_code,
-        Longitude: deliveryData[2]?.location[0],
-        Latitude: deliveryData[2]?.location[1],
-        CountryCode: deliveryData[2]?.country_code,
-        Region: deliveryData[2]?.region,
+        PostalCode: deliveryData[2]?.postal_code || "",
+        Longitude: deliveryData[2]?.location[0] || "",
+        Latitude: deliveryData[2]?.location[1] || "",
+        CountryCode: deliveryData[2]?.country_code || "",
+        Region: deliveryData[2]?.region || "",
         SubRegion: "",
-        City: deliveryData[2]?.city,
+        City: deliveryData[2]?.city || "",
         KladrCode: "",
-        Address: deliveryData[2]?.address,
+        Address: deliveryData[2]?.address || "",
       },
       FromLocation: {
-        Code: "string",
-        FiasGuid: "string",
-        PostalCode: "string",
-        Longitude: "string",
-        Latitude: "string",
-        CountryCode: "string",
-        Region: "string",
-        SubRegion: "string",
-        City: "string",
-        KladrCode: "string",
-        Address: "string",
+        PostalCode: "MSK951",
+        CountryCode: "RU",
+        City: "Москва",
+        Address: "Нагатинская набережная, 54",
       },
       Packages: [
         {
@@ -162,13 +155,9 @@ export default function PlacingAnOrder() {
       Sender: {
         Name: "Петров Петр",
       },
-      Services: [
-        {
-          Code: "string",
-        },
-      ],
+     
     }
-
+    console.log("body",body)
     await axios.post("https://elevenislands.ru/api/Pay/create-order",body)
   }
 
@@ -198,7 +187,7 @@ export default function PlacingAnOrder() {
 
           const body= {
             Email:formState.email,
-            Discription:formState.message?.trim(),
+            Discription:formState.message || "",
             Anmount:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
             Price:(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0) * 100,
             Items:items
@@ -206,11 +195,12 @@ export default function PlacingAnOrder() {
 
           setLoading(true)
         try {
-          const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
           await createCdekOrder()
           localStorage.removeItem("dataGelary")
-          window.open(data?.PaymentURL,"_self")
+          // window.open(data?.PaymentURL,"_self")
         } catch (error) {
+          console.log("error",error)
           setPaymentError(true)
         }finally{
           setLoading(false)
