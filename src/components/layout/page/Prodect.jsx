@@ -94,14 +94,14 @@ export default function Prodect() {
     }
   }, [findeElement?.attributes])
 
-  const addToBasket = () => {
+  const addToBasket = (_, countOp) => {
     // const dataBasket = JSON.parse(localStorage.getItem("dataGelary"))
     const existingProduct = dataGelary.find(product => product.id === id);
     if (existingProduct) {
       const dataDeform = dataGelary.filter(el => el.id !== existingProduct.id)
       setDataGelary([...dataDeform, { ...existingProduct, count: count, countPrice: existingProduct.price * count }])
     } else {
-      if (count) {
+      if (count || countOp) {
         setDataGelary([
           ...dataGelary,
           {
@@ -109,7 +109,7 @@ export default function Prodect() {
             title: findeElement?.name,
             name: findeElement?.short_description,
             price: findeElement?.price,
-            size: sizeVibor, count: count,
+            size: sizeVibor, count: count || countOp,
             titleImg: findeElement?.images?.[0],
             countPrice: findeElement?.price,
           }])
@@ -293,7 +293,8 @@ export default function Prodect() {
                 } */}
               </div>
               <Link onClick={() => {
-                addToBasket(findeElement.id)
+                setCount(1)
+                addToBasket(findeElement.id, count || 1)
               }} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
 
             </div>
@@ -376,18 +377,16 @@ export default function Prodect() {
                   </span>
                 </div>
                 <TransitionGroup style={{ height: 'auto' }}>
-                  {isOpenDiscrip2 && (
-                    <CSSTransition timeout={300} classNames="fade" >
-                      <div className='info-d-product' style={{ padding: '10px 0' }}>
-                        <div style={{ fontSize: 14 }}>
-                          Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
-                          дополнительную плату и займет 1-3 рабочих дня.
-                          Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
-                          Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
-                        </div>
+                  <CSSTransition timeout={300} classNames="fade" >
+                    <div className='info-d-product' style={{ padding: '10px 0' }}>
+                      <div style={{ fontSize: 14 }}>
+                        Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
+                        дополнительную плату и займет 1-3 рабочих дня.
+                        Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
+                        Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
                       </div>
-                    </CSSTransition>
-                  )}
+                    </div>
+                  </CSSTransition>
                 </TransitionGroup>
               </div>
             </div>
