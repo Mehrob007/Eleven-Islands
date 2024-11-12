@@ -93,9 +93,9 @@ export default function Navigate() {
       <div className='paramsNav'>
         <div className='comParams'>
           <img src={iconSearch} onClick={() => setModalStateSeatch(true)} alt="iconSearch" />
-          <div className='comParamsDiv'>
+          <div className='comParamsDiv' onClick={() => setModalState(true)}>
             {lengthCount > 0 && <span>{lengthCount}</span>}
-            <img src={iconShoping} onClick={() => setModalState(true)} alt="iconShoping" />
+            <img src={iconShoping} alt="iconShoping" />
           </div>
           {isLargeScreen && (
             <Link to='/login'>

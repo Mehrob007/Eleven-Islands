@@ -41,7 +41,7 @@ export default function Prodect() {
   const navigate = useNavigate()
   const { id } = useParams()
   const { findeElement, findeProduct } = usePhotoStore()
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(null)
   const [colorVibor, setColorVibor] = useState(() => {
     return localStorage.getItem('colorVibor') || '';
   });
@@ -99,9 +99,9 @@ export default function Prodect() {
     const existingProduct = dataGelary.find(product => product.id === id);
     if (existingProduct) {
       const dataDeform = dataGelary.filter(el => el.id !== existingProduct.id)
-      setDataGelary([...dataDeform, { ...existingProduct, count: count, countPrice: existingProduct.price * count }])
+      setDataGelary([...dataDeform, { ...existingProduct, count: count || 1, countPrice: existingProduct.price * count }])
     } else {
-      if (count || countOp) {
+      if (countOp) {
         setDataGelary([
           ...dataGelary,
           {
@@ -109,7 +109,19 @@ export default function Prodect() {
             title: findeElement?.name,
             name: findeElement?.short_description,
             price: findeElement?.price,
-            size: sizeVibor, count: count || countOp,
+            size: sizeVibor, count: 1,
+            titleImg: findeElement?.images?.[0],
+            countPrice: findeElement?.price,
+          }])
+      }if (count) {
+        setDataGelary([
+          ...dataGelary,
+          {
+            id: id,
+            title: findeElement?.name,
+            name: findeElement?.short_description,
+            price: findeElement?.price,
+            size: sizeVibor, count: count || 1,
             titleImg: findeElement?.images?.[0],
             countPrice: findeElement?.price,
           }])
@@ -118,7 +130,9 @@ export default function Prodect() {
   }
 
   useEffect(() => {
-    addToBasket()
+    if (count) {
+      addToBasket()
+    }
   }, [count])
 
   const widthLap = '1020px'
@@ -208,8 +222,9 @@ export default function Prodect() {
             <div className='header-div-product'>
               <img src={NewCollection} alt="NewCollection" />
               <div style={{ width: '300px' }}>
-                <h1>{findeElement?.name}</h1>
-                <p>{findeElement?.short_description}</p>
+                <h1>{findeElement?.short_description}</h1>
+                {/* <h1>{findeElement?.name}</h1> */}
+                {/* <p>{findeElement?.short_description}</p> */}
               </div>
               <div className='price-product'>
                 {findeElement.old_price != 0 && <h4 className='skitka'> <>{findeElement?.old_price} ₽</></h4>}
@@ -294,7 +309,7 @@ export default function Prodect() {
               </div>
               <Link onClick={() => {
                 setCount(1)
-                addToBasket(findeElement.id, count || 1)
+                addToBasket(findeElement.id, count || true)
               }} to='/placing-an-order' className='on-click-buy button-product'>Купить в один клик</Link>
 
             </div>

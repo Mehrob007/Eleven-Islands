@@ -162,6 +162,7 @@ header{
 }
 .comParamsDiv{
     position: relative;
+    cursor: pointer;
 }
 .comParamsDiv > span {
     position: absolute;
@@ -1744,14 +1745,16 @@ input[type="checkbox"] {
     text-align: left;
 
 }
-.PlacingAnOrder__form__div__3 > div > .PlacingAnOrder__Lable__6 > p{
+.PlacingAnOrder__form__div__3 > div > .PlacingAnOrder__Lable__6 > p,.PlacingAnOrder__Lable__6 > label > label{
     font-family: AGAvantGardeCyr;
     font-size: 14px;
     font-weight: 400;
     line-height: 15.4px;
     text-align: left;
     color: #0000004D;
-
+}
+.PlacingAnOrder__Lable__6 > label{
+    display: block;
 }
 .PlacingAnOrder__form__div__4{
     max-width: 650px;
@@ -2551,7 +2554,9 @@ input[type="checkbox"] {
         max-width: 90%;
         width: 100%;
         margin: 0 auto;
-        gap: 25px;
+        gap: 20px;
+        margin-top: -29px;
+        
  }
     .product-gelary{
         width: 100%;
@@ -2610,10 +2615,13 @@ input[type="checkbox"] {
         text-align: left;
         color: #262626;
     }
+    .header-div-product > div > h4{
+        margin-top: -10px;
+    }
     .header-div-product{
         width: 156px;
-        height: 102px;
-        gap: 15px;
+        height: 70px;
+        gap: 10px;
     }
     .price-product > h4, .price-product > h4 > span{
         /* font-family: ALS Granate; */
@@ -2669,8 +2677,9 @@ input[type="checkbox"] {
         gap: 10px;
         text-align: right;
         display: flex;
-        align-items: center;
+        align-items: end;
         justify-content: center;
+        margin-bottom: -1px;
     }
     .size-div-product-nav > p > img{
         width: 16px;
@@ -2680,7 +2689,9 @@ input[type="checkbox"] {
         /* display: grid;
         grid-template-columns: repeat(2, 1fr); */
         display: flex;
-        justify-content: space-between;
+        justify-content: start;
+        align-items: end;
+        gap: 20px;
         width: 100%;
     }
     /* .slider1 > .slick-list > .slick-track > .slick-slide{
@@ -2693,8 +2704,8 @@ input[type="checkbox"] {
         gap: 12px;
    }
    .slick-dots li{
-    width: 20px ;
-    height: 20px ;
+    width: 16px ;
+    height: 16px ;
 }
 .dontProductBusket{
     display: flex;
@@ -2741,9 +2752,7 @@ input[type="checkbox"] {
         bottom: 10px;
     }
   
-    .contectProductId__info{
-        margin-top: -10px;
-    }
+   
     .itemBox2{
         max-width: 148px;
         max-height: 300px;
@@ -2791,7 +2800,7 @@ input[type="checkbox"] {
   }
   /* Стили для каждой точки */
   .slick-dots li button::before {
-    font-size: 12px; /* Размер точек */
+    font-size: 8px; /* Размер точек */
     color: #40875933; /* Цвет неактивных точек */
     opacity: 0.75; /* Прозрачность неактивных точек */
     left: 0;

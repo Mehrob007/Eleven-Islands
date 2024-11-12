@@ -8,6 +8,7 @@ import { ArrCity } from "../../../assets/processed_city";
 import { useNavigate } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import axios from "axios";
+import Branding from '../../../assets/icon/Branding.svg'
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
@@ -33,20 +34,20 @@ export default function PlacingAnOrder() {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [amountPrice, setAmountPrice] = useState(0)
-  const [paymentError,setPaymentError] = useState(false)
-  const [loading,setLoading] = useState(false)
-  const [deliveryData,setDeliveryData] = useState([])
-  useEffect(()=>{
+  const [paymentError, setPaymentError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [deliveryData, setDeliveryData] = useState([])
+  useEffect(() => {
     const cartData = localStorage.getItem("dataGelary")
-    if(cartData){
+    if (cartData) {
       const parse = JSON.parse(cartData)
       let countPrice = 0
-      parse.forEach(v=>{
+      parse.forEach(v => {
         countPrice += v?.price * v.count
       })
       setAmountPrice(countPrice)
     }
-  },[])
+  }, [])
   const [formState, setFormState] = useState({
     name: '', // *
     sorname: '',// *
@@ -99,9 +100,9 @@ export default function PlacingAnOrder() {
     if (cartData) {
       const parse = JSON.parse(cartData)
       packagesItems = parse.map((v) => ({
-        WareKey:v.id?.toString(),
-        Payment:{
-          Value:v?.price
+        WareKey: v.id?.toString(),
+        Payment: {
+          Value: v?.price
         },
         Name: v?.name,
         Cost: v?.price * 100,
@@ -110,7 +111,7 @@ export default function PlacingAnOrder() {
         Url: "https://elevenislands.ru",
       }))
     }
-    console.log("packagesItems",packagesItems)
+    console.log("packagesItems", packagesItems)
 
     const body = {
       TariffCode: 136,
@@ -156,13 +157,13 @@ export default function PlacingAnOrder() {
       Sender: {
         Name: "Петров Петр",
       },
-     
+
     }
-    console.log("body",body)
-    await axios.post("https://elevenislands.ru/api/Pay/create-order",body)
+    console.log("body", body)
+    await axios.post("https://elevenislands.ru/api/Pay/create-order", body)
   }
 
-  const placingAnOrder = async(e) => {
+  const placingAnOrder = async (e) => {
     e.preventDefault();
     setPaymentError(false)
     if (formState.check_box_3) {
@@ -175,40 +176,40 @@ export default function PlacingAnOrder() {
           console.log("TUT")
           let items = []
           const cartData = localStorage.getItem("dataGelary")
-          if(cartData){
+          if (cartData) {
             const parse = JSON.parse(cartData)
-           items =  parse.map(v=>({
-            Name:v?.name,
-            Quantity:v?.count,
-            Price:(v?.price + (deliveryData?.[1]?.delivery_sum || 0)) *100,
-            Amount:((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100 ,
-            Tax:"none",
-           }))
+            items = parse.map(v => ({
+              Name: v?.name,
+              Quantity: v?.count,
+              Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+              Amount: ((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+              Tax: "none",
+            }))
           }
 
 
-          const body= {
-            Email:formState.email,
-            Discription:formState.message || "",
-            Anmount:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-            Price:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-            Items:items
+          const body = {
+            Email: formState.email,
+            Discription: formState.message || "",
+            Anmount: ((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+            Price: ((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+            Items: items
           }
 
           setLoading(true)
-        try {
-          const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
-          console.log("payment")
-          // await createCdekOrder()
-          console.log("order")
-          // localStorage.removeItem("dataGelary")
-          window.open(data?.PaymentURL,"_self")
-        } catch (error) {
-          console.log("error",error)
-          setPaymentError(true)
-        }finally{
-          setLoading(false)
-        }
+          try {
+            const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
+            console.log("payment")
+            // await createCdekOrder()
+            console.log("order")
+            // localStorage.removeItem("dataGelary")
+            window.open(data?.PaymentURL, "_self")
+          } catch (error) {
+            console.log("error", error)
+            setPaymentError(true)
+          } finally {
+            setLoading(false)
+          }
         }
       }
     }
@@ -216,13 +217,11 @@ export default function PlacingAnOrder() {
   const filteredCities = ArrCity.filter(city =>
     city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
-
   const handleSelectCity = (cityName) => {
-      console.log("cityname",cityName)
-      setCity(cityName?.name);
-      setSearchQuery(cityName?.name);
-      setShowDropdown(false);
+    console.log("cityname", cityName)
+    setCity(cityName?.name);
+    setSearchQuery(cityName?.name);
+    setShowDropdown(false);
   };
 
 
@@ -261,8 +260,8 @@ export default function PlacingAnOrder() {
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="number">Телефон*</label>
                 <InputMask mask="9 (999) 9999 999" style={{ borderColor: errors.number && 'red' }} type="text" required id="number" onChange={e => onChange('number', e.target.value)} >
-                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.number && 'red' }} type="text" id="number"  />
-                }
+                  {(inputProps) => <input {...inputProps} style={{ borderColor: errors.number && 'red' }} type="text" id="number" />
+                  }
                 </InputMask>
                 {errors.number && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
               </div>
@@ -331,13 +330,13 @@ export default function PlacingAnOrder() {
                 <div className="PlacingAnOrder__CheckTrue" onClick={() => onChange('check_box_1', true)}>
                   {formState.check_box_1 ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
                 </div>
-                <label htmlFor="sity">Курьерская доставка СДЭК по всей России</label>
+                <label htmlFor="sity">Курьером СДЭК до двери</label>
               </div>
               <div >
                 <div className="PlacingAnOrder__CheckTrue" onClick={() => onChange('check_box_1', false)}>
                   {!formState.check_box_1 ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
                 </div>
-                <label htmlFor="sity">Доставка в ПВЗ СДЭК по всей России</label>
+                <label htmlFor="sity">До пункта выдачи заказов СДЭК</label>
               </div>
             </div>
           </div>
@@ -380,7 +379,7 @@ export default function PlacingAnOrder() {
                     <span>
                       {!formState.radio_box ? <img src={iconRadeoButton} alt="iconRadeoButton" /> : <div></div>}
                     </span>
-                    Долями 4 платежа {useMediaQuery(`(max-width: ${widthLap})`) && <br />} по 3456 руб.
+                    Оплата "Долями" {useMediaQuery(`(max-width: ${widthLap})`) && <br />}
                   </div>
                   <div>
                     <img src={Branding} alt="banckCart" />
@@ -397,8 +396,8 @@ export default function PlacingAnOrder() {
                   {formState.check_box_3 ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
                 </div>
                 <div className="PlacingAnOrder__Lable__6">
-                  <label>Я ознакомлен и согласен с условиями оферты</label>
-                  <p>и политики конфиденциальности</p>
+                  <label>Я ознакомлен и согласен с условиями<br /> оферты и <label>политики конфиденциальности</label></label>
+
                 </div>
               </div>
             </div>
@@ -441,7 +440,7 @@ export default function PlacingAnOrder() {
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>
-                {paymentError ? <p className="text-red-700 text-2xl text-center">Ошибка при попытке оплаты</p>:""}
+              {paymentError ? <p className="text-red-700 text-2xl text-center">Ошибка при попытке оплаты</p> : ""}
             </div>
           </div>
         </form>
