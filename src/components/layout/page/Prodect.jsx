@@ -243,7 +243,7 @@ export default function Prodect() {
               <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile })}>
                 <div>
                   <img src={dalymiIcon} alt="dalymiIcon" />
-                  <p>4 платежа по {findeElement?.price / 4}</p>
+                  <p>4 платежа по {findeElement?.price / 4} ₽</p>
                 </div>
                 <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
               </div>

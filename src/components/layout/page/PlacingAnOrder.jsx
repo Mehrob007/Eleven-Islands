@@ -51,11 +51,17 @@ export default function PlacingAnOrder() {
     number: '',// *
     email: '',// *
     // addres: '',
+    StreetHome: '',
+    apartmentOrOffice: '',
+    floor: '',
+    intercom: '',
+    entrance: '',
     message: '',
     check_box_1: false,
     check_box_3: false,// *
     radio_box: true,// *
     price: amountPrice,// *
+
   });
   const [errors, setErrors] = useState({});
 
@@ -82,89 +88,103 @@ export default function PlacingAnOrder() {
     if (!formState.sorname) newErrors.sorname = 'Фамилия обязательна';
     if (!formState.number || formState.number.replace(/[^\d]/g, '')?.length !== 11) newErrors.number = 'Телефон обязателен';
     if (!formState.email || !emailValidateRegex.test(formState.email)) newErrors.email = 'Email обязателен';
-    // if (formState.check_box_1) {
-    //   if (!formState.addres) newErrors.addres = 'Адрес обязателен';
-    // }
+    if (formState.check_box_1) {
+      if (!formState.StreetHome) newErrors.StreetHome = 'Улица, дом обязателен';
+      // if (!formState.apartmentOrOffice) newErrors.apartmentOrOffice = 'Адрес обязателен';
+      // if (!formState.floor) newErrors.floor = 'Адрес обязателен';
+      // if (!formState.intercom) newErrors.intercom = 'Адрес обязателен';
+      // if (!formState.entrance) newErrors.entrance = 'Адрес обязателен';
+    } else {
+      if (deliveryData.length <= 0) newErrors.deliveryData = 'Выберите пункт выдочи';
+    }
 
-    scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.addres && 'addres', 120)
+    scrollToSection(
+      newErrors.name ? 'name' :
+        newErrors.sorname ? 'sorname' :
+          newErrors.number ? 'number' :
+            newErrors.email ? 'email' :
+              // newErrors.deliveryData ? 'deliveryData' : null
+              (formState.check_box_1
+                ? (newErrors.StreetHome ? 'StreetHome' : null)
+                : (newErrors.deliveryData ? 'deliveryData' : null))
+      , 120
+    );
+
     return newErrors;
   };
 
 
-  const createCdekOrder = async () => {
-    let packagesItems = []
-    const cartData = localStorage.getItem("dataGelary")
-    if (cartData) {
-      const parse = JSON.parse(cartData)
-      packagesItems = parse.map((v) => ({
-        WareKey: v.id?.toString(),
-        Payment: {
-          Value: v?.price
-        },
-        Name: v?.name,
-        Cost: v?.price * 100,
-        Amount: (v?.price * v?.count) * 100,
-        Weight: 100,
-        Url: "https://elevenislands.ru",
-      }))
-    }
-    // console.log("packagesItems", packagesItems)
+  // const createCdekOrder = async () => {
+  //   let packagesItems = []
+  //   const cartData = localStorage.getItem("dataGelary")
+  //   if (cartData) {
+  //     const parse = JSON.parse(cartData)
+  //     packagesItems = parse.map((v) => ({
+  //       WareKey: v.id?.toString(),
+  //       Payment: {
+  //         Value: v?.price
+  //       },
+  //       Name: v?.name,
+  //       Cost: v?.price * 100,
+  //       Amount: (v?.price * v?.count) * 100,
+  //       Weight: 100,
+  //       Url: "https://elevenislands.ru",
+  //     }))
+  //   }
+  //   const body = {
+  //     TariffCode: 136,
+  //     Comment: formState?.message,
+  //     Recipient: {
+  //       Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
+  //       Phones: [
+  //         {
+  //           Number: formState?.number?.replace(/[^\d]/g, ""),
+  //         },
+  //       ],
+  //     },
+  //     ToLocation: {
+  //       Code: deliveryData[2]?.city_code || "",
+  //       FiasGuid: "",
+  //       PostalCode: deliveryData[2]?.postal_code || "",
+  //       Longitude: deliveryData[2]?.location[0] || "",
+  //       Latitude: deliveryData[2]?.location[1] || "",
+  //       CountryCode: deliveryData[2]?.country_code || "",
+  //       Region: deliveryData[2]?.region || "",
+  //       SubRegion: "",
+  //       City: deliveryData[2]?.city || "",
+  //       KladrCode: "",
+  //       Address: deliveryData[2]?.address || "",
+  //     },
+  //     FromLocation: {
+  //       PostalCode: "MSK951",
+  //       CountryCode: "RU",
+  //       City: "Москва",
+  //       Address: "Нагатинская набережная, 54",
+  //     },
+  //     Packages: [
+  //       {
+  //         Number: new Date().toISOString(),
+  //         Comment: "Упаковка",
+  //         Height: 10,
+  //         Length: 10,
+  //         Weight: 4000,
+  //         Width: 10,
+  //         Items: packagesItems,
+  //       },
+  //     ],
+  //     Sender: {
+  //       Name: "Петров Петр",
+  //     },
 
-    const body = {
-      TariffCode: 136,
-      Comment: formState?.message,
-      Recipient: {
-        Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
-        Phones: [
-          {
-            Number: formState?.number?.replace(/[^\d]/g, ""),
-          },
-        ],
-      },
-      ToLocation: {
-        Code: deliveryData[2]?.city_code || "",
-        FiasGuid: "",
-        PostalCode: deliveryData[2]?.postal_code || "",
-        Longitude: deliveryData[2]?.location[0] || "",
-        Latitude: deliveryData[2]?.location[1] || "",
-        CountryCode: deliveryData[2]?.country_code || "",
-        Region: deliveryData[2]?.region || "",
-        SubRegion: "",
-        City: deliveryData[2]?.city || "",
-        KladrCode: "",
-        Address: deliveryData[2]?.address || "",
-      },
-      FromLocation: {
-        PostalCode: "MSK951",
-        CountryCode: "RU",
-        City: "Москва",
-        Address: "Нагатинская набережная, 54",
-      },
-      Packages: [
-        {
-          Number: new Date().toISOString(),
-          Comment: "Упаковка",
-          Height: 10,
-          Length: 10,
-          Weight: 4000,
-          Width: 10,
-          Items: packagesItems,
-        },
-      ],
-      Sender: {
-        Name: "Петров Петр",
-      },
+  //   }
+  //   console.log("body", body)
+  //   await axios.post("https://elevenislands.ru/api/Pay/create-order", body)
+  // }
 
-    }
-    console.log("body", body)
-    await axios.post("https://elevenislands.ru/api/Pay/create-order", body)
-  }
+  // (formState.check_box_1 ? 550 : 249)
 
-  // (deliveryData?.[1]?.delivery_sum || 0)
+  // const procentDostavki = ((formState.check_box_1 ? 550 : 249) / amountPrice) * 100;
 
-  const procentDostavki = ((deliveryData?.[1]?.delivery_sum || 0) / amountPrice) * 100;
-
-  console.log(procentDostavki);
 
 
   const placingAnOrder = async (e) => {
@@ -186,16 +206,16 @@ export default function PlacingAnOrder() {
               items = parse.map(v => ({
                 Name: v?.name,
                 Quantity: v?.count,
-                Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-                Amount: ((v?.price * v?.count) - ((v?.price * v?.count) / 100 * promo.procentSkitki) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Price: v?.price * 100,
+                Amount: ((v?.price * v?.count) * 100) - (((v?.price * v?.count) * 100) / 100 * promo.procentSkitki),
                 Tax: "none",
               }))
             } else {
               items = parse.map(v => ({
                 Name: v?.name,
                 Quantity: v?.count,
-                Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-                Amount: ((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Price: v?.price * 100,
+                Amount: ((v?.price * v?.count) * 100) - (((v?.price * v?.count) * 100) / 100 * promo.procentSkitki),
                 Tax: "none",
               }))
             }
@@ -203,15 +223,33 @@ export default function PlacingAnOrder() {
           const body = {
             Email: formState.email,
             Discription: formState.message || "",
-            Anmount: ((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-            Price: ((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-            Items: items
+            Anmount: (amountPrice - promo.itogProcent) * 100,
+            Price: (amountPrice - promo.itogProcent) * 100,
+            Name: formState.name,
+            SurName: formState.sorname,
+            Items: items,
+            AcceptedTerms: formState.check_box_3,
+            PromoCode: promo.promocode,
+            DeliverPrice: formState.check_box_1 ? 550 : 249,
+            city: city
+
+          }
+          if (formState.check_box_1) {
+            body.Addres = {
+              StreetHome: formState.StreetHome,        //Улица, дом
+              apartmentOrOffice: formState.apartmentOrOffice, // Квартира или офис
+              floor: formState.floor,             // Этаж
+              intercom: formState.intercom,          // Домофон
+              entrance: formState.entrance,          // Подъезд
+            }
+          } else {
+            body.infoCdek = deliveryData
           }
           setLoading(true)
           try {
             const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
             console.log("payment")
-            await createCdekOrder()
+            // await createCdekOrder()
             console.log("order")
             // localStorage.removeItem("dataGelary")
             window.open(data?.PaymentURL, "_self")
@@ -225,7 +263,6 @@ export default function PlacingAnOrder() {
       }
     }
   };
-  console.log(promo);
 
   const filteredCities = ArrCity.filter(city =>
     city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -236,6 +273,8 @@ export default function PlacingAnOrder() {
     setSearchQuery(cityName?.name);
     setShowDropdown(false);
   };
+
+  console.log(formState);
 
 
   const onChangePromo = () => {
@@ -329,12 +368,36 @@ export default function PlacingAnOrder() {
                 {/* Другие города */}
                 {/* </select> */}
               </div>
-              {/* {formState.check_box_1 &&
-                <div style={{ position: 'relative', height: '90px' }}>
-                  <label htmlFor="addres">Адрес*</label>
-                  <input style={{ borderColor: errors.addres && 'red' }} type="text" id="addres" onChange={e => onChange('addres', e.target.value)} />
-                  {errors.addres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.addres}</p>}
-                </div>} */}
+              {formState.check_box_1 &&
+                <div className="divAddres">
+                  <div className="Addres" style={{ position: 'relative', height: '90px' }}>
+                    <label htmlFor="StreetHome">Улица, дом*</label>
+                    <input style={{ borderColor: errors.StreetHome && 'red' }} type="text" id="StreetHome" onChange={e => onChange('StreetHome', e.target.value)} />
+                    {errors.StreetHome && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.StreetHome}</p>}
+                  </div>
+                  <div className="comAddres">
+                    <div>
+                      <label htmlFor="apartmentOrOffice">Квартира или офис</label>
+                      <input style={{ borderColor: errors.apartmentOrOffice && 'red' }} type="text" id="apartmentOrOffice" onChange={e => onChange('apartmentOrOffice', e.target.value)} />
+                      {/* {errors.apartmentOrOffice && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.apartmentOrOffice}</p>} */}
+                    </div>
+                    <div>
+                      <label htmlFor="floor">Этаж</label>
+                      <input style={{ borderColor: errors.floor && 'red' }} type="text" id="floor" onChange={e => onChange('floor', e.target.value)} />
+                      {/* {errors.floor && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.floor}</p>} */}
+                    </div>
+                    <div>
+                      <label htmlFor="intercom">Домофон</label>
+                      <input style={{ borderColor: errors.intercom && 'red' }} type="text" id="intercom" onChange={e => onChange('intercom', e.target.value)} />
+                      {/* {errors.intercom && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.intercom}</p>} */}
+                    </div>
+                    <div>
+                      <label htmlFor="entrance">Подъезд</label>
+                      <input style={{ borderColor: errors.entrance && 'red' }} type="text" id="entrance" onChange={e => onChange('entrance', e.target.value)} />
+                      {/* {errors.entrance && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.entrance}</p>} */}
+                    </div>
+                  </div>
+                </div>}
             </div>
           </div>
           <div className="PlacingAnOrder__form__1">
@@ -353,13 +416,12 @@ export default function PlacingAnOrder() {
               </div>
             </div>
           </div>
-
-          <div className="PlacingAnOrder__form__1">
+          {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
               <CDEKMap typeSakath={formState.check_box_1} setDeliveryData={setDeliveryData} city={city} />
+              {errors.deliveryData && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '-5%' }}>{errors.deliveryData}</p>}
             </div>
-          </div>
-
+          </div>}
           <div className="PlacingAnOrder__form__1">
             <h1>Дополнительно</h1>
             <div className="PlacingAnOrder__form__div__1">
@@ -440,7 +502,7 @@ export default function PlacingAnOrder() {
               </div>
               <div>
                 <p>Стоимость доставки:</p>
-                <p>{deliveryData[1]?.delivery_sum || 0} руб</p>
+                <p>{formState.check_box_1 ? 550 : 249} руб</p>
               </div>
               <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
                 <p>Скидка:</p>
@@ -450,7 +512,7 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)} руб</p>
+                <p>{(amountPrice - promo.itogProcent) + (formState.check_box_1 ? 550 : 249)} руб</p>
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>

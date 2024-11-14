@@ -38,10 +38,9 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
                     tariffs: {
                         office: !typeSakath ? [136,234] : [],
                         door: typeSakath ? [145, 150] : []
-                        
                     },
                     forceFilters:{
-                        type:"ALL"
+                        type:"PVZ"
                     },
                     // canChoose:true,
                     goods: [
@@ -56,15 +55,12 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
                     defaultLocation: city || "Москва",
                     lang: 'rus',
                     currency: 'RUB',
-                    
-              
-
                     onReady() {
                         // console.log('Виджет CDEK загружен');
                     },
-                    onCalculate() {
+                    onCalculate(el) {
                         // Логика расчета доставки
-                        console.log("awdwa")
+                        console.log("CDEK", el)
                     },
                     onChoose(...v) {
                         console.log('Доставка выбрана');

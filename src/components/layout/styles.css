@@ -1761,6 +1761,42 @@ input[type="checkbox"] {
     width: 100%;
     height: 300px;
     border: 1px solid #408759;
+    position: relative;
+}
+.Addres{
+    display: grid !important;
+    gap: 10px;
+}
+.Addres > label, .comAddres > div > label{
+    font-family: AGAvantGardeCyr;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: left;
+    margin-right: 0 !important;
+}
+.comAddres > div > input{
+    padding: 0 5px;
+    margin-bottom: 15px;
+    height: 45px;
+    border: 1px solid #262626;
+    max-width: 152px;
+    outline: none;
+}
+.comAddres{
+    display: grid;
+    grid-template-columns: repeat(152px, 4);
+    justify-content: space-between;
+    align-items: center;
+    max-width: 650px;
+}
+.comAddres > div{
+    display: grid;
+    gap: 10px;
+}
+.divAddres{
+    display: grid;
+    /* gap: 30px !important; */
 }
 .PlacingAnOrder__form__div__5{
     display: flex;
@@ -1947,6 +1983,22 @@ input[type="checkbox"] {
 }
 
 @media screen and (max-width: 1020px) {
+    .Addres > label, .comAddres > div > label{
+        font-size: 12px !important;
+    }
+    .divAddres{
+        gap: 0px !important;
+    }
+    .comAddres{
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    .comAddres > div > input{
+        max-width: 100%;
+        width: 100%;
+        margin-bottom: 0 !important;
+    }
     .block-dalymi > div{
         font-size: 12px;
         margin-top: -1px;
