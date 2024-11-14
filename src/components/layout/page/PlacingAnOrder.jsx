@@ -11,9 +11,6 @@ import axios from "axios";
 import Branding from '../../../assets/icon/Branding.svg'
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
-
-
-
   useEffect(() => {
     const media = window.matchMedia(query);
     const listener = () => setMatches(media.matches);
@@ -53,7 +50,7 @@ export default function PlacingAnOrder() {
     sorname: '',// *
     number: '',// *
     email: '',// *
-    addres: '',
+    // addres: '',
     message: '',
     check_box_1: false,
     check_box_3: false,// *
@@ -85,9 +82,9 @@ export default function PlacingAnOrder() {
     if (!formState.sorname) newErrors.sorname = 'Фамилия обязательна';
     if (!formState.number || formState.number.replace(/[^\d]/g, '')?.length !== 11) newErrors.number = 'Телефон обязателен';
     if (!formState.email || !emailValidateRegex.test(formState.email)) newErrors.email = 'Email обязателен';
-    if (formState.check_box_1) {
-      if (!formState.addres) newErrors.addres = 'Адрес обязателен';
-    }
+    // if (formState.check_box_1) {
+    //   if (!formState.addres) newErrors.addres = 'Адрес обязателен';
+    // }
 
     scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.addres && 'addres', 120)
     return newErrors;
@@ -111,7 +108,7 @@ export default function PlacingAnOrder() {
         Url: "https://elevenislands.ru",
       }))
     }
-    console.log("packagesItems", packagesItems)
+    // console.log("packagesItems", packagesItems)
 
     const body = {
       TariffCode: 136,
@@ -163,6 +160,13 @@ export default function PlacingAnOrder() {
     await axios.post("https://elevenislands.ru/api/Pay/create-order", body)
   }
 
+  // (deliveryData?.[1]?.delivery_sum || 0)
+
+  const procentDostavki = ((deliveryData?.[1]?.delivery_sum || 0) / amountPrice) * 100;
+
+  console.log(procentDostavki);
+
+
   const placingAnOrder = async (e) => {
     e.preventDefault();
     setPaymentError(false)
@@ -178,16 +182,24 @@ export default function PlacingAnOrder() {
           const cartData = localStorage.getItem("dataGelary")
           if (cartData) {
             const parse = JSON.parse(cartData)
-            items = parse.map(v => ({
-              Name: v?.name,
-              Quantity: v?.count,
-              Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-              Amount: ((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-              Tax: "none",
-            }))
+            if (promo.procentSkitki > 0 && promo.type) {
+              items = parse.map(v => ({
+                Name: v?.name,
+                Quantity: v?.count,
+                Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Amount: ((v?.price * v?.count) - ((v?.price * v?.count) / 100 * promo.procentSkitki) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Tax: "none",
+              }))
+            } else {
+              items = parse.map(v => ({
+                Name: v?.name,
+                Quantity: v?.count,
+                Price: (v?.price + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Amount: ((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
+                Tax: "none",
+              }))
+            }
           }
-
-
           const body = {
             Email: formState.email,
             Discription: formState.message || "",
@@ -195,12 +207,11 @@ export default function PlacingAnOrder() {
             Price: ((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
             Items: items
           }
-
           setLoading(true)
           try {
             const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
             console.log("payment")
-            // await createCdekOrder()
+            await createCdekOrder()
             console.log("order")
             // localStorage.removeItem("dataGelary")
             window.open(data?.PaymentURL, "_self")
@@ -214,6 +225,8 @@ export default function PlacingAnOrder() {
       }
     }
   };
+  console.log(promo);
+
   const filteredCities = ArrCity.filter(city =>
     city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -230,9 +243,9 @@ export default function PlacingAnOrder() {
     if (promo.type) {
       setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
     } else if (code === "WELCOME10") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10 })
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10, procentSkitki: 10 })
     } else if (code === "TEST90") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90 })
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90, procentSkitki: 90 })
     }
     else {
       setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })
@@ -316,12 +329,12 @@ export default function PlacingAnOrder() {
                 {/* Другие города */}
                 {/* </select> */}
               </div>
-              {formState.check_box_1 &&
+              {/* {formState.check_box_1 &&
                 <div style={{ position: 'relative', height: '90px' }}>
                   <label htmlFor="addres">Адрес*</label>
                   <input style={{ borderColor: errors.addres && 'red' }} type="text" id="addres" onChange={e => onChange('addres', e.target.value)} />
                   {errors.addres && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.addres}</p>}
-                </div>}
+                </div>} */}
             </div>
           </div>
           <div className="PlacingAnOrder__form__1">
@@ -341,11 +354,11 @@ export default function PlacingAnOrder() {
             </div>
           </div>
 
-          {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
+          <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap setDeliveryData={setDeliveryData} city={city} />
+              <CDEKMap typeSakath={formState.check_box_1} setDeliveryData={setDeliveryData} city={city} />
             </div>
-          </div>}
+          </div>
 
           <div className="PlacingAnOrder__form__1">
             <h1>Дополнительно</h1>
@@ -369,6 +382,7 @@ export default function PlacingAnOrder() {
                     Картой онлайн
                   </div>
                   <div>
+                    <img src={Branding} alt="Branding" />
                     <img src={banckCart} alt="banckCart" />
                   </div>
                 </div>
@@ -382,7 +396,7 @@ export default function PlacingAnOrder() {
                     Оплата "Долями" {useMediaQuery(`(max-width: ${widthLap})`) && <br />}
                   </div>
                   <div>
-                    <img src={Branding} alt="banckCart" />
+                    
                   </div>
                 </div>
               </div> */}
@@ -403,14 +417,14 @@ export default function PlacingAnOrder() {
             </div>
           </div>
 
-          {formState.check_box_1 && <div className="PlacingAnOrder__form__1">
+          {<div className="PlacingAnOrder__form__1">
             <h1>Ваш заказ</h1>
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="promo">Промокод или сертификат</label>
                 <div>
                   <input type="text" value={promo.promocode} id="promo" onChange={e => setPromo({ ...promo, promocode: e.target.value })} />
-                  <button onClick={onChangePromo} style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
+                  <button onClick={onChangePromo} type="button" style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
                 </div>
                 {
                   <p className="mt-2" style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', }}>{promo.procent || '-'}</p>}

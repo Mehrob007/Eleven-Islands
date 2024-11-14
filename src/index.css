@@ -137,7 +137,7 @@ table {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.274);
+  background-color: rgba(0, 0, 0, 0.432);
 }
 .ImageCom > img{
   width: 700px;

@@ -5,6 +5,14 @@ import NewCollection from '../../../assets/icon/NewCollection.svg'
 import lineyka from '../../../assets/icon/lineyka.svg'
 import popupPc from '../../../assets/icon/popup-pc.svg'
 // popupPc
+import dalymiIcon from '../../../assets/icon/dalymiIcon.svg'
+//dalymiIcon
+import iconRightButtonDalymi from '../../../assets/icon/iconRightButtonDalymi.svg'
+//iconRightButtonDalymi
+import DalymiImgMobile from '../../../assets/icon/DalymiImgMobile.svg'
+//DalymiImgMobile
+import DalymiImgPc from '../../../assets/icon/DalymiImgPc.svg'
+//DalymiImgPc
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { dataGelaryStore } from '../../layout/storeState/modalBasket'
 // NewCollection.svg
@@ -113,7 +121,7 @@ export default function Prodect() {
             titleImg: findeElement?.images?.[0],
             countPrice: findeElement?.price,
           }])
-      }if (count) {
+      } if (count) {
         setDataGelary([
           ...dataGelary,
           {
@@ -231,6 +239,22 @@ export default function Prodect() {
                 <h4><span>{findeElement?.price}</span> ₽</h4>
               </div>
             </div>
+            {useMediaQuery(`(max-width: ${widthLap})`) ?
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile })}>
+                <div>
+                  <img src={dalymiIcon} alt="dalymiIcon" />
+                  <p>4 платежа по {findeElement?.price / 4}</p>
+                </div>
+                <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
+              </div>
+              :
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgPc })}>
+                <div>
+                  <img src={dalymiIcon} alt="dalymiIcon" />
+                  <p>4 платежа по {findeElement?.price / 4}</p>
+                </div>
+                <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
+              </div>}
             <div className="color-div-product">
               <h1>Другие цвета</h1>
               <div>
@@ -392,16 +416,17 @@ export default function Prodect() {
                   </span>
                 </div>
                 <TransitionGroup style={{ height: 'auto' }}>
-                  <CSSTransition timeout={300} classNames="fade" >
-                    <div className='info-d-product' style={{ padding: '10px 0' }}>
-                      <div style={{ fontSize: 14 }}>
-                        Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
-                        дополнительную плату и займет 1-3 рабочих дня.
-                        Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
-                        Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
+                  {isOpenDiscrip2 &&
+                    <CSSTransition timeout={300} classNames="fade" >
+                      <div className='info-d-product' style={{ padding: '10px 0' }}>
+                        <div style={{ fontSize: 14 }}>
+                          Стандартная доставка занимает 3-7 рабочих дней. Экспресс-доставка возможна за
+                          дополнительную плату и займет 1-3 рабочих дня.
+                          Вернуть или обменять товары возможно в течение 14 дней с момента получения заказа.
+                          Подробности о возвратах и обменах можно найти на нашей странице "Возвраты и обмены"
+                        </div>
                       </div>
-                    </div>
-                  </CSSTransition>
+                    </CSSTransition>}
                 </TransitionGroup>
               </div>
             </div>

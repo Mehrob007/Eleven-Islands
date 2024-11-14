@@ -1,7 +1,10 @@
-.ymaps3x0--controls_horizontal{
+/* .ymaps3x0--controls_horizontal{
     display: none !important;
-  }
+  } */
 
-  .ymaps3x0--controls_left{
+  /* .ymaps3x0--controls_left{
     display: none !important;
-  }
+  } */
+  .ymaps3x0--controls_horizontal > .ymaps3x0--control:nth-child(2){
+    display: none !important;
+   }

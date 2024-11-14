@@ -1791,6 +1791,7 @@ input[type="checkbox"] {
 .PlacingAnOrder__form__item__5 > div{
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 .PlacingAnOrder__form__item__5 > div > span{
@@ -1874,9 +1875,9 @@ input[type="checkbox"] {
     justify-content: center;
   }
   /* Скрыть кнопки зума на CDEK карте */
-#cdek-map .ymaps-2-1-79-controls__control {
+/* #cdek-map .ymaps-2-1-79-controls__control {
     display: none !important;
-}
+} */
 .popapModalProduct{
     width: 300px;
     height: 44px;
@@ -1926,10 +1927,30 @@ input[type="checkbox"] {
     font-weight: 400;
     line-height: 11.64px;
     text-align: left;
-
+}
+.block-dalymi{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 310px;
+    height: 45px;
+    cursor: pointer;
+    background-color: #0000000A;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.block-dalymi > div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
 }
 
 @media screen and (max-width: 1020px) {
+    .block-dalymi > div{
+        font-size: 12px;
+        margin-top: -1px;
+    }
     .button-div-product > div > button{
         width: 100% !important;
     }
@@ -1987,7 +2008,11 @@ input[type="checkbox"] {
         font-size: 12px;
     }
     .PlacingAnOrder__form__item__5 > div{
-        font-size: 12px;
+        font-size: 11px;
+        gap: 3px;
+    }
+    .PlacingAnOrder__form__item__5 > div > img{
+        height: 20px;
     }
     .PlacingAnOrder__Lable__6{
         font-size: 12px;

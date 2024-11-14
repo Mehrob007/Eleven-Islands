@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import CDEKWidget from '@cdek-it/widget'
 import './cdekMapCSS.css'
-const CDEKMap = ({ city,setDeliveryData }) => {
-    console.log("city",city)
+const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
+    console.log(typeSakath)
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
@@ -32,13 +32,17 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                     },
                     
                     hideDeliveryOptions: {
-                        office: false,
-                        door: true,
+                        office: typeSakath,
+                        door: !typeSakath,
+                    },
+                    tariffs: {
+                        office: !typeSakath ? [136,234] : [],
+                        door: typeSakath ? [145, 150] : []
+                        
                     },
                     forceFilters:{
-                        type:"PVZ"
+                        type:"ALL"
                     },
-                    // debug: false,
                     // canChoose:true,
                     goods: [
                         {
@@ -48,14 +52,11 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                             weight: 10,
                         },
                     ],
+                    showSearch: true, sender: true,
                     defaultLocation: city || "Москва",
                     lang: 'rus',
                     currency: 'RUB',
-                    tariffs: {
-                        office: [136,234],
-                        door:[]
-                        
-                    },
+                    
               
 
                     onReady() {
@@ -86,7 +87,8 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                 window.cdekMapInstance = null; // Убираем ссылку на экземпляр
             }
         };
-    }, [city]); // Зависимость от sity для повторной инициализации
+        
+    }, [city, typeSakath]); // Зависимость от sity для повторной инициализации
 
     return (
         <>
