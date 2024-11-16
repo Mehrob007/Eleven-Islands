@@ -142,3 +142,37 @@ table {
 .ImageCom > img{
   width: 700px;
 }
+.ImageCom > div{
+  padding-top: 20px ;
+  width: 800px;
+  height: 732px;
+  position: relative;
+}
+.ImageCom > div > img{
+  width: 100%;
+}
+.ImageComDiv{
+  display: grid;
+  /* display: none; */
+  grid-template-columns: repeat(4, 163px);
+  width: 658px;
+  height: 35px;
+  background-color: #f6f7f8;
+  position: absolute;
+  top: 40.5%;
+  left: 70px;
+}
+.ImageComDiv > div{
+  padding-left: 20px;
+  padding-top: 10px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #aeaeae;
+}
+.ImageComDiv > div:first-child{
+  padding-left: 20px;
+  padding-top: 10px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #4b4b4b;
+}

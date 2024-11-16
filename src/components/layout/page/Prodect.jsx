@@ -67,7 +67,8 @@ export default function Prodect() {
   const [sizeVibor, setSizeVibor] = useState(haveSize[0])
   const [modalOpen, setModalOpen] = useState({
     open: false,
-    img: null
+    img: null,
+    element: {}
   })
   useEffect(() => {
     if (haveSize.length > 0) {
@@ -240,7 +241,7 @@ export default function Prodect() {
               </div>
             </div>
             {useMediaQuery(`(max-width: ${widthLap})`) ?
-              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile })}>
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile, element: {priceDalymi: findeElement?.price / 4, phone: true}})}>
                 <div>
                   <img src={dalymiIcon} alt="dalymiIcon" />
                   <p>4 платежа по {findeElement?.price / 4} ₽</p>
@@ -248,10 +249,10 @@ export default function Prodect() {
                 <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
               </div>
               :
-              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgPc })}>
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgPc, element: {priceDalymi: findeElement?.price / 4, type: true, }})}>
                 <div>
                   <img src={dalymiIcon} alt="dalymiIcon" />
-                  <p>4 платежа по {findeElement?.price / 4}</p>
+                  <p>4 платежа по {findeElement?.price / 4} ₽</p>
                 </div>
                 <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
               </div>}
@@ -447,6 +448,6 @@ export default function Prodect() {
       </>
     }
     {modalOpen.open &&
-      <ImageCom img={modalOpen.img} setImg={setModalOpen} />}
+      <ImageCom img={modalOpen.img} setImg={setModalOpen} element={modalOpen.element} />}
   </>)
 }

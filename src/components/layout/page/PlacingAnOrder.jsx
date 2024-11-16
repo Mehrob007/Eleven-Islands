@@ -114,78 +114,187 @@ export default function PlacingAnOrder() {
   };
 
 
-  // const createCdekOrder = async () => {
-  //   let packagesItems = []
-  //   const cartData = localStorage.getItem("dataGelary")
-  //   if (cartData) {
-  //     const parse = JSON.parse(cartData)
-  //     packagesItems = parse.map((v) => ({
-  //       WareKey: v.id?.toString(),
-  //       Payment: {
-  //         Value: v?.price
-  //       },
-  //       Name: v?.name,
-  //       Cost: v?.price * 100,
-  //       Amount: (v?.price * v?.count) * 100,
-  //       Weight: 100,
-  //       Url: "https://elevenislands.ru",
-  //     }))
-  //   }
-  //   const body = {
-  //     TariffCode: 136,
-  //     Comment: formState?.message,
-  //     Recipient: {
-  //       Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
-  //       Phones: [
-  //         {
-  //           Number: formState?.number?.replace(/[^\d]/g, ""),
-  //         },
-  //       ],
-  //     },
-  //     ToLocation: {
-  //       Code: deliveryData[2]?.city_code || "",
-  //       FiasGuid: "",
-  //       PostalCode: deliveryData[2]?.postal_code || "",
-  //       Longitude: deliveryData[2]?.location[0] || "",
-  //       Latitude: deliveryData[2]?.location[1] || "",
-  //       CountryCode: deliveryData[2]?.country_code || "",
-  //       Region: deliveryData[2]?.region || "",
-  //       SubRegion: "",
-  //       City: deliveryData[2]?.city || "",
-  //       KladrCode: "",
-  //       Address: deliveryData[2]?.address || "",
-  //     },
-  //     FromLocation: {
-  //       PostalCode: "MSK951",
-  //       CountryCode: "RU",
-  //       City: "Москва",
-  //       Address: "Нагатинская набережная, 54",
-  //     },
-  //     Packages: [
-  //       {
-  //         Number: new Date().toISOString(),
-  //         Comment: "Упаковка",
-  //         Height: 10,
-  //         Length: 10,
-  //         Weight: 4000,
-  //         Width: 10,
-  //         Items: packagesItems,
-  //       },
-  //     ],
-  //     Sender: {
-  //       Name: "Петров Петр",
-  //     },
+  const orderCuirer = async (e) => {
+    e.preventDefault();
+    setPaymentError(false)
+    let packagesItems = []
+    const cartData = localStorage.getItem("dataGelary")
+    if (cartData) {
+      const parse = JSON.parse(cartData)
+      packagesItems = parse.map((v) => ({
+        WareKey: v.id?.toString(),
+        Payment: {
+          Value: v?.price
+        },
+        Name: v?.name,
+        Cost: v?.price * 100,
+        Amount: (v?.price * v?.count) * 100,
+        Weight: 100,
+        Url: "https://elevenislands.ru",
+      }))
+    }
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      setErrors({});
+      const body = {
+        CdekNumber: 136,
+        Comment: formState?.message,
+        Height: 10,
+        Length: 10,
+        Weight: 4000,
+        Width: 10,
+        Sender: {
+          Company: "string",
+          Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
+          Phones: [
+            {
+              Number: formState?.number?.replace(/[^\d]/g, ""),
+            },
+          ],
+        },
+        FromLocation: {
+          // Code: deliveryData[2]?.city_code || "",
+          // FiasGuid: "",
+          // PostalCode: deliveryData[2]?.postal_code || "",
+          // Longitude: deliveryData[2]?.location[0] || "",
+          // Latitude: deliveryData[2]?.location[1] || "",
+          // CountryCode: deliveryData[2]?.country_code || "",
+          // Region: deliveryData[2]?.region || "",
+          // SubRegion: "",
+          // KladrCode: "",
+          // City: city || "",
+          Addres: {
+            StreetHome: formState.StreetHome,
+            apartmentOrOffice: formState.apartmentOrOffice,
+            floor: formState.floor,
+            intercom: formState.intercom,
+            entrance: formState.entrance,
+          }
+        },
+        // Addres: {
+        //   StreetHome: formState.StreetHome,
+        //   apartmentOrOffice: formState.apartmentOrOffice,
+        //   floor: formState.floor,
+        //   intercom: formState.intercom,
+        //   entrance: formState.entrance,
+        // }
+        NeedCall: true,
+        // FromLocation: {
+        //   PostalCode: "MSK951",
+        //   CountryCode: "RU",
+        //   City: "Москва",
+        //   Address: "Нагатинская набережная, 54",
+        // },
+        // Packages: [
+        //   {
+        //     Number: new Date().toISOString(),
+        //     Comment: "Упаковка",
+        //     Height: 10,
+        //     Length: 10,
+        //     Weight: 4000,
+        //     Width: 10,
+        //     Items: packagesItems,
+        //   },
+        // ],
+        // Sender: {
+        //   Name: "Петров Петр",
+        // },
 
-  //   }
-  //   console.log("body", body)
-  //   await axios.post("https://elevenislands.ru/api/Pay/create-order", body)
-  // }
+      }
+      await axios.post("https://elevenislands.ru/api/Pay/create-payment-cuirer", body)
+      console.log("body", body)
+    }
+  }
 
-  // (formState.check_box_1 ? 550 : 249)
 
   // const procentDostavki = ((formState.check_box_1 ? 550 : 249) / amountPrice) * 100;
+  // console.log(JSON.stringify(localStorage.getItem("dataGelary")));
 
 
+  const createOrder = async (items) => {
+
+    const dataProducts = items?.map((a) => ({
+      ...a,
+      ware_key: `${a.Id}12345`,
+      Cost: a.Price,
+      Payment: {
+        Value: a.Amount
+      },
+    }))
+    console.log(dataProducts);
+
+    const idProduct = localStorage.getItem("customerId")
+    const bodyOrder = {
+      TariffCode: 136,
+      Comment: formState?.message,
+      Number: idProduct,
+      DeliveryRecipientCost: {
+        Value: formState.check_box_1 ? 550 : 249,
+      },
+      DeliveryRecipientCostAdv: [
+        {
+          Sum: 0,
+          Threshold: 0
+        }
+      ],
+      Recipient: {
+        Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
+        Phones: [
+          {
+            Number: formState?.number?.replace(/[^\d]/g, ""),
+          },
+        ],
+      },
+      FromLocation: {
+        PostalCode: "MSK951",
+        CountryCode: "RU",
+        City: "Москва",
+        Address: "Нагатинская набережная, 54",
+      },
+      ToLocation: {
+        SubRegion: "",
+        KladrCode: "",
+        FiasGuid: "",
+        Code: deliveryData[2]?.city_code || "",
+        PostalCode: deliveryData[2]?.postal_code || "",
+        Longitude: deliveryData[2]?.location[0] || "",
+        Latitude: deliveryData[2]?.location[1] || "",
+        CountryCode: deliveryData[2]?.country_code || "",
+        Region: deliveryData[2]?.region || "",
+        City: deliveryData[2]?.city || "",
+        Address: deliveryData[2]?.address || "",
+      },
+
+      Packages: [
+        {
+          Number: new Date().toISOString(),
+          Comment: "Упаковка",
+          Height: 10,
+          Length: 10,
+          Weight: 4000,
+          Width: 10,
+          Items: dataProducts,
+        },
+      ],
+      Sender: {
+        Name: "Петров Петр",
+      },
+
+    }
+    setLoading(true)
+    try {
+      const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-order", bodyOrder)
+      // localStorage.removeItem("dataGelary")
+      window.open(data?.PaymentURL, "_self")
+    } catch (error) {
+      console.log("error", error)
+      setPaymentError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const placingAnOrder = async (e) => {
     e.preventDefault();
@@ -197,13 +306,56 @@ export default function PlacingAnOrder() {
       } else {
         setErrors({});
         if (formState.check_box_3) {
-          console.log("TUT")
-          let items = []
+          // const body = {
+          //   Email: formState.email,
+          //   Discription: formState.message || "",
+          //   Anmount: (amountPrice - promo.itogProcent) * 100,
+          //   Price: (amountPrice - promo.itogProcent) * 100,
+          //   Name: formState.name,
+          //   SurName: formState.sorname,
+          //   Items: items,
+          //   AcceptedTerms: formState.check_box_3,
+          //   PromoCode: promo.promocode,
+          //   DeliverPrice: formState.check_box_1 ? 550 : 249,
+          //   city: city
+          // }
+          // if (formState.check_box_1) {
+          //   body.Addres = {
+          //     StreetHome: formState.StreetHome,        //Улица, дом
+          //     apartmentOrOffice: formState.apartmentOrOffice, // Квартира или офис
+          //     floor: formState.floor,             // Этаж
+          //     intercom: formState.intercom,          // Домофон
+          //     entrance: formState.entrance,          // Подъезд
+          //   }
+          // } else {
+          //   // body.infoCdek = deliveryData
+          // }
+
+          // let packagesItems = []
+          // const cartData = localStorage.getItem("dataGelary")
+          // if (cartData) {
+          //   const parse = JSON.parse(cartData)
+          //   packagesItems = parse.map((v) => ({
+          //     WareKey: v.id?.toString(),
+          //     Payment: {
+          //       Value: v?.price
+          //     },
+          //     Name: v?.name,
+          //     Cost: v?.price * 100,
+          //     Amount: (v?.price * v?.count) * 100,
+          //     Weight: 100,
+          //     Url: "https://elevenislands.ru",
+          //   }))
+          // }
+          // console.log("packagesItems", packagesItems)
+          console.log("PVZ")
           const cartData = localStorage.getItem("dataGelary")
+          let items = []
           if (cartData) {
             const parse = JSON.parse(cartData)
             if (promo.procentSkitki > 0 && promo.type) {
               items = parse.map(v => ({
+                Id: v?.id,
                 Name: v?.name,
                 Quantity: v?.count,
                 Price: v?.price * 100,
@@ -212,45 +364,46 @@ export default function PlacingAnOrder() {
               }))
             } else {
               items = parse.map(v => ({
+                Id: v?.id,
                 Name: v?.name,
                 Quantity: v?.count,
                 Price: v?.price * 100,
-                Amount: ((v?.price * v?.count) * 100) - (((v?.price * v?.count) * 100) / 100 * promo.procentSkitki),
+                Amount: ((v?.price * v?.count) * 100),
                 Tax: "none",
               }))
             }
           }
+          let remainingDiscount = formState.check_box_1 ? 550 : 249;
+          let priceD = remainingDiscount / items.length
+
           const body = {
             Email: formState.email,
             Discription: formState.message || "",
-            Anmount: (amountPrice - promo.itogProcent) * 100,
-            Price: (amountPrice - promo.itogProcent) * 100,
-            Name: formState.name,
-            SurName: formState.sorname,
-            Items: items,
-            AcceptedTerms: formState.check_box_3,
-            PromoCode: promo.promocode,
-            DeliverPrice: formState.check_box_1 ? 550 : 249,
-            city: city
+            Anmount: (amountPrice * 100 - promo.itogProcent) + (formState.check_box_1 ? 550 : 249), // Корректное использование тернарного оператора
+            Price: (amountPrice * 100 - promo.itogProcent) + (formState.check_box_1 ? 550 : 249), // Корректное использование тернарного оператора
+            Items: items.map((item) => {
+              return {
+                ...item,
+                Amount: item.Amount + priceD,
+              };
+            })
+          };
 
-          }
-          if (formState.check_box_1) {
-            body.Addres = {
-              StreetHome: formState.StreetHome,        //Улица, дом
-              apartmentOrOffice: formState.apartmentOrOffice, // Квартира или офис
-              floor: formState.floor,             // Этаж
-              intercom: formState.intercom,          // Домофон
-              entrance: formState.entrance,          // Подъезд
-            }
-          } else {
-            body.infoCdek = deliveryData
-          }
+
           setLoading(true)
           try {
             const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
             console.log("payment")
             // await createCdekOrder()
+            if (!formState.check_box_1) {
+              await createOrder(items)
+            } else {
+              await orderCuirer()
+            }
             console.log("order")
+            if (formState.check_box_1) {
+              await orderCuirer()
+            }
             // localStorage.removeItem("dataGelary")
             window.open(data?.PaymentURL, "_self")
           } catch (error) {
@@ -263,7 +416,7 @@ export default function PlacingAnOrder() {
       }
     }
   };
-
+  console.log(deliveryData);
   const filteredCities = ArrCity.filter(city =>
     city.name && typeof city.name === 'string' && city.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -274,9 +427,6 @@ export default function PlacingAnOrder() {
     setShowDropdown(false);
   };
 
-  console.log(formState);
-
-
   const onChangePromo = () => {
     const code = promo.promocode.toUpperCase()
     if (promo.type) {
@@ -285,8 +435,7 @@ export default function PlacingAnOrder() {
       setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10, procentSkitki: 10 })
     } else if (code === "TEST90") {
       setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90, procentSkitki: 90 })
-    }
-    else {
+    } else {
       setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })
     }
   }
@@ -473,7 +622,6 @@ export default function PlacingAnOrder() {
                 </div>
                 <div className="PlacingAnOrder__Lable__6">
                   <label>Я ознакомлен и согласен с условиями<br /> оферты и <label>политики конфиденциальности</label></label>
-
                 </div>
               </div>
             </div>
@@ -485,7 +633,7 @@ export default function PlacingAnOrder() {
               <div>
                 <label htmlFor="promo">Промокод или сертификат</label>
                 <div>
-                  <input type="text" value={promo.promocode} id="promo" onChange={e => setPromo({ ...promo, promocode: e.target.value })} />
+                  <input type="text" value={promo.promocode} id="promo" onChange={e => { if (!promo.type) setPromo({ ...promo, promocode: e.target.value }) }} />
                   <button onClick={onChangePromo} type="button" style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
                 </div>
                 {
