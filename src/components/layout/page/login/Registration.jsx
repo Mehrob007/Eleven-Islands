@@ -89,7 +89,13 @@ export default function Registration() {
             // console.log('Форма валидна, данные отправлены:', formData);
             const token = localStorage.getItem('token');
             try {
-                const res = await apiClient.post('/customers', { customer: formData }, {
+                const res = await apiClient.post('/Customer', { 
+                    Email: formData.email,
+                    LastName: formData.last_name,
+                    Password: formData.password,
+                    FirstName: formData.first_name,
+                    PhoneNumber: formData.phone_number
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

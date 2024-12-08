@@ -828,7 +828,7 @@ select{
     width: 100%;
     min-height: 1014px;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     gap: 6px;
     flex-wrap: wrap;
@@ -2909,4 +2909,15 @@ input[type="checkbox"] {
     color: #408759; /* Цвет активной точки */
     opacity: 1; /* Прозрачность активной точки */
   }
- 
+ .price__div{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: AGAvantGardeCyr;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
+ }

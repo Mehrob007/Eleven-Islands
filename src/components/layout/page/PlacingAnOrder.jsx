@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import axios from "axios";
 import Branding from '../../../assets/icon/Branding.svg'
+import DeliveryMap from "../Ymap/DeliveryMap";
+import apiClient from "../../../utils/api";
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function PlacingAnOrder() {
   // const [sity, setSity] = useState("")
   const [city, setCity] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [amountPrice, setAmountPrice] = useState(0)
   const [paymentError, setPaymentError] = useState(false)
@@ -359,7 +361,7 @@ export default function PlacingAnOrder() {
                 Name: v?.name,
                 Quantity: v?.count,
                 Price: v?.price * 100,
-                Amount: ((v?.price * v?.count) * 100) - (((v?.price * v?.count) * 100) / 100 * promo.procentSkitki),
+                Amount: (v?.price * v?.count) - (((v?.price * v?.count) * 100) / 100 * promo.procentSkitki),
                 Tax: "none",
               }))
             } else {
@@ -368,28 +370,26 @@ export default function PlacingAnOrder() {
                 Name: v?.name,
                 Quantity: v?.count,
                 Price: v?.price * 100,
-                Amount: ((v?.price * v?.count) * 100),
+                Amount: (v?.price * v?.count),
                 Tax: "none",
               }))
             }
           }
-          let remainingDiscount = formState.check_box_1 ? 550 : 249;
-          let priceD = remainingDiscount / items.length
+          // let remainingDiscount = formState.check_box_1 ? 550 : 249;
+          const totalDeliveryCost = formState.check_box_1 ? 550 : 249;
+          const baseDeliveryCost = Math.floor(totalDeliveryCost / items.length);
+          const deliveryRemainder = totalDeliveryCost % items.length;
 
           const body = {
             Email: formState.email,
             Discription: formState.message || "",
-            Anmount: (amountPrice * 100 - promo.itogProcent) + (formState.check_box_1 ? 550 : 249), // Корректное использование тернарного оператора
-            Price: (amountPrice * 100 - promo.itogProcent) + (formState.check_box_1 ? 550 : 249), // Корректное использование тернарного оператора
-            Items: items.map((item) => {
-              return {
-                ...item,
-                Amount: item.Amount + priceD,
-              };
-            })
+            Anmount: ((amountPrice - promo.itogProcent) + totalDeliveryCost) * 100, // Итоговая сумма заказа
+            Price: ((amountPrice - promo.itogProcent) + totalDeliveryCost) * 100, // Цена заказа
+            Items: items.map((item, index) => ({
+              ...item,
+              Amount: (item.Amount + baseDeliveryCost + (index < deliveryRemainder ? 1 : 0)) * 100, // Добавление остатка по первым элементам
+            })),
           };
-
-
           setLoading(true)
           try {
             const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
@@ -427,16 +427,32 @@ export default function PlacingAnOrder() {
     setShowDropdown(false);
   };
 
-  const onChangePromo = () => {
+  const onChangePromo = async () => {
+    const token = localStorage.getItem("token")
     const code = promo.promocode.toUpperCase()
-    if (promo.type) {
-      setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
-    } else if (code === "WELCOME10") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10, procentSkitki: 10 })
-    } else if (code === "TEST90") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90, procentSkitki: 90 })
+    if (!promo.type) {
+      try {
+        const res = await apiClient.get(`https://backendeleven.ru/Api/get-promo-for-user?name=${code}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        console.log(res);
+        // Math.floor
+        // Math.ceil
+        if (res.status === 200) {
+          setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${Math.floor(amountPrice / 100 * res.data.promo)} руб.`, itogProcent: Math.floor(amountPrice / 100 * res.data.promo), procentSkitki: res.data.promo })
+        }
+      } catch (e) {
+        console.log(e.response.status);
+        if (e.response.status) {
+          setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })
+        }
+      }
     } else {
-      setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })
+      setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
     }
   }
 
@@ -567,7 +583,7 @@ export default function PlacingAnOrder() {
           </div>
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <CDEKMap typeSakath={formState.check_box_1} setDeliveryData={setDeliveryData} city={city} />
+              <DeliveryMap />
               {errors.deliveryData && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '-5%' }}>{errors.deliveryData}</p>}
             </div>
           </div>}
@@ -654,13 +670,13 @@ export default function PlacingAnOrder() {
               </div>
               <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
                 <p>Скидка:</p>
-                <p>{promo.itogProcent} руб</p>
+                <p>{Math.floor(promo.itogProcent)} руб</p>
               </div>
             </div>
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{(amountPrice - promo.itogProcent) + (formState.check_box_1 ? 550 : 249)} руб</p>
+                <p>{Math.ceil(amountPrice - promo.itogProcent) + (formState.check_box_1 ? 550 : 249)} руб</p>
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>

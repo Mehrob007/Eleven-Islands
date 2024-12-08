@@ -204,6 +204,9 @@ export default function MainPage() {
   //     fetchPhotos({ limit: 50, page: 1 });
   //   }
   // }, [fetching]);
+  console.log('====================================');
+  console.log(photos);
+  console.log('====================================');
 
   return (
     <>
@@ -238,10 +241,9 @@ export default function MainPage() {
         {useMediaQuery(`(min-width: ${widthLap})`) &&
           <div className='headerCom2'>
             <Link to='products/all'>Смотреть все</Link>
-          </div>
-        }
+          </div>}
       </div>
-      <Box2 arrDataImg={photos.filter((prev, i) => prev.show_on_home_page && i < 32)} />
+      <Box2 arrDataImg={photos.filter((prev, i) => prev.popular && i < 32)} />
 
       {useMediaQuery(`(max-width: ${widthLap})`) &&
         <div className="header headerBox2 " style={{ display: 'flex', justifyContent: 'center' }}>

@@ -10,8 +10,8 @@ export const usePhotoStore = create((set, get) => ({
         const token = localStorage.getItem('token');
         const queryParams = new URLSearchParams();
 
-        if (params.CategoryId) {
-            queryParams.append('CategoryId', params.CategoryId);
+        if (params.categoryId) {
+            queryParams.append('categoryId', params.categoryId);
         }
 
         // if (params.month) {
@@ -30,7 +30,7 @@ export const usePhotoStore = create((set, get) => ({
         if (params.limit) {
             queryParams.append('limit', params.limit);
         }
-       
+
         if (params.page || params.page === 1) {
             queryParams.append('page', params.page);
         }
@@ -42,24 +42,37 @@ export const usePhotoStore = create((set, get) => ({
 
         set({ loading: true });
         try {
-            const response = await apiClient.get(`products?${queryParams}`, {
+            // const response = await apiClient.get(`products?${queryParams}`, {
+            //     headers: {
+            //         Authorization: `Bearer ${token}`
+            //     }
+            // });
+            // Product/get-all-products
+            const response = await apiClient.get(`Product/get-category-product?${queryParams}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
 
-            const newPhotos = response.data.products;
+            // const newPhotos = response.data.products;
+            const newPhotos = response.data.products[0];
+
 
             const uniquePhotos = newPhotos.filter(
                 (newPhoto) => !get().photos.some((photo) => photo.id === newPhoto.id)
             );
 
+            console.log("products", newPhotos);
+            console.log("productFilter", uniquePhotos);
+
+
+
             set(() => ({
-                photos: uniquePhotos,
+                photos: newPhotos,
             }));
         } catch (error) {
             console.error("Error fetching photos:", error);
-        } finally{
+        } finally {
             set({ loading: false });
         }
     },
@@ -68,12 +81,12 @@ export const usePhotoStore = create((set, get) => ({
     findeProduct: async (id) => {
         const token = localStorage.getItem('token');
         try {
-            const response = await axios.get(`https://elevenislands.ru/api/products/${id}`, {
+            const response = await apiClient.get(`Product/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            const data = response.data.products[0];
+            const data = response.data;
             set({ findeElement: data });
         } catch (e) {
             console.error(e);

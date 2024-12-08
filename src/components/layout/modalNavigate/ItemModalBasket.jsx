@@ -71,7 +71,7 @@ export default function ItemModalBasket({ see = false }) {
     return dataGelary.map((product, index) => (
         <div className='itemModalBasket' key={index}>
             <div className='modalBasketImg'>
-                <img src={product?.titleImg?.src || img} alt={product?.title} />
+                <img src={product?.titleImg || img} alt={product?.title} />
             </div>
             <div className='modalBasketInfo'>
                 <div className='info'>

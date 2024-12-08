@@ -54,11 +54,16 @@ export default function Prodect() {
     return localStorage.getItem('colorVibor') || '';
   });
 
+  console.log('====================================');
+  console.log("findeElement", findeElement);
+  console.log('====================================');
+
   // useEffect(() => {
 
   // }, [colorVibor]);
   const [isOpenDiscrip, setIsOpenDiscrip] = useState(true);
   const [isOpenDiscrip2, setIsOpenDiscrip2] = useState(false);
+  const [isOpenDiscrip3, setIsOpenDiscrip3] = useState(false);
   const { dataGelary, setDataGelary } = dataGelaryStore()
   // const sizeDef = ['XXS', 'XS', 'S', 'L', 'XL', 'XXL']
   // const [idProduct, setIdProduct] = useState(0)
@@ -73,7 +78,7 @@ export default function Prodect() {
   useEffect(() => {
     if (haveSize.length > 0) {
       setSizeVibor(haveSize[0])
-      setColorVibor(findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values[0].name)
+      setColorVibor(findeElement?.attributes.find(atr => atr.productAttributeId == 1)?.attributeValues[0].name)
     }
   }, [haveSize, findeElement])
 
@@ -95,7 +100,7 @@ export default function Prodect() {
   useEffect(() => {
     if (findeElement?.attributes) {
       const arrSize = []
-      findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map(el => {
+      findeElement?.attributes.find(atr => atr?.productAttributeId == 2)?.attributeValues.map(el => {
         arrSize.push(el.name)
       })
 
@@ -116,7 +121,7 @@ export default function Prodect() {
           {
             id: id,
             title: findeElement?.name,
-            name: findeElement?.short_description,
+            name: findeElement?.shortDescription,
             price: findeElement?.price,
             size: sizeVibor, count: 1,
             titleImg: findeElement?.images?.[0],
@@ -128,7 +133,7 @@ export default function Prodect() {
           {
             id: id,
             title: findeElement?.name,
-            name: findeElement?.short_description,
+            name: findeElement?.shortDescription,
             price: findeElement?.price,
             size: sizeVibor, count: count || 1,
             titleImg: findeElement?.images?.[0],
@@ -160,14 +165,14 @@ export default function Prodect() {
     title: findeElement?.meta_title,
     description: findeElement?.meta_keywords,
     url: location?.pathname,
-    image: findeElement?.images?.[0]?.src,
+    image: findeElement?.images?.[0],
     siteName: 'ELEVEN ISLANDS',
     keywords: findeElement?.meta_descriptioт
   };
 
   useEffect(() => {
-    if (findeElement?.attributes?.find(atr => atr?.product_attribute_id == 1)?.attribute_values?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]) {
-      localStorage.setItem('colorVibor', findeElement?.attributes?.find(atr => atr?.product_attribute_id == 1)?.attribute_values?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]);
+    if (findeElement?.attributes?.find(atr => atr?.productAttributeId == 1)?.attributeValues?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]) {
+      localStorage.setItem('colorVibor', findeElement?.attributes?.find(atr => atr?.productAttributeId == 1)?.attributeValues?.filter(el => el?.name?.split("|")?.[1] === id)?.[0]?.name?.split("|")?.[0]);
     }
   }, [findeElement])
 
@@ -198,8 +203,8 @@ export default function Prodect() {
               findeElement?.images.map((prev, i) => (
                 <img onClick={() => setModalOpen({
                   open: true,
-                  img: prev.src
-                })} key={i} src={prev.src} alt="imgProduct" />
+                  img: prev
+                })} key={i} src={prev} alt="imgProduct" />
               )
               )
             }
@@ -208,7 +213,7 @@ export default function Prodect() {
             <div className='contectProductId_phone'>
               <Slider {...settingsGelary}>
                 {findeElement?.images?.map((prev, i) => {
-                  console.log(prev.src)
+                  console.log(prev)
                   return (
                     <img
                       // style={{
@@ -218,7 +223,7 @@ export default function Prodect() {
                       // }}
                       className='img_phone_items'
                       key={i}
-                      src={prev.src}
+                      src={prev}
                       alt="imgProduct"
                     />
                   )
@@ -229,19 +234,19 @@ export default function Prodect() {
           <div className='contectProductId__info'>
             {/* Prodect{id} */}
             <div className='header-div-product'>
-              <img src={NewCollection} alt="NewCollection" />
+              {findeElement?.NewCollection && <img src={NewCollection} alt="NewCollection" />}
               <div style={{ width: '300px' }}>
-                <h1>{findeElement?.short_description}</h1>
+                <h1>{findeElement?.shortDescription}</h1>
                 {/* <h1>{findeElement?.name}</h1> */}
-                {/* <p>{findeElement?.short_description}</p> */}
+                <p>{findeElement?.descriptionProduct}</p>
               </div>
-              <div className='price-product'>
-                {findeElement.old_price != 0 && <h4 className='skitka'> <>{findeElement?.old_price} ₽</></h4>}
-                <h4><span>{findeElement?.price}</span> ₽</h4>
+              <div className='price-product '>
+                {findeElement.discount != 0 && <h4 className='skitka'> <>{findeElement?.price} ₽</></h4>}
+                <h4><span>{findeElement.discount != 0 ? findeElement?.discount : findeElement?.price}</span> ₽</h4>
               </div>
             </div>
             {useMediaQuery(`(max-width: ${widthLap})`) ?
-              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile, element: {priceDalymi: findeElement?.price / 4, phone: true}})}>
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgMobile, element: { priceDalymi: findeElement?.price / 4, phone: true } })}>
                 <div>
                   <img src={dalymiIcon} alt="dalymiIcon" />
                   <p>4 платежа по {findeElement?.price / 4} ₽</p>
@@ -249,7 +254,7 @@ export default function Prodect() {
                 <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
               </div>
               :
-              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgPc, element: {priceDalymi: findeElement?.price / 4, type: true, }})}>
+              <div className='block-dalymi' onClick={() => setModalOpen({ open: true, img: DalymiImgPc, element: { priceDalymi: findeElement?.price / 4, type: true, } })}>
                 <div>
                   <img src={dalymiIcon} alt="dalymiIcon" />
                   <p>4 платежа по {findeElement?.price / 4} ₽</p>
@@ -259,12 +264,13 @@ export default function Prodect() {
             <div className="color-div-product">
               <h1>Другие цвета</h1>
               <div>
-                {findeElement?.attributes && findeElement?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
+                {findeElement?.attributes && findeElement?.attributes.find(atr => atr.productAttributeId == 1)?.attributeValues.map((el, i) => (
                   <Link to={`/product/${el.name.split("|")[1]}`} key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
                     <nav onClick={() => {
                       localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       setColorVibor(el.name.split("|")[0])
-                    }} style={{ background: el.name.split("|")[0] }}></nav>
+                      // el.name.split("|")[0]
+                    }} style={{ background: "#" + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff"  &&  '1px solid #333', borderRadius: '50%' }} ></nav>
                   </Link>
                 ))}
               </div>
@@ -277,7 +283,7 @@ export default function Prodect() {
                 {useMediaQuery(`(max-width: ${widthLap})`) && <p style={{ cursor: 'pointer' }} onClick={() => setModalOpen({ open: true, img: popupPc })}><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
               </nav>
               <div>
-                {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.product_attribute_id == 2)?.attribute_values.map((el, i) => {
+                {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.productAttributeId == 2)?.attributeValues.map((el, i) => {
                   return (
                     <nav className={el.quantity == 0 && `size-none`} key={i} onClick={() => { el.quantity != 0 && setSizeVibor(el.name) }} style={{ background: el.name == sizeVibor && '#408759', color: el.name == sizeVibor && '#fff', borderColor: el.name == sizeVibor && 'transparent' }}>
                       {el.name}
@@ -394,12 +400,39 @@ export default function Prodect() {
                   {isOpenDiscrip && (
                     <CSSTransition timeout={300} classNames="fade" >
                       <div className='info-d-product' style={{ padding: '10px 0' }}>
-                        <div style={{ fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: findeElement?.full_description }} />
+                        <div style={{ fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: findeElement?.fullDescription }} />
                       </div>
                     </CSSTransition>
                   )}
                 </TransitionGroup>
               </div>
+              <div className='dop-info-product'>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    padding: '10px 0'
+                  }}
+                  onClick={() => setIsOpenDiscrip3(!isOpenDiscrip3)}
+                >
+                  <h2 style={{ margin: 0 }}>Уход</h2>
+                  <span style={{ fontSize: '24px' }}>
+                    {isOpenDiscrip3 ? (<PiMinus />) : (<PiPlus />)}
+                  </span>
+                </div>
+                <TransitionGroup style={{ height: 'auto' }}>
+                  {isOpenDiscrip3 && (
+                    <CSSTransition timeout={300} classNames="fade" >
+                      <div className='info-d-product' style={{ padding: '10px 0' }}>
+                        <div style={{ fontSize: '14px' }} dangerouslySetInnerHTML={{ __html: findeElement?.care }} />
+                      </div>
+                    </CSSTransition>
+                  )}
+                </TransitionGroup>
+              </div>
+              {/* care */}
               <div className='dop-info-product'>
                 <div
                   style={{

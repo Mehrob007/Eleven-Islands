@@ -56,15 +56,20 @@ export default function Layout() {
   const guestFun = async () => {
     if (!localStorage.getItem('token') || errorToken) {
       try {
-        const res = await axios.post('https://elevenislands.ru/token', {
-          guest: true,
+        console.log({
+          email: "guest",
+          password: "guest"
+        });
+        const res = await axios.post('https://backendeleven.ru/Token/get-token', {
+          "email": "guest",
+          "password": "guest"
         })
-        localStorage.setItem('token', res.data.access_token)
+        localStorage.setItem('token', res.data)
         localStorage.setItem('customerId', res.data.customer_id)
       }
       catch (error) {
-        // console.error(error);
-        // setErrorToken(error)
+        console.error(error);
+        setErrorToken(error)
       }
     }
   }

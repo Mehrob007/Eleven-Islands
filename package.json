@@ -28,6 +28,7 @@
     "react-router-dom": "^6.26.1",
     "react-slick": "^0.30.2",
     "react-transition-group": "^4.4.5",
+    "react-yandex-maps": "^4.6.0",
     "slick-carousel": "^1.8.1",
     "vite-plugin-ssr": "^0.4.142",
     "zustand": "^4.5.5"

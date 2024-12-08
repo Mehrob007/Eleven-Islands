@@ -72,7 +72,8 @@ export default function Box2({ arrDataImg }) {
               >
                 <div className='itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7'
                   style={{
-                    background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / cover no-repeat`,
+                    background: `url('${hoveredIndex !== i ? item?.images[0] : item?.images?.[1]}') center / cover no-repeat`,
+                    // background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / cover no-repeat`,
                   }}>
                   {/* <div className='h-full w-full object-cover object-center group-hover:opacity-75'
                     
@@ -88,7 +89,7 @@ export default function Box2({ arrDataImg }) {
                     }} style={{ background: el.name.split("|")[0] }}></nav>
                 </a> */}
 
-                {item?.attributes.find(atr => atr?.product_attribute_id == 1)?.attribute_values.map((el, i) => (
+                {item?.attributes.find(atr => atr?.productAttributeId == 1)?.attributeValues.map((el, i) => (
                   // <div
                   //   key={i}
                   //   style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}
@@ -105,14 +106,17 @@ export default function Box2({ arrDataImg }) {
                       // localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       // setColorVibor(el.name.split("|")[0])
                       document.location.href = `/product/${el.name.split("|")[1]}`
-                    }} style={{ background: el.name.split("|")[0] }}></nav>
+                    }} style={{ background: "#" + el.name.split("|")[0] }}></nav>
                   </div>
                 ))}
               </div>
 
               <div className='itemInfoProduct'>
-                <h1 className='productTitle'>{item?.short_description}</h1>
-                <h1 className='productPrice'>{item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
+                <h1 className='productTitle'>{item?.shortDescription}</h1>
+                <div className='price__div price-product'>
+                  {item.discount != 0 && <h4 className='skitka' style={{ fontSize: "16px" }}> <>{item?.price} ₽</></h4>}
+                  <h1 className='productPrice'  style={{ fontSize: "16px" }}>{item.discount != 0 ? item?.discount : item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
+                </div>
               </div>
               {/* <Link to={`/product/${item?.id}`}>
                 <label className='add-product-btn'>
@@ -159,14 +163,14 @@ export default function Box2({ arrDataImg }) {
                   </div>
                 </Link>
                 <div className='color-product'>
-                  {item?.attributes.find(atr => atr.product_attribute_id == 1)?.attribute_values.map((el, i) => (
+                  {item?.attributes.find(atr => atr.productAttributeId == 1)?.attributeValues.map((el, i) => (
                     <div key={item?.id} style={{ background: el.name }}>
                     </div>
                   ))}
                 </div>
 
                 <div className='itemInfoProduct'>
-                  <h1 className='productTitle'>{item?.short_description}</h1>
+                  <h1 className='productTitle'>{item?.shortDescription}</h1>
                   <h1 className='productPrice'>{item?.price} ₽</h1>
                 </div>
 

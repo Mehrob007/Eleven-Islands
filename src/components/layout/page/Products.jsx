@@ -58,11 +58,11 @@ export default function Products() {
 
 
 
-    const getDataStaffs = () => {
-        fetchPhotos({
-            page: count,
+    const getDataStaffs = async () => {
+        await fetchPhotos({
+            page: count || 1,
             limit: 50,
-            CategoryId: dateSearch?.CategoryId
+            categoryId: dateSearch?.categoryId
         })
 
     }
@@ -73,32 +73,29 @@ export default function Products() {
     ];
 
     const getTypeElement = async () => {
-        const token = localStorage.getItem('token')
-        try {
-            const response = await apiClient.get(`categories?Limit=${100}&Page=${1}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            const newPhotos = response.data.categories;
-            // console.log('==============111======================');
-            // console.log(newPhotos);
-            // console.log('====================================');
-            setTypeSelect([{ label: 'Все типы', value: '' }, ...newPhotos.map((e) => ({
-                label: e.name, value: e.id
-            }))])
-        } catch (error) {
-            console.error("Error fetching photos:", error);
-        }
+        // const token = localStorage.getItem('token')
+        // try {
+        //     const response = await apiClient.get(`categories?Limit=${100}&Page=${1}`, {
+        //         headers: {
+        //             Authorization: `Bearer ${token}`
+        //         }
+        //     });
+        //     const newPhotos = response.data.categories;
+        //     // console.log('==============111======================');
+        //     // console.log(newPhotos);
+        //     // console.log('====================================');
+        //     setTypeSelect([{ label: 'Все типы', value: '' }, ...newPhotos.map((e) => ({
+        //         label: e.name, value: e.id
+        //     }))])
+        // } catch (error) {
+        //     console.error("Error fetching photos:", error);
+        // }
     }
 
     useEffect(() => {
         getTypeElement()
     }, [])
 
-    useEffect(() => {
-        getDataStaffs()
-    }, [])
     // const typeSelect = [
     //     { label: 'Все типы', value: 'all' },
     //     { label: 'Топы', value: 'tops' },
@@ -136,11 +133,6 @@ export default function Products() {
             ]);
         }
     }, [photos]);
-
-
-
-
-
     useEffect(() => {
         const handleScroll = () => {
             const scrollPosition = window.innerHeight + window.scrollY;
@@ -156,15 +148,13 @@ export default function Products() {
     }, [isFetching]);
 
     useEffect(() => {
-        // Запрос данных при изменении count
         const fetchData = async () => {
-            // Загрузка данных
             await fetchPhotos({
-                CategoryId: dateSearch?.CategoryId,
+                categoryId: dateSearch?.categoryId,
                 limit: 50,
                 page: count
             });
-            setIsFetching(false); // Сбрасываем флаг после загрузки
+            setIsFetching(false); 
         };
 
         if (isFetching) {
@@ -174,14 +164,12 @@ export default function Products() {
 
     useEffect(() => {
         if (selectedSizes === '*' || !selectedSizes) {
-            // If "All Sizes" is selected or selectedSizes is empty, reset to original data
             setdataGetSearsh(photos);
         } else {
-            // Filter by selectedSizes
             setdataGetSearsh(prevState => prevState.filter(el =>
                 el.attributes?.some(attr =>
-                    attr.product_attribute_id === 2 &&
-                    attr.attribute_values.some(attrValue =>
+                    attr.productAttributeId === 2 &&
+                    attr.attributeValues.some(attrValue =>
                         Array.isArray(selectedSizes)
                             ? selectedSizes.includes(attrValue.name)
                             : attrValue.name === selectedSizes
@@ -189,10 +177,13 @@ export default function Products() {
                 )
             ));
         }
-    }, [selectedSizes, photos]); // Ensure photos is a dependency to handle resets
+    }, [selectedSizes, photos]);
+
+    console.log("selectedSizes", selectedSizes);
+
 
     console.log('====================================');
-    console.log(dataGetSearsh);
+    console.log(photos);
     console.log('====================================');
     useEffect(() => {
         console.log("Sorting triggered with stemsSort:", stemsSort);
@@ -229,7 +220,7 @@ export default function Products() {
                             onClick={(id) => {
                                 setCount(0)
                                 setdataGetSearsh([])
-                                setDateSearch({ ...dateSearch, CategoryId: id })
+                                setDateSearch({ ...dateSearch, categoryId: id })
                             }}
                             title='Тип продукции' open={openSelect === "type"} toggle={() => toggleSelect("type")} value={typeSelect} />
                         {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
@@ -273,7 +264,7 @@ export default function Products() {
                 {/* {fetching && <h1 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h1>}  */}
                 <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
                 <SendEmail />
-                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i >= 8)} />
+                <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />
             </div>
             <ModalFilter
                 modalStateFilter={modalStateFilter}
@@ -284,7 +275,7 @@ export default function Products() {
                             onClick={(id) => {
                                 setCount(0)
                                 setdataGetSearsh([])
-                                setDateSearch({ ...dateSearch, CategoryId: id })
+                                setDateSearch({ ...dateSearch, categoryId: id })
                             }}
                             resetValue={resetValue}
                             title='Тип продукции' phone={true} value={typeSelect} />
