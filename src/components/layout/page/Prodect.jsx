@@ -234,8 +234,8 @@ export default function Prodect() {
           <div className='contectProductId__info'>
             {/* Prodect{id} */}
             <div className='header-div-product'>
-              {findeElement?.NewCollection && <img src={NewCollection} alt="NewCollection" />}
-              <div style={{ width: '300px' }}>
+              {findeElement?.newCollection && <img src={NewCollection} alt="NewCollection" />}
+              <div style={{ width: '300px', height: '90px' }}>
                 <h1>{findeElement?.shortDescription}</h1>
                 {/* <h1>{findeElement?.name}</h1> */}
                 <p>{findeElement?.descriptionProduct}</p>
@@ -270,7 +270,7 @@ export default function Prodect() {
                       localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       setColorVibor(el.name.split("|")[0])
                       // el.name.split("|")[0]
-                    }} style={{ background: "#" + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff"  &&  '1px solid #333', borderRadius: '50%' }} ></nav>
+                    }} style={{ background:  el.name[0] !== "#" ? "#" : "" + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff"  &&  '1px solid #333', borderRadius: '50%' }} ></nav>
                   </Link>
                 ))}
               </div>

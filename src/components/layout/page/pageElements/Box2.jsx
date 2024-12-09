@@ -106,7 +106,7 @@ export default function Box2({ arrDataImg }) {
                       // localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       // setColorVibor(el.name.split("|")[0])
                       document.location.href = `/product/${el.name.split("|")[1]}`
-                    }} style={{ background: "#" + el.name.split("|")[0] }}></nav>
+                    }} style={{ background: el.name[0] !== "#" ? "#" : "" + el.name.split("|")[0] }}></nav>
                   </div>
                 ))}
               </div>
