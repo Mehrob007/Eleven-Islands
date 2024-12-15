@@ -132,7 +132,7 @@ export default function comGelaryAll() {
         <div className='comGelaryAll'>
             <div>
                 <div className="comGelaryAll__box">
-                    <h1 >{dataGelary.title}</h1>
+                    <h2 >{dataGelary.title}</h2>
                 </div>
                 <div className="comGelaryAll__contentBox">
                     {dataGelary.data.map((el, i) => (

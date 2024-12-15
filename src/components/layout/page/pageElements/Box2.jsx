@@ -106,16 +106,16 @@ export default function Box2({ arrDataImg }) {
                       // localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       // setColorVibor(el.name.split("|")[0])
                       document.location.href = `/product/${el.name.split("|")[1]}`
-                    }} style={{ background: el.name[0] !== "#" ? "#" : "" + el.name.split("|")[0] }}></nav>
+                    }} style={{ backgroundColor: el.name[0] !== "#" && "#"  + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff" && '1px solid #333', }}></nav>
                   </div>
                 ))}
               </div>
 
               <div className='itemInfoProduct'>
-                <h1 className='productTitle'>{item?.shortDescription}</h1>
+                <h2 className='productTitle'>{item?.shortDescription}</h2>
                 <div className='price__div price-product'>
                   {item.discount != 0 && <h4 className='skitka' style={{ fontSize: "16px" }}> <>{item?.price} ₽</></h4>}
-                  <h1 className='productPrice'  style={{ fontSize: "16px" }}>{item.discount != 0 ? item?.discount : item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h1>
+                  <h2 className='productPrice'  style={{ fontSize: "16px" }}>{item.discount != 0 ? item?.discount : item?.price} <span style={{ fontFamily: 'font-book, sans-serif' }}>₽</span></h2>
                 </div>
               </div>
               {/* <Link to={`/product/${item?.id}`}>
@@ -130,8 +130,8 @@ export default function Box2({ arrDataImg }) {
               {/* </Link> */}
 
             </div>
-          </>)) : <h1>Loading...</h1>}
-          {/* {loading && <h1 style={{ textAlign: 'center' }}>loading...</h1>} */}
+          </>)) : <h2>Loading...</h2>}
+          {/* {loading && <h2 style={{ textAlign: 'center' }}>loading...</h2>} */}
         </div>
       </div>
     </div>
@@ -170,8 +170,8 @@ export default function Box2({ arrDataImg }) {
                 </div>
 
                 <div className='itemInfoProduct'>
-                  <h1 className='productTitle'>{item?.shortDescription}</h1>
-                  <h1 className='productPrice'>{item?.price} ₽</h1>
+                  <h2 className='productTitle'>{item?.shortDescription}</h2>
+                  <h2 className='productPrice'>{item?.price} ₽</h2>
                 </div>
 
               </Link>
@@ -184,4 +184,4 @@ export default function Box2({ arrDataImg }) {
                   <FiPlus />
                 </span>
               </label></Link>
-            </div></>)) : <h1>Loading...</h1>} */}
+            </div></>)) : <h2>Loading...</h2>} */}

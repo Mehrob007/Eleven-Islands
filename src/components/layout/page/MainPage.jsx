@@ -227,8 +227,8 @@ export default function MainPage() {
             </div>
 
             <div className="comRightColl">
-              <h1>New collection</h1>
-              <h1>ESSENTIAL</h1>
+              <h2>New collection</h2>
+              <h2>ESSENTIAL</h2>
               {/* <img src={comRightColl} alt="comRightColl" /> */}
             </div>
           </div>
@@ -236,7 +236,7 @@ export default function MainPage() {
       </div>
       <div className="header headerBox2 ">
         <div className='headerCom1'>
-          <h1>Essential collection</h1>
+          <h2>Essential collection</h2>
         </div>
         {useMediaQuery(`(min-width: ${widthLap})`) &&
           <div className='headerCom2'>
@@ -259,7 +259,7 @@ export default function MainPage() {
         <div className="box3">
           <div className="header">
             <div className='headerCom1'>
-              <h1>Фотогалерея</h1>
+              <h2>Фотогалерея</h2>
             </div>
             <div className='headerCom2 buttonSlider'>
               <button
@@ -314,7 +314,7 @@ export default function MainPage() {
       {/* <div className="box4">
         <div className="header">
           <div className='headerCom1'>
-            <h1>Блог</h1>
+            <h2>Блог</h2>
           </div>
           {useMediaQuery(`(min-width: ${widthLap})`) &&
             <div className='headerCom2'>

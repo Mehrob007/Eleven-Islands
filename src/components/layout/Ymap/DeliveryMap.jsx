@@ -1,73 +1,104 @@
 import { useEffect } from 'react';
-// import { YMaps, Map, Placemark, Polyline } from 'react-yandex-maps';
-// import { calculateOrder } from './apiFunctions';
+import apiClient from '../../../utils/api';
 
-const DeliveryMap = () => {
+const DeliveryWidget = ({ city, setDeliveryPrice }) => {
     useEffect(() => {
-        // Загружаем скрипт виджета
-        const script = document.createElement('script');
-        script.src = 'https://ndd-widget.landpro.site/widget.js';
-        script.async = true;
-
-        document.body.appendChild(script);
-
-        // Функция для инициализации виджета
-        const startWidget = () => {
-            if (window.YaDelivery) {
-                window.YaDelivery.createWidget({
-                    containerId: 'delivery-widget',
-                    params: {
-                        city: 'Москва',
-                        size: {
-                            height: '450px',
-                            width: '100%',
+        // Функция для добавления скрипта виджета
+        const addWidgetScript = () => {
+            const script = document.createElement('script');
+            script.src = 'https://ndd-widget.landpro.site/widget.js';
+            script.async = true;
+            script.onload = () => {
+                if (window.YaDelivery) {
+                    console.log('Инициализация виджета...');
+                    window.YaDelivery.createWidget({
+                        containerId: 'delivery-widget',
+                        params: {
+                            city: city?.name || "Москва",
+                            delivery_price: "от 200",
+                            show_select_button: false,
+                            size: {
+                                height: '650px',
+                                width: '100%',
+                            },
+                            source_platform_station: '05e809bb-4521-42d9-a936-0fb0744c0fb3',
+                            physical_dims_weight_gross: 10000,
+                            delivery_term: 'от 1 дня',
+                            filter: {
+                                type: ['pickup_point', 'terminal'], // Добавьте оба типа для большей гибкости
+                                is_yandex_branded: false,           // Уберите фильтр на "брендированные" пункты
+                                // payment_methods: [],                // Уберите фильтр на способы оплаты
+                            }
                         },
-                        source_platform_station: '05e809bb-4521-42d9-a936-0fb0744c0fb3',
-                        physical_dims_weight_gross: 10000,
-                        delivery_price: 'от 100',
-                        delivery_term: 'от 1 дня',
-                        show_select_button: true,
-                        filter: {
-                            type: ['pickup_point', 'terminal'],
-                            is_yandex_branded: false,
-                            payment_methods: ['already_paid', 'card_on_receipt'],
-                            payment_methods_filter: 'or',
-                        },
+                    });
+                } else {
+                    console.error('YaDelivery не загружен!');
+                }
+            };
+
+
+            document.body.appendChild(script);
+
+            return () => {
+                document.body.removeChild(script);
+            };
+        };
+
+        addWidgetScript();
+
+        // Обработчик события выбора ПВЗ
+        const handlePointSelected = async (event) => {
+            const token = localStorage.getItem("token")
+            const { detail } = event;
+            console.log('ID:', detail.id);
+            console.log('Адрес:', detail.address.full_address);
+            console.log('Страна:', detail.address.country);
+            console.log('Город:', detail.address.locality);
+            console.log('Улица:', detail.address.street);
+            console.log('Дом:', detail.address.house);
+            console.log('Комментарий:', detail.address.comment);
+            try {
+                const res = await apiClient.post('https://backendeleven.ru/YandexOrder/calculate-order', {
+                    "destination": {
+                        "address": detail.address.full_address
                     },
-                });
-            }
+                    "source": {
+                        "address": detail.address.street
+                    },
+                    "tariff": "time_interval",
+                    "total_weight": 2000,
+                    "places": [
+                        {
+                            "physical_dims": {
+                                "weight_gross": 2000,
+                                "dx": 25,
+                                "dy": 10,
+                                "dz": 15
+                            }
+                        }
+                    ]
+                },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                )
+                console.log(res.data);
+                setDeliveryPrice(res.data.pricing_total.split(' ')[0])
+
+            } catch { (el) => console.error(el) }
         };
-
-        // Слушаем событие загрузки виджета
-        const handleWidgetLoad = () => {
-            startWidget();
-        };
-
-        document.addEventListener('YaNddWidgetLoad', handleWidgetLoad);
-
-        // Слушаем событие выбора пункта выдачи
-        const handlePointSelected = (event) => {
-            const data = event.detail;
-            console.log('ID:', data.id);
-            console.log('Адрес:', data.address.full_address);
-            console.log('Страна:', data.address.country);
-            console.log('Город:', data.address.locality);
-            console.log('Улица:', data.address.street);
-            console.log('Дом:', data.address.house);
-            console.log('Комментарий:', data.address.comment);
-        };
-
         document.addEventListener('YaNddWidgetPointSelected', handlePointSelected);
-
-        // Удаляем обработчики при размонтировании компонента
         return () => {
-            document.removeEventListener('YaNddWidgetLoad', handleWidgetLoad);
             document.removeEventListener('YaNddWidgetPointSelected', handlePointSelected);
-            document.body.removeChild(script);
         };
     }, []);
 
-    return <div id="delivery-widget" style={{ width: '100%', height: '450px' }} />;
+    return (
+        <div id="delivery-widget"></div>
+    );
 };
 
-export default DeliveryMap;
+export default DeliveryWidget;
+

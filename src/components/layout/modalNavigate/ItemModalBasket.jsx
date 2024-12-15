@@ -75,7 +75,7 @@ export default function ItemModalBasket({ see = false }) {
             </div>
             <div className='modalBasketInfo'>
                 <div className='info'>
-                    <h1 >{product?.title}</h1>
+                    <h2 >{product?.title}</h2>
                     <p>Цена: <span style={{ color: '#262626' }}>{product?.price} руб</span></p>
                     <p>Размер: <span style={{ color: '#262626' }}>{product?.size}</span></p>
                 </div>

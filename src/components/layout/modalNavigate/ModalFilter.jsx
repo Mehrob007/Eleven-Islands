@@ -18,7 +18,7 @@ export default function ModalFilter({
             <div className="componentModalFilter">
                 <div className="componentModalHeaderFilter">
                     <button onClick={() => setModalStateFilter(false)}><img src={CloasModal} alt="CloasModal" /></button>
-                    <h1>Фильтр</h1>
+                    <h2>Фильтр</h2>
                     <button onClick={() => setResetValue(true)}>Сбросить</button>
                 </div>
                 <div className='FilterBox'>

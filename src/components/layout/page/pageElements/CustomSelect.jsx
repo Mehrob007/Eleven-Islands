@@ -68,7 +68,7 @@ export default function CustomSelect({
     }
     if (phone) {
         return (<div className="phone-select-filter">
-            <h1>{title}</h1>
+            <h2>{title}</h2>
             <ul className={`${title == 'Размер' ? 'phone-size-filter-ul' : 'flex-col'}  pt-[15px] bg-white text-black w-[250px] flex  gap-[15px]`}>
                 {value && value?.map((el) => (
                     <li onClick={() => {

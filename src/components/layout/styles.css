@@ -233,10 +233,10 @@ header{
     gap: 3px;
    z-index: 2;
 }
-.comRightColl > h1:first-child{
+.comRightColl > h2:first-child{
     font-size: 50px;
 }
-.comRightColl > h1:last-child{
+.comRightColl > h2:last-child{
     font-size: 29px;
     letter-spacing: 2px;
 
@@ -289,7 +289,7 @@ header{
     /* width: 244px; */
     text-align: center;
 }
-.headerCom1 > h1{
+.headerCom1 > h2{
     color: #262626;
 }
 .headerCom2{
@@ -381,7 +381,7 @@ header{
     align-items: center;
     justify-content: space-between;
 }
-.sendEmailTop > h1{
+.sendEmailTop > h2{
     font-family: AGAvantGardeCyr;
     font-size: 28px;
     font-weight: 400;
@@ -670,7 +670,7 @@ footer{
     flex-direction: column;
     align-items: start;
 }
-.footerContentCom2 > h1{
+.footerContentCom2 > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -702,7 +702,7 @@ footer{
     gap: 25px;
     align-items: start;
 }
-.footerContentCom3 > h1{
+.footerContentCom3 > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -751,7 +751,7 @@ footer{
     color: white;
     text-align: left;
 }
-.creatorCom > h1{
+.creatorCom > h2{
     font-family: "Unbounded", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
@@ -775,7 +775,7 @@ select{
     outline: none;
     cursor: pointer;
 }
-.filterBar > h1{
+.filterBar > h2{
     font-family: AGAvantGardeCyr;
     font-size: 28px;
     font-weight: 400;
@@ -941,7 +941,7 @@ select{
     display: grid;
     grid-template-columns: 80px 1fr 80px;
 }
-.componentModalHeader > div > h1{
+.componentModalHeader > div > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -980,7 +980,7 @@ select{
     position: relative; 
 }
 
-.componentModalHeader h1 {
+.componentModalHeader h2 {
     position: absolute; 
     left: 50%;
     transform: translateX(-50%);
@@ -1001,7 +1001,7 @@ select{
     align-items: center;
     /* grid-template-columns: 40px 1fr 40px; */
 }
-.componentModalHeaderSearch > div > h1{
+.componentModalHeaderSearch > div > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -1083,7 +1083,7 @@ select{
     height: 95%;
     gap: 10px;
 }
-.dontProductBusket > h1{
+.dontProductBusket > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -1109,7 +1109,7 @@ select{
     flex-direction: column;
     gap: 10px;
 }
-.modalBasketInfo > .info > h1{
+.modalBasketInfo > .info > h2{
     font-family: AGAvantGardeCyr;
     font-size: 14px;
     font-weight: 400;
@@ -1248,7 +1248,7 @@ input[type="checkbox"] {
     justify-content: space-between;
     flex-direction: column;
   }
-  .box-login > h1, .h1-login-box{
+  .box-login > h2, .h2-login-box{
     font-family: AGAvantGardeCyr;
     font-size: 28px;
     font-weight: 400;
@@ -1368,7 +1368,7 @@ input[type="checkbox"] {
     justify-content: start;
     gap: 10px;
 }
-.header-div-product > div > h1{
+.header-div-product > div > h2{
     font-family: AGAvantGardeCyr;
     font-size: 28px;
     font-weight: 400;
@@ -1419,7 +1419,7 @@ input[type="checkbox"] {
 .count-product > button{
     width: 20px;
 }
-.color-div-product > h1{
+.color-div-product > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -1469,7 +1469,7 @@ input[type="checkbox"] {
     align-items: start;
     justify-content: start;
 }
-.size-div-product > h1{
+.size-div-product > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -1630,7 +1630,7 @@ input[type="checkbox"] {
     color: #262626;
     padding: 0 50px;
 }
-.PlacingAnOrder > h1{
+.PlacingAnOrder > h2{
     font-family: AGAvantGardeCyr;
     font-size: 28px;
     font-weight: 400;
@@ -1658,7 +1658,7 @@ input[type="checkbox"] {
     color: #262626;
     margin-bottom: 60px;
 }
-.PlacingAnOrder__form__1 > h1{
+.PlacingAnOrder__form__1 > h2{
     font-family: AGAvantGardeCyr;
     font-size: 22px;
     font-weight: 400;
@@ -1764,8 +1764,8 @@ input[type="checkbox"] {
     max-width: 650px;
     min-width: 650px;
     width: 100%;
-    height: 300px;
-    border: 1px solid #408759;
+    height: 650px;
+    /* border: 1px solid #408759; */
     position: relative;
 }
 .Addres{
@@ -2046,7 +2046,7 @@ input[type="checkbox"] {
     .allPhotoButton{
         padding-top: 10px;
     }
-    .PlacingAnOrder__form__1 > h1{
+    .PlacingAnOrder__form__1 > h2{
         font-size: 14px;
     }
     .PlacingAnOrder__form__raschot__price > p{
@@ -2058,7 +2058,7 @@ input[type="checkbox"] {
     .PlacingAnOrder__box{
         margin-top: 30px;
     }
-    .PlacingAnOrder > h1{
+    .PlacingAnOrder > h2{
         font-size:16px ;
     }
     .PlacingAnOrder__form__div__1{
@@ -2107,7 +2107,7 @@ input[type="checkbox"] {
         font-size: 10px;
         z-index: 2;
     }
-    .advertising-h1-1{
+    .advertising-h2-1{
         display: none;
     }
     .PlacingAnOrder{
@@ -2281,7 +2281,7 @@ input[type="checkbox"] {
         height: 60px;
         justify-content: start;
     }
-    .sendEmailTop > h1{
+    .sendEmailTop > h2{
         font-family: AGAvantGardeCyr;
         font-size: 16px;
         font-weight: 400;
@@ -2489,7 +2489,7 @@ input[type="checkbox"] {
         justify-content: center;
         gap: 7px;
     }
-    .filterBar > h1{
+    .filterBar > h2{
         border-bottom: 1.5px solid #262626;
         padding-bottom: 4px;
         font-family: AGAvantGardeCyr;
@@ -2549,7 +2549,7 @@ input[type="checkbox"] {
         justify-content: space-between;
         padding: 17px 13px 25px;
     }
-    .componentModalHeaderFilter > h1{
+    .componentModalHeaderFilter > h2{
         margin-left: 104px;
         margin-right: 69px;
         font-family: AGAvantGardeCyr;
@@ -2588,7 +2588,7 @@ input[type="checkbox"] {
         padding: 0 20px;
         align-items: center;
     }
-    .componentModalHeader h1{
+    .componentModalHeader h2{
         font-size: 16px;
     }
     .componentModalHeader button{
@@ -2691,7 +2691,7 @@ input[type="checkbox"] {
         width: 96px;
         height: 16px;
     }
-    .header-div-product > div > h1{
+    .header-div-product > div > h2{
         font-family: AGAvantGardeCyr;
         font-size: 16px;
         font-weight: 400;
@@ -2749,7 +2749,7 @@ input[type="checkbox"] {
     .button-div-product > .button-product{
         min-width: 100%;
     }
-    .color-div-product > h1, .size-div-product > h1, .headerCom1 > h1 {
+    .color-div-product > h2, .size-div-product > h2, .headerCom1 > h2 {
         font-family: AGAvantGardeCyr;
         font-size: 16px;
         font-weight: 400;
@@ -2807,7 +2807,7 @@ input[type="checkbox"] {
     flex-direction: column;
     gap: 10px;
 }
-.dontProductBusket > h1{
+.dontProductBusket > h2{
     font-family: AGAvantGardeCyr;
     font-size: 16px;
     font-weight: 400;

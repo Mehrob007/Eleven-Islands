@@ -37,7 +37,7 @@ export default function SendEmail() {
     return (
         <div className="sendEmail">
             <div className='sendEmailTop'>
-                <h1>Скоро новый дроп</h1>
+                <h2>Скоро новый дроп</h2>
                 <p>Хочешь узнавать о всех новинках первый?</p>
                 <p>Подпишись на рассылку!</p>
             </div>

@@ -176,3 +176,22 @@ table {
   font-size: 20px;
   color: #4b4b4b;
 }
+.widget__label-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: absolute;
+  padding: 0;
+  right: 10px !important;
+  top: 30% !important;
+  transform: translateY(-12%);
+  width: 24px;
+  height: 24px;
+}
+.widget__input--search.active{
+  width: 100% !important;
+}
+.widget__label-text{
+  display: none;
+}

@@ -115,7 +115,7 @@ export default function Registration() {
             minHeight: useMediaQuery(`(max-width: ${widthLap})`) && '700px'
         }}>
             <div className="box-login" style={{ height: '610px' }}>
-                <h1>Регистрация</h1>
+                <h2>Регистрация</h2>
                 <form onSubmit={loginFunction} className="input-login" style={{ height: '543px' }}>
                     <div className="login-inputs">
                         <label htmlFor="input-name">Имя</label>

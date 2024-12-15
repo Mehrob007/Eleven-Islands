@@ -88,7 +88,6 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
 
     return (
         <>
-           
             <div id="cdek-map" style={{ width: '100%', height: '100%' }}></div>
         </>
     );

@@ -75,7 +75,7 @@ export default function Box3({ images, title }) {
             <div className="box3">
                 <div className="header">
                     <div className='headerCom1'>
-                        <h1>{title}</h1>
+                        <h2>{title}</h2>
                     </div>
                     <div className='headerCom2 buttonSlider'>
                         <button

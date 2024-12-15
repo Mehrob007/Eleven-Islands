@@ -79,13 +79,13 @@ export default function ModalBasket() {
                     {!isLargeScreen ?
                         <div className="componentModalHeader">
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
-                            <h1>Корзина</h1>
+                            <h2>Корзина</h2>
                             <button onClick={DeleteProductsBasket}>Очистить</button>
                         </div>
                         :
                         <div className="componentModalHeader">
                             <button onClick={DeleteProductsBasket}>Очистить</button>
-                            <h1>Корзина</h1>
+                            <h2>Корзина</h2>
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
                         </div>}
 
@@ -93,7 +93,7 @@ export default function ModalBasket() {
                         <ItemModalBasket setPrice={setPrice} />
                     </div>
                     <div className="endPrice">
-                        <h1>Итого:</h1>
+                        <h2>Итого:</h2>
                         <p>{price} руб</p>
                     </div>
                     {price > 0 &&
@@ -106,17 +106,17 @@ export default function ModalBasket() {
                     {!isLargeScreen ?
                         <div className="componentModalHeader">
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
-                            <h1>Корзина</h1>
+                            <h2>Корзина</h2>
                             {/* <button onClick={DeleteProductsBasket}>Очистить</button> */}
                         </div>
                         :
                         <div className="componentModalHeader">
                             {/* <button onClick={DeleteProductsBasket}>Очистить</button> */}
-                            <h1>Корзина</h1>
+                            <h2>Корзина</h2>
                             <button onClick={() => setModalState(false)}><img src={CloasModal} alt="CloasModal" /></button>
                         </div>}
                     <div className="dontProductBusket">
-                        <h1>Тут пока что пусто</h1>
+                        <h2>Тут пока что пусто</h2>
                         <img src={iconBasketGrey} alt="iconShoping" />
                     </div>
                 </div>}

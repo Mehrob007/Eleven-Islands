@@ -28,6 +28,7 @@ const widthLap = '1020px';
 export default function PlacingAnOrder() {
   const [promo, setPromo] = useState({ type: null, procent: null, promocode: "", itogProcent: 0 })
   // const [sity, setSity] = useState("")
+  const [deliveryPrice, setDeliveryPrice] = useState(0)
   const [city, setCity] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   // const navigate = useNavigate();
@@ -36,17 +37,7 @@ export default function PlacingAnOrder() {
   const [paymentError, setPaymentError] = useState(false)
   const [loading, setLoading] = useState(false)
   const [deliveryData, setDeliveryData] = useState([])
-  useEffect(() => {
-    const cartData = localStorage.getItem("dataGelary")
-    if (cartData) {
-      const parse = JSON.parse(cartData)
-      let countPrice = 0
-      parse.forEach(v => {
-        countPrice += v?.price * v.count
-      })
-      setAmountPrice(countPrice)
-    }
-  }, [])
+
   const [formState, setFormState] = useState({
     name: '', // *
     sorname: '',// *
@@ -211,7 +202,7 @@ export default function PlacingAnOrder() {
   }
 
 
-  // const procentDostavki = ((formState.check_box_1 ? 550 : 249) / amountPrice) * 100;
+  // const procentDostavki = ((deliveryPrice) / amountPrice) * 100;
   // console.log(JSON.stringify(localStorage.getItem("dataGelary")));
 
 
@@ -233,7 +224,7 @@ export default function PlacingAnOrder() {
       Comment: formState?.message,
       Number: idProduct,
       DeliveryRecipientCost: {
-        Value: formState.check_box_1 ? 550 : 249,
+        Value: deliveryPrice,
       },
       DeliveryRecipientCostAdv: [
         {
@@ -318,7 +309,7 @@ export default function PlacingAnOrder() {
           //   Items: items,
           //   AcceptedTerms: formState.check_box_3,
           //   PromoCode: promo.promocode,
-          //   DeliverPrice: formState.check_box_1 ? 550 : 249,
+          //   DeliverPrice: deliveryPrice,
           //   city: city
           // }
           // if (formState.check_box_1) {
@@ -375,8 +366,8 @@ export default function PlacingAnOrder() {
               }))
             }
           }
-          // let remainingDiscount = formState.check_box_1 ? 550 : 249;
-          const totalDeliveryCost = formState.check_box_1 ? 550 : 249;
+          // let remainingDiscount = deliveryPrice;
+          const totalDeliveryCost = deliveryPrice;
           const baseDeliveryCost = Math.floor(totalDeliveryCost / items.length);
           const deliveryRemainder = totalDeliveryCost % items.length;
 
@@ -392,7 +383,7 @@ export default function PlacingAnOrder() {
           };
           setLoading(true)
           try {
-            const { data } = await axios.post("https://elevenislands.ru/api/Pay/create-payment", body)
+            const { data } = await axios.post("https://Backendeleven.ru/api/Pay/create-payment", body)
             console.log("payment")
             // await createCdekOrder()
             if (!formState.check_box_1) {
@@ -422,7 +413,7 @@ export default function PlacingAnOrder() {
   );
   const handleSelectCity = (cityName) => {
     console.log("cityname", cityName)
-    setCity(cityName?.name);
+    setCity(cityName);
     setSearchQuery(cityName?.name);
     setShowDropdown(false);
   };
@@ -455,14 +446,24 @@ export default function PlacingAnOrder() {
       setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
     }
   }
-
+  useEffect(() => {
+    const cartData = localStorage.getItem("dataGelary")
+    if (cartData) {
+      const parse = JSON.parse(cartData)
+      let countPrice = 0
+      parse.forEach(v => {
+        countPrice += v?.price * v.count
+      })
+      setAmountPrice(countPrice)
+    }
+  }, [])
   return (
     <div className="PlacingAnOrder">
-      <h1>Оформление</h1>
+      <h2>Оформление</h2>
       <div className="PlacingAnOrder__box">
         <form noValidate onSubmit={placingAnOrder} className="PlacingAnOrder__form">
           <div className="PlacingAnOrder__form__1">
-            <h1>Получатель</h1>
+            <h2>Получатель</h2>
             <div className="PlacingAnOrder__form__div__1" style={{ gap: '12px' }}>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="name">Имя*</label>
@@ -491,7 +492,7 @@ export default function PlacingAnOrder() {
           </div>
 
           <div className="PlacingAnOrder__form__1">
-            <h1>Доставка</h1>
+            <h2>Доставка</h2>
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="sity">Город*</label>
@@ -510,7 +511,11 @@ export default function PlacingAnOrder() {
 
                   {showDropdown && filteredCities.length > 0 && (
                     <ul style={{ border: '1px solid #ccc', padding: '0', margin: '0', top: '95%', zIndex: '99999', listStyle: 'none', position: 'absolute', backgroundColor: 'white', maxHeight: '220px', width: '100%', overflowY: "scroll" }}>
-                      {filteredCities.map(city => (
+                      {filteredCities?.sort((a, b) => {
+                        if (a.name < b.name) return -1;
+                        if (a.name > b.name) return 1;
+                        return 0;
+                      })?.map(city => (
                         <li
                           key={city.id}
                           onMouseDown={() => handleSelectCity(city)}
@@ -522,16 +527,6 @@ export default function PlacingAnOrder() {
                     </ul>
                   )}
                 </div>
-                {/* <select name="sity" id="sity" onChange={e => setSity(e.target.value)}>
-                  <option value={null}>Выберите город</option>
-                  {ArrCity.map(el => (
-                    <option key={el.id}>
-                      {el.name}
-                    </option>
-                  ))} */}
-                {/* <option value="Москва">Москва</option> */}
-                {/* Другие города */}
-                {/* </select> */}
               </div>
               {formState.check_box_1 &&
                 <div className="divAddres">
@@ -571,24 +566,24 @@ export default function PlacingAnOrder() {
                 <div className="PlacingAnOrder__CheckTrue" onClick={() => onChange('check_box_1', true)}>
                   {formState.check_box_1 ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
                 </div>
-                <label htmlFor="sity">Курьером СДЭК до двери</label>
+                <label htmlFor="sity">Курьером Яндекс до двери</label>
               </div>
               <div >
                 <div className="PlacingAnOrder__CheckTrue" onClick={() => onChange('check_box_1', false)}>
                   {!formState.check_box_1 ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
                 </div>
-                <label htmlFor="sity">До пункта выдачи заказов СДЭК</label>
+                <label htmlFor="sity">До пункта выдачи заказов Яндекс</label>
               </div>
             </div>
           </div>
           {!formState.check_box_1 && <div className="PlacingAnOrder__form__1">
             <div className="PlacingAnOrder__form__div__4">
-              <DeliveryMap />
+              <DeliveryMap setDeliveryPrice={setDeliveryPrice} city={city} />
               {errors.deliveryData && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '-5%' }}>{errors.deliveryData}</p>}
             </div>
           </div>}
           <div className="PlacingAnOrder__form__1">
-            <h1>Дополнительно</h1>
+            <h2>Дополнительно</h2>
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="message">Комментарий</label>
@@ -598,7 +593,7 @@ export default function PlacingAnOrder() {
           </div>
 
           <div className="PlacingAnOrder__form__1">
-            <h1>Способ оплаты</h1>
+            <h2>Способ оплаты</h2>
             <div className="PlacingAnOrder__form__div__5">
               <div onClick={() => onChange('radio_box', true)}>
                 <div className="PlacingAnOrder__form__item__5">
@@ -644,7 +639,7 @@ export default function PlacingAnOrder() {
           </div>
 
           {<div className="PlacingAnOrder__form__1">
-            <h1>Ваш заказ</h1>
+            <h2>Ваш заказ</h2>
             <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="promo">Промокод или сертификат</label>
@@ -666,7 +661,7 @@ export default function PlacingAnOrder() {
               </div>
               <div>
                 <p>Стоимость доставки:</p>
-                <p>{formState.check_box_1 ? 550 : 249} руб</p>
+                <p>{deliveryPrice} руб</p>
               </div>
               <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
                 <p>Скидка:</p>
@@ -676,7 +671,7 @@ export default function PlacingAnOrder() {
             <div className="PlacingAnOrder__form__raschot">
               <div className="PlacingAnOrder__form__raschot__price">
                 <p>Итого:</p>
-                <p>{Math.ceil(amountPrice - promo.itogProcent) + (formState.check_box_1 ? 550 : 249)} руб</p>
+                <p>{Math.ceil(amountPrice - promo.itogProcent) + (deliveryPrice)} руб</p>
               </div>
 
               <button disabled={!formState.check_box_3 || loading} className={`button__placing__an__order ${!formState.check_box_3 && "block__button"}`} type="submit" >Оформить заказ</button>

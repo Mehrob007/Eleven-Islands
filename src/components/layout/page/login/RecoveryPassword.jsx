@@ -51,7 +51,7 @@ export default function RecoveryPassword() {
     <div className="login-box">
       <div className="box-login" style={{ height: '304px' }}>
         <div className="div-login-box" style={{ height: '57px' }}>
-          <h1 className="h1-login-box">Восстановление</h1>
+          <h2 className="h1-login-box">Восстановление</h2>
         </div>
         <form onSubmit={loginFunction} style={{ height: '230px' }} className="input-login">
           <div className="login-inputs">

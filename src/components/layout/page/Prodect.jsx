@@ -65,7 +65,7 @@ export default function Prodect() {
   const [isOpenDiscrip2, setIsOpenDiscrip2] = useState(false);
   const [isOpenDiscrip3, setIsOpenDiscrip3] = useState(false);
   const { dataGelary, setDataGelary } = dataGelaryStore()
-  // const sizeDef = ['XXS', 'XS', 'S', 'L', 'XL', 'XXL']
+  const sizeDef = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL']
   // const [idProduct, setIdProduct] = useState(0)
   const [haveSize, setHaveSize] = useState([])
   const { photos, fetchPhotos } = usePhotoStore();
@@ -176,10 +176,6 @@ export default function Prodect() {
     }
   }, [findeElement])
 
-  console.log(count);
-
-
-
 
   return (<>
     <Helmet>
@@ -236,8 +232,8 @@ export default function Prodect() {
             <div className='header-div-product'>
               {findeElement?.newCollection && <img src={NewCollection} alt="NewCollection" />}
               <div style={{ width: '300px', height: '90px' }}>
-                <h1>{findeElement?.shortDescription}</h1>
-                {/* <h1>{findeElement?.name}</h1> */}
+                <h2>{findeElement?.shortDescription}</h2>
+                {/* <h2>{findeElement?.name}</h2> */}
                 <p>{findeElement?.descriptionProduct}</p>
               </div>
               <div className='price-product '>
@@ -262,7 +258,7 @@ export default function Prodect() {
                 <img src={iconRightButtonDalymi} alt="iconRightButtonDalymi" />
               </div>}
             <div className="color-div-product">
-              <h1>Другие цвета</h1>
+              <h2>Другие цвета</h2>
               <div>
                 {findeElement?.attributes && findeElement?.attributes.find(atr => atr.productAttributeId == 1)?.attributeValues.map((el, i) => (
                   <Link to={`/product/${el.name.split("|")[1]}`} key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
@@ -270,7 +266,7 @@ export default function Prodect() {
                       localStorage.setItem('colorVibor', el.name.split("|")[0]);
                       setColorVibor(el.name.split("|")[0])
                       // el.name.split("|")[0]
-                    }} style={{ background:  el.name[0] !== "#" ? "#" : "" + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff"  &&  '1px solid #333', borderRadius: '50%' }} ></nav>
+                    }} style={{ backgroundColor: el.name[0] !== "#" && "#" + el.name.split("|")[0], border: el.name.split("|")[0] === "ffffff" ? '1px solid #333' : "0px", borderRadius: '50%' }} ></nav>
                   </Link>
                 ))}
               </div>
@@ -279,11 +275,11 @@ export default function Prodect() {
             </div>
             <div className='size-div-product'>
               <nav className='size-div-product-nav'>
-                <h1>Размер</h1>
+                <h2>Размер</h2>
                 {useMediaQuery(`(max-width: ${widthLap})`) && <p style={{ cursor: 'pointer' }} onClick={() => setModalOpen({ open: true, img: popupPc })}><img src={lineyka} alt="lineyka" /> Размерная сетка</p>}
               </nav>
               <div>
-                {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.productAttributeId == 2)?.attributeValues.map((el, i) => {
+                {findeElement?.attributes && findeElement?.attributes.find(atr => atr?.productAttributeId == 2)?.attributeValues.sort((a, b) => sizeDef.indexOf(a.name) - sizeDef.indexOf(b.name)).map((el, i) => {
                   return (
                     <nav className={el.quantity == 0 && `size-none`} key={i} onClick={() => { el.quantity != 0 && setSizeVibor(el.name) }} style={{ background: el.name == sizeVibor && '#408759', color: el.name == sizeVibor && '#fff', borderColor: el.name == sizeVibor && 'transparent' }}>
                       {el.name}
@@ -470,7 +466,7 @@ export default function Prodect() {
         <div>
           <div className="header headerBox2 headerBoxProbucts" style={{ marginTop: '60px' }}>
             <div className='headerCom1'>
-              <h1>Дополни свой образ</h1>
+              <h2>Дополни свой образ</h2>
             </div>
             <div className='headerCom2'>
             </div>

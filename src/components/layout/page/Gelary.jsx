@@ -117,8 +117,8 @@ export default function Gelary() {
                             <img src={elementBox1Logo} className='elementBox1Logo' alt="elementBox1Logo" />
                         </div>
                         <div className="comRightColl">
-                            <h1>New collection</h1>
-                            <h1>ESSENTIAL</h1>
+                            <h2>New collection</h2>
+                            <h2>ESSENTIAL</h2>
                             {/* <img src={comRightColl} alt="comRightColl" /> */}
                         </div>
                     </div>

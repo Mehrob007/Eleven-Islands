@@ -73,7 +73,7 @@ export default function Login() {
   return (
     <div className="login-box">
       <div className="box-login">
-        <h1>Вход</h1>
+        <h2>Вход</h2>
         <form onSubmit={loginFunction} className="input-login">
           <div className="login-inputs">
             <label htmlFor="input-email-and-tell">Email или телефон</label>

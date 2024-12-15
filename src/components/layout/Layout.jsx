@@ -166,9 +166,9 @@ export default function Layout() {
         <title>{ogData.title}</title>
       </Helmet>
       <div className="advertising">
-        <h1 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h1>
-        <h1>Скидка 10% по промокоду WELCOME10</h1>
-        <h1 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h1>
+        <h2 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h2>
+        <h2>Скидка 10% по промокоду WELCOME10</h2>
+        <h2 className='advertising-h1-1'>Скидка 10% по промокоду WELCOME10</h2>
       </div>
       <header style={headerStyle}>
         <Navigate />
@@ -185,7 +185,7 @@ export default function Layout() {
               {useMediaQuery(`(max-width: ${widthLap})`) &&
                 <div className='boxColomnFooter'>
                   <div className="footerContentCom2">
-                    <h1>Навигация</h1>
+                    <h2>Навигация</h2>
                     <div>
                       <p>Главная</p>
                       <p>О нас</p>
@@ -196,7 +196,7 @@ export default function Layout() {
                     </div>
                   </div>
                   <div className="footerContentCom3">
-                    <h1>Покупателям</h1>
+                    <h2>Покупателям</h2>
                     <div>
                       <p>Контакты</p>
                       <p>Доставка и оплата</p>
@@ -248,7 +248,7 @@ export default function Layout() {
             {useMediaQuery(`(min-width: ${widthLap})`) &&
               <>
                 <div className="footerContentCom2">
-                  <h1>Навигация</h1>
+                  <h2>Навигация</h2>
                   <div>
                     <p>Главная</p>
                     <p>О нас</p>
@@ -259,7 +259,7 @@ export default function Layout() {
                   </div>
                 </div>
                 <div className="footerContentCom3">
-                  <h1>Покупателям</h1>
+                  <h2>Покупателям</h2>
                   <div>
                     <p>Контакты</p>
                     <p>Доставка и оплата</p>

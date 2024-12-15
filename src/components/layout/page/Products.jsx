@@ -213,7 +213,7 @@ export default function Products() {
     return (
         <>
             <div className='filterBar'>
-                <h1>Каталог</h1>
+                <h2>Каталог</h2>
                 <div> {isLargeScreen ?
                     <div className='filterProbucts'>
                         <CustomSelect
@@ -261,7 +261,7 @@ export default function Products() {
 
             </div>
             <div className="contentProducts">
-                {/* {fetching && <h1 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h1>}  */}
+                {/* {fetching && <h2 style={{ margin: '0 auto', textAlign: 'center' }}>Loading...</h2>}  */}
                 <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i < 8)} />
                 <SendEmail />
                 <Box2 arrDataImg={dataGetSearsh?.filter((_, i) => i > 8)} />

@@ -63,7 +63,7 @@ export default function ModalNav() {
             {!isLargeScreen ? <div className="componentModal">
                 {/* <Navigate /> */}
                 <div className="advertising">
-                    <h1>Скидка 10% по промокоду WELCOME10</h1>
+                    <h2>Скидка 10% по промокоду WELCOME10</h2>
                 </div>
                 <div className="componentModalHeaderNav" >
                     <div className="navigation">
