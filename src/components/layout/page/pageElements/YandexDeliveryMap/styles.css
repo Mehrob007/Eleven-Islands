@@ -1,0 +1,14 @@
+#delivery-widget,
+#delivery-widget * {
+    box-sizing: content-box !important;
+}
+
+#delivery-widget label {
+    all: revert;
+    width: 100%;
+}
+
+
+#delivery-widget .widget__header {
+    display: none;
+}

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CDEKWidget from '@cdek-it/widget'
 import './cdekMapCSS.css'
-const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
-    console.log(typeSakath)
+
+const CDEKMap = ({ city,setDeliveryData }) => {
+    console.log("city",city)
     useEffect(() => {
         const cdekScript = document.createElement('script');
         cdekScript.src = 'https://cdn.jsdelivr.net/npm/@cdek-it/widget@3';
@@ -32,16 +33,13 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
                     },
                     
                     hideDeliveryOptions: {
-                        office: typeSakath,
-                        door: !typeSakath,
-                    },
-                    tariffs: {
-                        office: !typeSakath ? [136,234] : [],
-                        door: typeSakath ? [145, 150] : []
+                        office: false,
+                        door: true,
                     },
                     forceFilters:{
                         type:"PVZ"
                     },
+                    // debug: false,
                     // canChoose:true,
                     goods: [
                         {
@@ -51,16 +49,22 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
                             weight: 10,
                         },
                     ],
-                    showSearch: true, sender: true,
                     defaultLocation: city || "Москва",
                     lang: 'rus',
                     currency: 'RUB',
+                    tariffs: {
+                        office: [136,234],
+                        door:[]
+                        
+                    },
+              
+
                     onReady() {
                         // console.log('Виджет CDEK загружен');
                     },
-                    onCalculate(el) {
+                    onCalculate() {
                         // Логика расчета доставки
-                        console.log("CDEK", el)
+                        console.log("awdwa")
                     },
                     onChoose(...v) {
                         console.log('Доставка выбрана');
@@ -83,8 +87,7 @@ const CDEKMap = ({ city, setDeliveryData, typeSakath }) => {
                 window.cdekMapInstance = null; // Убираем ссылку на экземпляр
             }
         };
-        
-    }, [city, typeSakath]); // Зависимость от sity для повторной инициализации
+    }, [city]); // Зависимость от sity для повторной инициализации
 
     return (
         <>
