@@ -1,7 +1,6 @@
 .address-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    display: grid !important;
+    grid-gap: 16px !important;
 }
 
 .address-form__inputs {

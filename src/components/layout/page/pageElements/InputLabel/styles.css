@@ -4,6 +4,7 @@
     font-weight: 400;
     line-height: 15.4px;
     text-align: left;
+    margin: 0;
 
     @media (min-width: 1020px) {
         font-size: 14px;

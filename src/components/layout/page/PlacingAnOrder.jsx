@@ -8,8 +8,10 @@ import { ArrCity } from "../../../assets/processed_city";
 import { useNavigate } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import axios from "axios";
-import { DeliveryServices } from "./pageElements/DeliveryServices/DeliveryServices.jsx";
-import {YandexDeliveryMap} from "./pageElements/YandexDeliveryMap/YandexDeliveryMap.jsx";
+import { RadioGroup} from "./pageElements/RadioGroup/index.jsx";
+import {YandexDeliveryMap} from "./pageElements/YandexDeliveryMap/index.jsx";
+import yandexDeliveryIcon from '../../../assets/icon/yandexDeliveryLogo.svg'
+import cdekDeliveryIcon from '../../../assets/icon/cdekLogo.svg'
 import {AddressForm} from "./pageElements/AddressForm/index.jsx";
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -32,10 +34,8 @@ const DELIVERY_TYPES = Object.freeze({
 });
 
 const DELIVERY_SERVICES = Object.freeze({
-  CDEK_DOOR_TO_DOOR: 'CDEK_DOOR_TO_DOOR',
-  YANDEX_DOOR_TO_DOOR: 'YANDEX_DOOR_TO_DOOR',
-  CDEK_PICKUP_POINT: 'CDEK_PICKUP_POINT',
-  YANDEX_PICKUP_POINT: 'YANDEX_PICKUP_POINT',
+  YANDEX_DELIVERY: 'YANDEX_DELIVERY',
+  CDEK: 'CDEK',
 });
 
 const widthLap = '1020px';
@@ -71,7 +71,7 @@ export default function PlacingAnOrder() {
     address: '',
     message: '',
     deliveryType: DELIVERY_TYPES.DOOR_TO_DOOR, // По дефолту выбрана доставка до двери
-    deliveryService: DELIVERY_SERVICES.CDEK_DOOR_TO_DOOR,// По дефолту выбрана доставка CDEK
+    deliveryService: DELIVERY_SERVICES.CDEK,// По дефолту выбрана доставка CDEK
     isAgreedWithPolicies: false, // Согласен ли с условиями оферты
     radio_box: true,// *
     price: amountPrice,// *
@@ -321,7 +321,13 @@ export default function PlacingAnOrder() {
               </div>
             </div>
             <div className="PlacingAnOrder__form__div__1">
-              <DeliveryServices onChange={(newDeliveryService) => onChange('deliveryService', newDeliveryService)}/>
+              <RadioGroup currentValue={formState.deliveryService} radios={[{
+                value: DELIVERY_SERVICES.CDEK,
+                icon: cdekDeliveryIcon,
+              }, {
+                value: DELIVERY_SERVICES.YANDEX_DELIVERY,
+                icon: yandexDeliveryIcon,
+              }]} onChange={(newDeliveryService) => onChange('deliveryService', newDeliveryService)}/>
             </div>
             <div className="PlacingAnOrder__form__div__1">
               <div>
@@ -376,37 +382,47 @@ export default function PlacingAnOrder() {
                 {/* Другие города */}
                 {/* </select> */}
               </div>
-              {isDoorToDoorDelivery && <AddressForm />}
             </div>
-          </div>
-
-          <div className="PlacingAnOrder__form__1">
-            <h1>Дополнительно</h1>
             <div className="PlacingAnOrder__form__div__1">
-              <div>
-              <label htmlFor="message">Комментарий</label>
-                <input type="text" id="message" onChange={e => onChange('message', e.target.value)}/>
+              <div className="PlacingAnOrder__form__div__4">
+                {formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ?
+                    {
+                      [DELIVERY_SERVICES.YANDEX_DELIVERY]: <YandexDeliveryMap city={city}
+                                                                              onAddressChange={handleChangeAddress}/>,
+                      [DELIVERY_SERVICES.CDEK]: <CDEKMap city={city} onAddressChange={handleChangeAddress}/>,
+                    }[formState.deliveryService] :
+                <AddressForm />}
               </div>
             </div>
-          </div>
+            </div>
 
-          <div className="PlacingAnOrder__form__1" ref={paymentMethodRef}>
-            <h1>Способ оплаты</h1>
-            <div className="PlacingAnOrder__form__div__5">
-              <div onClick={() => onChange('radio_box', true)}>
-                <div className="PlacingAnOrder__form__item__5">
-                  <div>
-                    <span>
-                      {formState.radio_box ? <img src={iconRadeoButton} alt="iconRadeoButton" /> : <div></div>}
-                    </span>
-                    Картой онлайн
-                  </div>
-                  <div>
-                    <img src={banckCart} alt="banckCart" />
-                  </div>
+            <div className="PlacingAnOrder__form__1">
+            <h1>Дополнительно</h1>
+              <div className="PlacingAnOrder__form__div__1">
+                <div>
+                  <label htmlFor="message">Комментарий</label>
+                  <input type="text" id="message" onChange={e => onChange('message', e.target.value)}/>
                 </div>
               </div>
-              {/* <div onClick={() => onChange('radio_box', false)}>
+            </div>
+
+            <div className="PlacingAnOrder__form__1" ref={paymentMethodRef}>
+              <h1>Способ оплаты</h1>
+              <div className="PlacingAnOrder__form__div__5">
+                <div onClick={() => onChange('radio_box', true)}>
+                  <div className="PlacingAnOrder__form__item__5">
+                    <div>
+                    <span>
+                      {formState.radio_box ? <img src={iconRadeoButton} alt="iconRadeoButton"/> : <div></div>}
+                    </span>
+                      Картой онлайн
+                    </div>
+                    <div>
+                      <img src={banckCart} alt="banckCart"/>
+                    </div>
+                  </div>
+                </div>
+                {/* <div onClick={() => onChange('radio_box', false)}>
                 <div className="PlacingAnOrder__form__item__5">
                   <div>
                     <span>
@@ -419,66 +435,73 @@ export default function PlacingAnOrder() {
                   </div>
                 </div>
               </div> */}
-            </div>
-          </div>
-
-          <div className="PlacingAnOrder__form__1">
-            <div className="PlacingAnOrder__form__div__3">
-              <div>
-                <div className="PlacingAnOrder__CheckTrue" onClick={() => onChange('isAgreedWithPolicies', !formState.isAgreedWithPolicies)}>
-                  {formState.isAgreedWithPolicies ? <img src={activeCheckbox} alt="CheckTrue" /> : ''}
-                </div>
-                <div className="PlacingAnOrder__Lable__6">
-                  <label>Я ознакомлен и согласен с условиями оферты</label>
-                  <p>и политики конфиденциальности</p>
-                </div>
               </div>
             </div>
-          </div>
 
-          {isDoorToDoorDelivery && <div className="PlacingAnOrder__form__1">
-            <h1>Ваш заказ</h1>
-            <div className="PlacingAnOrder__form__div__1">
-              <div>
-                <label htmlFor="promo">Промокод или сертификат</label>
+            <div className="PlacingAnOrder__form__1">
+              <div className="PlacingAnOrder__form__div__3">
                 <div>
-                  <input type="text" value={promo.promocode} id="promo" onChange={e => setPromo({ ...promo, promocode: e.target.value })} />
-                  <button onClick={onChangePromo} style={{ backgroundColor: promo.type && '#0000004D' }}> {promo.type ? "Сбросить" : "Применить"}</button>
+                  <div className="PlacingAnOrder__CheckTrue"
+                       onClick={() => onChange('isAgreedWithPolicies', !formState.isAgreedWithPolicies)}>
+                    {formState.isAgreedWithPolicies ? <img src={activeCheckbox} alt="CheckTrue"/> : ''}
+                  </div>
+                  <div className="PlacingAnOrder__Lable__6">
+                    <label>Я ознакомлен и согласен с условиями оферты</label>
+                    <p>и политики конфиденциальности</p>
+                  </div>
                 </div>
-                {
-                  <p className="mt-2" style={{ color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45', }}>{promo.procent || '-'}</p>}
               </div>
             </div>
-          </div>}
 
-          <div className="PlacingAnOrder__form__price">
-            <div className="PlacingAnOrder__form__raschot">
-              <div>
-                <p>Сумма:</p>
-                <p>{amountPrice} руб</p>
+            {<div className="PlacingAnOrder__form__1">
+              <h1>Ваш заказ</h1>
+              <div className="PlacingAnOrder__form__div__1">
+                <div>
+                  <label htmlFor="promo">Промокод или сертификат</label>
+                  <div>
+                    <input type="text" value={promo.promocode} id="promo"
+                           onChange={e => setPromo({...promo, promocode: e.target.value})}/>
+                    <button onClick={onChangePromo}
+                            style={{backgroundColor: promo.type && '#0000004D'}}> {promo.type ? "Сбросить" : "Применить"}</button>
+                  </div>
+                  {
+                    <p className="mt-2"
+                       style={{color: promo.type === null ? "transparent" : promo.type ? '#408759' : '#AA4D45',}}>{promo.procent || '-'}</p>}
+                </div>
               </div>
-              <div>
-                <p>Стоимость доставки:</p>
-                <p>{deliveryData[1]?.delivery_sum || 0} руб</p>
-              </div>
-              <div style={{ color: promo.itogProcent === 0 ? "transparent" : '#AA4D45' }}>
-                <p>Скидка:</p>
-                <p>{promo.itogProcent} руб</p>
-              </div>
-            </div>
-            <div className="PlacingAnOrder__form__raschot">
-              <div className="PlacingAnOrder__form__raschot__price">
-                <p>Итого:</p>
-                <p>{(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)} руб</p>
-              </div>
+            </div>}
 
-              <button disabled={!formState.isAgreedWithPolicies || loading} className={`button__placing__an__order ${!formState.isAgreedWithPolicies && "block__button"}`} type="submit" >Оформить заказ</button>
-                {paymentError ? <p className="text-red-700 text-2xl text-center">Ошибка при попытке оплаты</p>:""}
+            <div className="PlacingAnOrder__form__price">
+              <div className="PlacingAnOrder__form__raschot">
+                <div>
+                  <p>Сумма:</p>
+                  <p>{amountPrice} руб</p>
+                </div>
+                <div>
+                  <p>Стоимость доставки:</p>
+                  <p>{deliveryData[1]?.delivery_sum || 0} руб</p>
+                </div>
+                <div style={{color: promo.itogProcent === 0 ? "transparent" : '#AA4D45'}}>
+                  <p>Скидка:</p>
+                  <p>{promo.itogProcent} руб</p>
+                </div>
+              </div>
+              <div className="PlacingAnOrder__form__raschot">
+                <div className="PlacingAnOrder__form__raschot__price">
+                  <p>Итого:</p>
+                  <p>{(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)} руб</p>
+                </div>
+
+                <button disabled={!formState.isAgreedWithPolicies || loading}
+                        className={`button__placing__an__order ${!formState.isAgreedWithPolicies && "block__button"}`}
+                        type="submit">Оформить заказ
+                </button>
+                {paymentError ? <p className="text-red-700 text-2xl text-center">Ошибка при попытке оплаты</p> : ""}
+              </div>
             </div>
-          </div>
         </form>
         {
-          useMediaQuery(`(min-width: ${widthLap})`) &&
+            useMediaQuery(`(min-width: ${widthLap})`) &&
           <div className="PlacingAnOrder__basket">
             <ItemModalBasket see={true} />
           </div>
