@@ -1,0 +1,15 @@
+.text-input {
+    display: grid !important;
+    grid-auto-flow: row;
+    grid-gap: 10px;
+}
+
+.text-input__input {
+    max-width: 650px;
+    width: 100%;
+    padding: 0 5px;
+    margin-bottom: 15px;
+    height: 45px;
+    border: 1px solid #262626;
+    outline: none;
+}

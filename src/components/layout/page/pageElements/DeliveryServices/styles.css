@@ -1,0 +1,73 @@
+.delivery-options {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    min-height: auto !important;
+    align-items: center;
+    justify-content: flex-start;
+    grid-gap: 20px;
+}
+
+.delivery-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.delivery-option input[type="radio"] {
+    display: none;
+}
+
+.delivery-option__label {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    grid-gap: 8px;
+}
+
+.custom-radio {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.custom-radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.delivery-option input[type="radio"]:checked + label .custom-radio {
+    border-color: #408759;
+    background-color: #408759;
+}
+
+.delivery-option input[type="radio"]:checked + label .custom-radio::after {
+    background-color: #f9f9f9;
+}
+
+.delivery-option input[type="radio"]:not(:checked) + label .custom-radio:hover {
+    border-color: #888;
+}
+
+.delivery-logo {
+    display: flex;
+    align-items: center;
+}
+
+.delivery-logo img {
+    height: 20px;
+}
+
+.delivery-logo span {
+    font-size: 14px;
+    color: #333;
+}

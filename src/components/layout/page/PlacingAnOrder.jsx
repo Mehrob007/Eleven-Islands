@@ -8,8 +8,9 @@ import { ArrCity } from "../../../assets/processed_city";
 import { useNavigate } from "react-router-dom";
 import InputMask from 'react-input-mask';
 import axios from "axios";
-import {Tabs} from "../../tabs/tabs.jsx";
+import { DeliveryServices } from "./pageElements/DeliveryServices/DeliveryServices.jsx";
 import {YandexDeliveryMap} from "./pageElements/YandexDeliveryMap/YandexDeliveryMap.jsx";
+import {AddressForm} from "./pageElements/AddressForm/index.jsx";
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
@@ -302,6 +303,27 @@ export default function PlacingAnOrder() {
           <div className="PlacingAnOrder__form__1">
             <h1>Доставка</h1>
             <div className="PlacingAnOrder__form__div__1">
+              <div className="PlacingAnOrder__form__1">
+                <div className="PlacingAnOrder__form__div__3">
+                  <div onClick={() => onChange('deliveryType', DELIVERY_TYPES.DOOR_TO_DOOR)}>
+                    <div className="PlacingAnOrder__CheckTrue">
+                      {isDoorToDoorDelivery ? <img src={activeCheckbox} alt="CheckTrue"/> : ''}
+                    </div>
+                    <label htmlFor="sity">Доставка до двери</label>
+                  </div>
+                  <div onClick={() => onChange('deliveryType', DELIVERY_TYPES.PICKUP_POINT)}>
+                    <div className="PlacingAnOrder__CheckTrue">
+                      {!isDoorToDoorDelivery ? <img src={activeCheckbox} alt="CheckTrue"/> : ''}
+                    </div>
+                    <label htmlFor="sity">Доставка до ПВЗ</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="PlacingAnOrder__form__div__1">
+              <DeliveryServices onChange={(newDeliveryService) => onChange('deliveryService', newDeliveryService)}/>
+            </div>
+            <div className="PlacingAnOrder__form__div__1">
               <div>
                 <label htmlFor="sity">Город*</label>
                 <div style={{position: 'relative'}}>
@@ -343,22 +365,6 @@ export default function PlacingAnOrder() {
                       </ul>
                   )}
                 </div>
-                <div className="PlacingAnOrder__form__1">
-                  <div className="PlacingAnOrder__form__div__3">
-                    <div onClick={() => onChange('deliveryType', DELIVERY_TYPES.DOOR_TO_DOOR)}>
-                      <div className="PlacingAnOrder__CheckTrue">
-                        {isDoorToDoorDelivery ? <img src={activeCheckbox} alt="CheckTrue"/> : ''}
-                      </div>
-                      <label htmlFor="sity">Доставка до двери</label>
-                    </div>
-                    <div onClick={() => onChange('deliveryType', DELIVERY_TYPES.PICKUP_POINT)}>
-                      <div className="PlacingAnOrder__CheckTrue">
-                        {!isDoorToDoorDelivery ? <img src={activeCheckbox} alt="CheckTrue"/> : ''}
-                      </div>
-                      <label htmlFor="sity">Доставка до ПВЗ</label>
-                    </div>
-                  </div>
-                </div>
                 {/* <select name="sity" id="sity" onChange={e => setSity(e.target.value)}>
                   <option value={null}>Выберите город</option>
                   {ArrCity.map(el => (
@@ -370,40 +376,15 @@ export default function PlacingAnOrder() {
                 {/* Другие города */}
                 {/* </select> */}
               </div>
-              {isDoorToDoorDelivery &&
-                  <div style={{position: 'relative', height: '90px'}}>
-                    <label htmlFor="address">Адрес*</label>
-                    <input style={{borderColor: errors.address && 'red'}} type="text" id="address"
-                           onChange={e => onChange('address', e.target.value)}/>
-                    {errors.address && <p style={{
-                      fontSize: '12px',
-                      color: 'red',
-                      position: 'absolute',
-                      bottom: '0px'
-                    }}>{errors.address}</p>}
-                  </div>}
+              {isDoorToDoorDelivery && <AddressForm />}
             </div>
           </div>
 
-          {!isDoorToDoorDelivery && <div className="PlacingAnOrder__form__1">
-            <Tabs defaultTab={DELIVERY_SERVICES.CDEK_PICKUP_POINT}
-                  onChangeTab={(newDeliveryService) => onChange('deliveryService', newDeliveryService)} tabs={[
-                { key: DELIVERY_SERVICES.CDEK_PICKUP_POINT, name: 'CDEK', children:
-                      <div className="PlacingAnOrder__form__div__4">
-                        <CDEKMap setDeliveryData={setDeliveryData} city={city}/>
-                      </div>},
-              {
-                key: DELIVERY_SERVICES.YANDEX_PICKUP_POINT, name: 'Яндекс Доставка', children:
-                        <YandexDeliveryMap city={city} onAddressChange={handleChangeAddress}/>
-              }]} />
-                              </div>
-                        }
-
-              <div className="PlacingAnOrder__form__1">
-                <h1>Дополнительно</h1>
-                <div className="PlacingAnOrder__form__div__1">
+          <div className="PlacingAnOrder__form__1">
+            <h1>Дополнительно</h1>
+            <div className="PlacingAnOrder__form__div__1">
               <div>
-                <label htmlFor="message">Комментарий</label>
+              <label htmlFor="message">Комментарий</label>
                 <input type="text" id="message" onChange={e => onChange('message', e.target.value)}/>
               </div>
             </div>

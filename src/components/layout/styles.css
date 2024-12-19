@@ -1706,8 +1706,6 @@ input[type="checkbox"] {
     font-weight: 400;
     line-height: 15.4px;
     text-align: center;
-
-
 }
 .PlacingAnOrder__form__div__1 > div > div > input{
     max-width: 650px;
@@ -1730,7 +1728,7 @@ input[type="checkbox"] {
 .PlacingAnOrder__form__div__3{
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px !important;
 }
 .PlacingAnOrder__form__div__3 > div{
     display: flex;
@@ -1756,8 +1754,6 @@ input[type="checkbox"] {
 .PlacingAnOrder__form__div__4{
     max-width: 650px;
     width: 100%;
-    height: 300px;
-    border: 1px solid #408759;
 }
 .PlacingAnOrder__form__div__5{
     display: flex;
