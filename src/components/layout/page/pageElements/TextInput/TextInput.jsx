@@ -6,5 +6,4 @@ export const TextInput = (inputProps) => (
         <InputLabel htmlFor={inputProps.htmlFor}>{inputProps.label}</InputLabel>
         <input {...inputProps} type="text" className="text-input__input" />
     </div>
-)
-
+);

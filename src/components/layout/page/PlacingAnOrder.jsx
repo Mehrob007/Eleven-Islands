@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import activeCheckbox from '../../../assets/icon/activeCheckbox.svg'
 import iconRadeoButton from '../../../assets/icon/iconRadeoButton.svg'
 import banckCart from '../../../assets/icon/banckCart.svg'
@@ -167,19 +167,19 @@ export default function PlacingAnOrder() {
       setShowDropdown(false);
   };
 
-  const handleChangeAddress = ({ address }) => {
+  const handleChangeAddress =useCallback(({ address }) => {
     if (paymentMethodRef.current) {
 
       switch (formState.deliveryService) {
         case DELIVERY_SERVICES.YANDEX_DELIVERY: {
           apiClient.post('/YandexOrder/calculate-order', {
             delivery_type: formState.deliveryType,
-          ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ? {
-            platform_station_id: address,
-          } : {
-            address
-          })}).then(({ data: { pricing_total }}) => {
-            setDeliveryPrice(pricing_total);
+            ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ? {
+              platform_station_id: address,
+            } : {
+              address
+            })}).then(({ data: { pricing_total }}) => {
+            setDeliveryPrice(parseInt(pricing_total));
             paymentMethodRef.current.scrollIntoView({
               behavior: "smooth",
               block: "start",
@@ -190,16 +190,20 @@ export default function PlacingAnOrder() {
         }
       }
     }
-  }
+  }, [formState.deliveryService, formState.deliveryType])
 
-  const handleAddressFormBlur = () => {
+  const conditionallyUpdateAddress = useCallback(() => {
     const { street } = formState
 
     if (street) {
       const address = `${formState.city} ${formState.street}`
       handleChangeAddress({ type: DELIVERY_TYPES.DOOR_TO_DOOR, address })
     }
-  }
+  }, [formState.city, formState.street, formState.deliveryType, handleChangeAddress])
+
+  useEffect(() => {
+    conditionallyUpdateAddress();
+  }, [conditionallyUpdateAddress, formState.deliveryService, formState.deliveryType])
 
 
   const onChangePromo = () => {
@@ -341,7 +345,7 @@ export default function PlacingAnOrder() {
                                                                               onAddressChange={(address) => handleChangeAddress({ address })}/>,
                       [DELIVERY_SERVICES.CDEK]: <CDEKMap city={formState.city} onAddressChange={handleChangeAddress}/>,
                     }[formState.deliveryService] :
-                <AddressForm onChange={onChange} onFormBlur={handleAddressFormBlur} />}
+                <AddressForm onChange={onChange} onFormBlur={conditionallyUpdateAddress} />}
               </div>
             </div>
             </div>
