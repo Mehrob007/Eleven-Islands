@@ -18,9 +18,6 @@ export const YandexDeliveryMap = ({ city, onAddressChange }) => {
         const parentWidth = document.documentElement.clientWidth;
         const parentHeight = document.documentElement.clientHeight;
 
-        console.log(city)
-
-        // Встраиваем HTML и скрипт внутрь iFrame
         iframeDocument.open();
         iframeDocument.write(`
       <!DOCTYPE html>
@@ -64,7 +61,7 @@ export const YandexDeliveryMap = ({ city, onAddressChange }) => {
               : document.addEventListener('YaNddWidgetLoad', startWidget);
 
             document.addEventListener('YaNddWidgetPointSelected', function (data) {
-              const address = data.detail.address.full_address;
+              const address = data.detail.id;
               window.parent.postMessage({ type: 'addressChange', address }, '*');
             });
           </script>

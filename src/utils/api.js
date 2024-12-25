@@ -2,24 +2,10 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://Backendeleven.ru',
+  baseURL: 'https://backendeleven.ru',
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+  }
 });
 
 export default apiClient;
-
-
-
-[
-  {
-    id: 0,
-
-    images: [
-      {
-        src: ""
-      }
-     // ...
-    ]
-    // attributes.
-  }
-  // ...
-]

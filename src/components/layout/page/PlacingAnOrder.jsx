@@ -13,6 +13,7 @@ import {YandexDeliveryMap} from "./pageElements/YandexDeliveryMap/index.jsx";
 import yandexDeliveryIcon from '../../../assets/icon/yandexDeliveryLogo.svg'
 import cdekDeliveryIcon from '../../../assets/icon/cdekLogo.svg'
 import {AddressForm} from "./pageElements/AddressForm/index.jsx";
+import apiClient from "../../../utils/api.js";
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
 
@@ -42,15 +43,13 @@ const widthLap = '1020px';
 
 export default function PlacingAnOrder() {
   const [promo, setPromo] = useState({ type: null, procent: null, promocode: "", itogProcent: 0 })
-  // const [sity, setSity] = useState("")
-  const [city, setCity] = useState('Москва');
   const [searchQuery, setSearchQuery] = useState('Москва');
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [amountPrice, setAmountPrice] = useState(0)
   const [paymentError,setPaymentError] = useState(false)
   const [loading,setLoading] = useState(false)
-  const [deliveryData,setDeliveryData] = useState([])
+  const [deliveryPrice, setDeliveryPrice] = useState(0)
   const paymentMethodRef = useRef()
   useEffect(()=>{
     const cartData = localStorage.getItem("dataGelary")
@@ -68,10 +67,15 @@ export default function PlacingAnOrder() {
     sorname: '',// *
     number: '',// *
     email: '',// *
-    address: '',
+    city: 'Москва',
+    street: '',
+    apartment: '',
+    floor: '',
+    intercom: '',
+    entrance: '',
     message: '',
     deliveryType: DELIVERY_TYPES.DOOR_TO_DOOR, // По дефолту выбрана доставка до двери
-    deliveryService: DELIVERY_SERVICES.CDEK,// По дефолту выбрана доставка CDEK
+    deliveryService: DELIVERY_SERVICES.CDEK, // По дефолту выбрана доставка CDEK
     isAgreedWithPolicies: false, // Согласен ли с условиями оферты
     radio_box: true,// *
     price: amountPrice,// *
@@ -109,76 +113,6 @@ export default function PlacingAnOrder() {
     return newErrors;
   };
 
-
-  const createCdekOrder = async () => {
-    let packagesItems = []
-    const cartData = localStorage.getItem("dataGelary")
-    if (cartData) {
-      const parse = JSON.parse(cartData)
-      packagesItems = parse.map((v) => ({
-        WareKey:v.id?.toString(),
-        Payment:{
-          Value:v?.price
-        },
-        Name: v?.name,
-        Cost: v?.price * 100,
-        Amount: (v?.price * v?.count) * 100,
-        Weight: 100,
-        Url: "https://elevenislands.ru",
-      }))
-    }
-    console.log("packagesItems",packagesItems)
-
-    const body = {
-      TariffCode: 136,
-      Comment: formState?.message,
-      Recipient: {
-        Name: `${formState?.name?.trim()} ${formState?.sorname?.trim()}`,
-        Phones: [
-          {
-            Number: formState?.number?.replace(/[^\d]/g, ""),
-          },
-        ],
-      },
-      ToLocation: {
-        Code: deliveryData[2]?.city_code || "",
-        FiasGuid: "",
-        PostalCode: deliveryData[2]?.postal_code || "",
-        Longitude: deliveryData[2]?.location[0] || "",
-        Latitude: deliveryData[2]?.location[1] || "",
-        CountryCode: deliveryData[2]?.country_code || "",
-        Region: deliveryData[2]?.region || "",
-        SubRegion: "",
-        City: deliveryData[2]?.city || "",
-        KladrCode: "",
-        Address: deliveryData[2]?.address || "",
-      },
-      FromLocation: {
-        PostalCode: "MSK951",
-        CountryCode: "RU",
-        City: "Москва",
-        Address: "Нагатинская набережная, 54",
-      },
-      Packages: [
-        {
-          Number: new Date().toISOString(),
-          Comment: "Упаковка",
-          Height: 10,
-          Length: 10,
-          Weight: 4000,
-          Width: 10,
-          Items: packagesItems,
-        },
-      ],
-      Sender: {
-        Name: "Петров Петр",
-      },
-     
-    }
-    console.log("body",body)
-    await axios.post("https://elevenislands.ru/api/Pay/create-order",body)
-  }
-
   const placingAnOrder = async(e) => {
     e.preventDefault();
     setPaymentError(false)
@@ -189,7 +123,6 @@ export default function PlacingAnOrder() {
       } else {
         setErrors({});
         if (formState.isAgreedWithPolicies) {
-          console.log("TUT")
           let items = []
           const cartData = localStorage.getItem("dataGelary")
           if(cartData){
@@ -197,28 +130,20 @@ export default function PlacingAnOrder() {
            items =  parse.map(v=>({
             Name:v?.name,
             Quantity:v?.count,
-            Price:(v?.price + (deliveryData?.[1]?.delivery_sum || 0)) *100,
-            Amount:((v?.price * v?.count) + (deliveryData?.[1]?.delivery_sum || 0)) * 100 ,
             Tax:"none",
-           }))
+           }));
           }
 
 
           const body= {
             Email:formState.email,
             Discription:formState.message || "",
-            Anmount:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
-            Price:((amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)) * 100,
             Items:items
           }
 
           setLoading(true)
         try {
           const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
-          console.log("payment")
-          // await createCdekOrder()
-          console.log("order")
-          // localStorage.removeItem("dataGelary")
           window.open(data?.PaymentURL,"_self")
         } catch (error) {
           console.log("error",error)
@@ -237,17 +162,42 @@ export default function PlacingAnOrder() {
 
   const handleSelectCity = (cityName) => {
       console.log("cityname",cityName)
-      setCity(cityName?.name);
+      setFormState(prev => ({ ...prev, city: cityName?.name }));
       setSearchQuery(cityName?.name);
       setShowDropdown(false);
   };
 
-  const handleChangeAddress = () => {
+  const handleChangeAddress = ({ address }) => {
     if (paymentMethodRef.current) {
-      paymentMethodRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
+
+      switch (formState.deliveryService) {
+        case DELIVERY_SERVICES.YANDEX_DELIVERY: {
+          apiClient.post('/YandexOrder/calculate-order', {
+            delivery_type: formState.deliveryType,
+          ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ? {
+            platform_station_id: address,
+          } : {
+            address
+          })}).then(({ data: { pricing_total }}) => {
+            setDeliveryPrice(pricing_total);
+            paymentMethodRef.current.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            })
+          })
+
+          return;
+        }
+      }
+    }
+  }
+
+  const handleAddressFormBlur = () => {
+    const { street } = formState
+
+    if (street) {
+      const address = `${formState.city} ${formState.street}`
+      handleChangeAddress({ type: DELIVERY_TYPES.DOOR_TO_DOOR, address })
     }
   }
 
@@ -387,11 +337,11 @@ export default function PlacingAnOrder() {
               <div className="PlacingAnOrder__form__div__4">
                 {formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ?
                     {
-                      [DELIVERY_SERVICES.YANDEX_DELIVERY]: <YandexDeliveryMap city={city}
-                                                                              onAddressChange={handleChangeAddress}/>,
-                      [DELIVERY_SERVICES.CDEK]: <CDEKMap city={city} onAddressChange={handleChangeAddress}/>,
+                      [DELIVERY_SERVICES.YANDEX_DELIVERY]: <YandexDeliveryMap city={formState.city}
+                                                                              onAddressChange={(address) => handleChangeAddress({ address })}/>,
+                      [DELIVERY_SERVICES.CDEK]: <CDEKMap city={formState.city} onAddressChange={handleChangeAddress}/>,
                     }[formState.deliveryService] :
-                <AddressForm />}
+                <AddressForm onChange={onChange} onFormBlur={handleAddressFormBlur} />}
               </div>
             </div>
             </div>
@@ -479,7 +429,7 @@ export default function PlacingAnOrder() {
                 </div>
                 <div>
                   <p>Стоимость доставки:</p>
-                  <p>{deliveryData[1]?.delivery_sum || 0} руб</p>
+                  <p>{deliveryPrice} руб</p>
                 </div>
                 <div style={{color: promo.itogProcent === 0 ? "transparent" : '#AA4D45'}}>
                   <p>Скидка:</p>
@@ -489,7 +439,7 @@ export default function PlacingAnOrder() {
               <div className="PlacingAnOrder__form__raschot">
                 <div className="PlacingAnOrder__form__raschot__price">
                   <p>Итого:</p>
-                  <p>{(amountPrice - promo.itogProcent) + (deliveryData?.[1]?.delivery_sum || 0)} руб</p>
+                  <p>{amountPrice} руб</p>
                 </div>
 
                 <button disabled={!formState.isAgreedWithPolicies || loading}
