@@ -51,8 +51,8 @@ export default function PlacingAnOrder() {
   const paymentMethodRef = useRef()
   const [formState, setFormState] = useState({
     name: '', // *
-    sorname: '',// *
-    number: '',// *
+    surname: '',// *
+    phoneNumber: '',// *
     email: '',// *
     city: 'Москва',
     street: '',
@@ -64,6 +64,8 @@ export default function PlacingAnOrder() {
     deliveryType: DELIVERY_TYPES.DOOR_TO_DOOR, // По дефолту выбрана доставка до двери
     deliveryService: DELIVERY_SERVICES.CDEK, // По дефолту выбрана доставка CDEK
     isAgreedWithPolicies: false, // Согласен ли с условиями оферты
+    platformStationId: '', // ID платформы для доставки до ПВЗ
+    address: '', // Полный адрес для доставки до двери
     radio_box: true,// *
     price: amountPrice,// *
   });
@@ -89,14 +91,14 @@ export default function PlacingAnOrder() {
     const emailValidateRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     const newErrors = {};
     if (!formState.name) newErrors.name = 'Имя обязательно';
-    if (!formState.sorname) newErrors.sorname = 'Фамилия обязательна';
-    if (!formState.number || formState.number.replace(/[^\d]/g, '')?.length !== 11) newErrors.number = 'Телефон обязателен';
+    if (!formState.surname) newErrors.surname = 'Фамилия обязательна';
+    if (!formState.phoneNumber || formState.phoneNumber.replace(/[^\d]/g, '')?.length !== 11) newErrors.phoneNumber = 'Телефон обязателен';
     if (!formState.email || !emailValidateRegex.test(formState.email)) newErrors.email = 'Email обязателен';
     if (isDoorToDoorDelivery) {
       if (!formState.address) newErrors.address = 'Адрес обязателен';
     }
 
-    scrollToSection(newErrors.name && 'name' || newErrors.sorname && 'sorname' || newErrors.number && 'number' || newErrors.email && 'email' || newErrors.address && 'address', 120)
+    scrollToSection(newErrors.name && 'name' || newErrors.surname && 'surname' || newErrors.phoneNumber && 'phoneNumber' || newErrors.email && 'email' || newErrors.address && 'address', 120)
     return newErrors;
   };
 
@@ -115,17 +117,26 @@ export default function PlacingAnOrder() {
           if(cartData){
             const parse = JSON.parse(cartData)
            items =  parse.map(v=>({
-            Name:v?.name,
-            Quantity:v?.count,
-            Tax:"none",
+            amount: v?.count,
+            id: v?.idProduct,
            }));
           }
 
 
           const body= {
-            email:formState.email,
-            discription:formState.message || "",
-            Items:items
+            name: formState.name,
+            surname: formState.surname,
+            email: formState.email,
+            phone: formState.phoneNumber,
+            description:formState.message || "",
+            items,
+            delivery_type: formState.deliveryType,
+            delivery_service: formState.deliveryService,
+            ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR ? {
+              address: formState.address,
+            } : {
+              platform_station_id: formState.platformStationId
+            })
           }
 
           setLoading(true)
@@ -155,6 +166,15 @@ export default function PlacingAnOrder() {
   };
 
   const handleChangeAddress = useCallback(({ address }) => {
+    setFormState(prevState => ({
+      ...prevState,
+      ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR ? {
+        address
+      } : {
+        platformStationId: address
+      }),
+    }))
+
     if (paymentMethodRef.current) {
       switch (formState.deliveryService) {
         case DELIVERY_SERVICES.YANDEX_DELIVERY: {
@@ -227,17 +247,17 @@ export default function PlacingAnOrder() {
                 {errors.name && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.name}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
-                <label htmlFor="sorname">Фамилия*</label>
-                <input style={{ borderColor: errors.sorname && 'red' }} type="text" required id="sorname" onChange={e => onChange('sorname', e.target.value)} />
-                {errors.sorname && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.sorname}</p>}
+                <label htmlFor="surname">Фамилия*</label>
+                <input style={{ borderColor: errors.surname && 'red' }} type="text" required id="surname" onChange={e => onChange('surname', e.target.value)} />
+                {errors.surname && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.surname}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
-                <label htmlFor="number">Телефон*</label>
-                <InputMask mask="9 (999) 9999 999" style={{ borderColor: errors.number && 'red' }} type="text" required id="number" onChange={e => onChange('number', e.target.value)} >
-                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.number && 'red' }} type="text" id="number"  />
+                <label htmlFor="phoneNumber">Телефон*</label>
+                <InputMask mask="9 (999) 9999 999" style={{ borderColor: errors.phoneNumber && 'red' }} type="text" required id="phoneNumber" onChange={e => onChange('phoneNumber', e.target.value)} >
+                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.phoneNumber && 'red' }} type="text" id="phoneNumber"  />
                 }
                 </InputMask>
-                {errors.number && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.number}</p>}
+                {errors.phoneNumber && <p style={{ fontSize: '12px', color: 'red', position: 'absolute', bottom: '0px' }}>{errors.phoneNumber}</p>}
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="email">Email*</label>
