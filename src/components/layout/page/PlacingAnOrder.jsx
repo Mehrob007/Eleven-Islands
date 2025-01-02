@@ -3,21 +3,19 @@ import activeCheckbox from '../../../assets/icon/activeCheckbox.svg'
 import iconRadeoButton from '../../../assets/icon/iconRadeoButton.svg'
 import banckCart from '../../../assets/icon/banckCart.svg'
 import ItemModalBasket from "../modalNavigate/ItemModalBasket";
-import CDEKMap from "./pageElements/CDEKMap";
+import { CDEKMap } from "./pageElements/CDEKMap";
 import { ArrCity } from "../../../assets/processed_city";
-import { useNavigate } from "react-router-dom";
 import InputMask from 'react-input-mask';
-import axios from "axios";
 import { RadioGroup} from "./pageElements/RadioGroup/index.jsx";
 import {YandexDeliveryMap} from "./pageElements/YandexDeliveryMap/index.jsx";
 import yandexDeliveryIcon from '../../../assets/icon/yandexDeliveryLogo.svg'
 import cdekDeliveryIcon from '../../../assets/icon/cdekLogo.svg'
 import {AddressForm} from "./pageElements/AddressForm/index.jsx";
 import apiClient from "../../../utils/api.js";
+import { calculateBasketPrice } from "./utils.js";
+
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
-
-
 
   useEffect(() => {
     const media = window.matchMedia(query);
@@ -44,24 +42,13 @@ const widthLap = '1020px';
 export default function PlacingAnOrder() {
   const [promo, setPromo] = useState({ type: null, procent: null, promocode: "", itogProcent: 0 })
   const [searchQuery, setSearchQuery] = useState('Москва');
-  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
-  const [amountPrice, setAmountPrice] = useState(0)
+  const calculatedBasketPrice = calculateBasketPrice()
+  const [amountPrice, setAmountPrice] = useState(calculatedBasketPrice)
   const [paymentError,setPaymentError] = useState(false)
   const [loading,setLoading] = useState(false)
   const [deliveryPrice, setDeliveryPrice] = useState(0)
   const paymentMethodRef = useRef()
-  useEffect(()=>{
-    const cartData = localStorage.getItem("dataGelary")
-    if(cartData){
-      const parse = JSON.parse(cartData)
-      let countPrice = 0
-      parse.forEach(v=>{
-        countPrice += v?.price * v.count
-      })
-      setAmountPrice(countPrice)
-    }
-  },[])
   const [formState, setFormState] = useState({
     name: '', // *
     sorname: '',// *
@@ -136,14 +123,14 @@ export default function PlacingAnOrder() {
 
 
           const body= {
-            Email:formState.email,
-            Discription:formState.message || "",
+            email:formState.email,
+            discription:formState.message || "",
             Items:items
           }
 
           setLoading(true)
         try {
-          const {data} = await axios.post("https://elevenislands.ru/api/Pay/create-payment",body)
+          const {data} = await apiClient.post("/api/Pay/create-payment",body)
           window.open(data?.PaymentURL,"_self")
         } catch (error) {
           console.log("error",error)
@@ -167,9 +154,8 @@ export default function PlacingAnOrder() {
       setShowDropdown(false);
   };
 
-  const handleChangeAddress =useCallback(({ address }) => {
+  const handleChangeAddress = useCallback(({ address }) => {
     if (paymentMethodRef.current) {
-
       switch (formState.deliveryService) {
         case DELIVERY_SERVICES.YANDEX_DELIVERY: {
           apiClient.post('/YandexOrder/calculate-order', {
@@ -179,7 +165,9 @@ export default function PlacingAnOrder() {
             } : {
               address
             })}).then(({ data: { pricing_total }}) => {
-            setDeliveryPrice(parseInt(pricing_total));
+              const numericPrice = parseInt(pricing_total);
+            setDeliveryPrice(numericPrice);
+            setAmountPrice(calculatedBasketPrice + numericPrice);
             paymentMethodRef.current.scrollIntoView({
               behavior: "smooth",
               block: "start",
@@ -187,6 +175,11 @@ export default function PlacingAnOrder() {
           })
 
           return;
+        }
+
+        case DELIVERY_SERVICES.CDEK:
+        default: {
+          apiClient.post()
         }
       }
     }

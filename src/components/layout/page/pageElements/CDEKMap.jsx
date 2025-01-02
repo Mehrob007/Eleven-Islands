@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import PropTypes from "prop-types";
 import CDEKWidget from '@cdek-it/widget'
 import './cdekMapCSS.css'
 
-const CDEKMap = ({ city,setDeliveryData }) => {
+export const CDEKMap = ({ city, onAddressChange }) => {
     console.log("city",city)
     useEffect(() => {
         const cdekScript = document.createElement('script');
@@ -17,21 +18,12 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                 }
 
                 window.cdekMapInstance = new CDEKWidget({
-                    from: {
-                        country_code: 'RU',
-                        city: 'Москва',
-                        postal_code: "MSK951",
-                        
-                        address: 'Нагатинская набережная, 54',
-                    },
                     root: 'cdek-map',
                     apiKey: '269cf3f0-3414-4a8f-82a9-97c20c42ce92',
                     servicePath: 'https://elevenislands.ru/cdek/service.php',
                     hideFilters: {
-                  
                         type: false,
                     },
-                    
                     hideDeliveryOptions: {
                         office: false,
                         door: true,
@@ -39,37 +31,10 @@ const CDEKMap = ({ city,setDeliveryData }) => {
                     forceFilters:{
                         type:"PVZ"
                     },
-                    // debug: false,
-                    // canChoose:true,
-                    goods: [
-                        {
-                            width: 10,
-                            height: 10,
-                            length: 10,
-                            weight: 10,
-                        },
-                    ],
                     defaultLocation: city || "Москва",
                     lang: 'rus',
-                    currency: 'RUB',
-                    tariffs: {
-                        office: [136,234],
-                        door:[]
-                        
-                    },
-              
-
-                    onReady() {
-                        // console.log('Виджет CDEK загружен');
-                    },
-                    onCalculate() {
-                        // Логика расчета доставки
-                        console.log("awdwa")
-                    },
-                    onChoose(...v) {
-                        console.log('Доставка выбрана');
-                        setDeliveryData(v)
-                        console.log(v);
+                    onChoose({ code }) {
+                        onAddressChange({ address: code })
                     },
                 });
             }
@@ -96,4 +61,7 @@ const CDEKMap = ({ city,setDeliveryData }) => {
     );
 };
 
-export default CDEKMap;
+CDEKMap.propTypes = {
+    city: PropTypes.string.isRequired,
+    onAddressChange: PropTypes.func.isRequired,
+}
