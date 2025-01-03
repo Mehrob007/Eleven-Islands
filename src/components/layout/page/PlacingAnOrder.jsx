@@ -128,7 +128,7 @@ export default function PlacingAnOrder() {
             surname: formState.surname,
             email: formState.email,
             phone: formState.phoneNumber,
-            description:formState.message || "",
+            comment: formState.message || "",
             items,
             delivery_type: formState.deliveryType,
             delivery_service: formState.deliveryService,
