@@ -213,7 +213,7 @@ export default function Prodect() {
     }
   }, [findeElement]);
 
-  console.log("ParsColors", parsColors);
+  console.log("photos", photos);
 
   return (
     <>
@@ -688,7 +688,7 @@ export default function Prodect() {
               </div>
               <div className="headerCom2"></div>
             </div>
-            <Box2 arrDataImg={photos?.filter((_, i) => i < 9 && i > 4)} />
+            <Box2 arrDataImg={photos?.filter((_, i) => i < 4 )} />
             <SendEmail />
           </div>
         </>
