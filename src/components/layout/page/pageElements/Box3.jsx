@@ -25,7 +25,7 @@ const useMediaQuery = (query) => {
 const widthLap = '1020px'
 
 
-export default function Box3({ images, title }) {
+export default function Box3({ images, title, id }) {
     const [isAtStart, setIsAtStart] = useState(true);
     const [isAtEnd, setIsAtEnd] = useState(false)
 
@@ -62,7 +62,6 @@ export default function Box3({ images, title }) {
 
     const settingsGelary = {
         className: "slider Gelary variable-width",
-        // dots: true,
         infinite: true,
         centerMode: true,
         slidesToShow: 1,
@@ -99,7 +98,7 @@ export default function Box3({ images, title }) {
                 {useMediaQuery(`(min-width: ${widthLap})`) ? <div className="containerBox3">
                     <div className="slider-wrapper">
                         <div className="image-list" ref={imageListRef}>
-                            {images.map((el, i) => (
+                            {images?.map((el, i) => (
                                 <div key={i} className="bg">
                                     <img src={el} alt={`img-${i}`} className="image-item" />
                                 </div>
@@ -108,7 +107,7 @@ export default function Box3({ images, title }) {
                     </div>
                 </div> :
                     <Slider {...settingsGelary}>
-                        {images.map((el, i) => (
+                        {images?.map((el, i) => (
                             <div key={i} className="bg-phone">
                                 <img src={el} alt={`img-${i}`} className="image-item" />
                             </div>
@@ -117,7 +116,7 @@ export default function Box3({ images, title }) {
                 }
             </div>
             <div className='allPhotoButton'>
-                <Link to='/com-gelary-all/1' >
+                <Link to={`/com-gelary-all/${id}`}>
                     <h3 style={{ cursor: 'pointer' }}>Вся фотогалерея</h3>
                 </Link>
             </div>
