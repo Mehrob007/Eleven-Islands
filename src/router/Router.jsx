@@ -45,6 +45,7 @@ export default function Router() {
                         <Route path="products/:type" element={<Products />} />
                         <Route path="product/:id" element={<Product />} />
                         <Route path='login' element={<Login />} />
+                        <Route path='login/:hash' element={<Login onHash={true} />}/>
                         <Route path='registration' element={<Registration />} />
                         <Route path='create-password' element={<CreatePassword />} />
                         <Route path='recovery-password' element={<RecoveryPassword/>} />

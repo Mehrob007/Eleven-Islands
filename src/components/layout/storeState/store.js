@@ -17,9 +17,9 @@ export const usePhotoStore = create((set, get) => ({
         // if (params.month) {
         //     queryParams.append('month', params.month);
         // }
-        // if (params.name) {
-        //     queryParams.append('name', params.name);
-        // }
+        if (params.size) {
+            queryParams.append('size', params.size);
+        }
         // if (params.last_name) {
         //     queryParams.append('last_name', params.last_name);
         // }

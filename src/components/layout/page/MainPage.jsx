@@ -1,146 +1,36 @@
-import { useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Box2 from './pageElements/Box2';
-import SendEmail from './pageElements/SendEmail';
+import { useRef, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Box2 from "./pageElements/Box2";
+import SendEmail from "./pageElements/SendEmail";
 
-import comRightColl from '../../../assets/icon/comRightColl.svg';
-import elementBox1Logo from '../../../assets/icon/elementBox1Logo.svg';
-import element2Box1Logo from '../../../assets/icon/element2Box1Logo.svg';
+import comRightColl from "../../../assets/icon/comRightColl.svg";
+import elementBox1Logo from "../../../assets/icon/elementBox1Logo.svg";
+import element2Box1Logo from "../../../assets/icon/element2Box1Logo.svg";
 
-
-import imgSlider from '../../../assets/img/imgSlidr.png';
-import VideoPc from '../../../assets/video/VideoPc.mp4';
-import VideoMobile from '../../../assets/video/VideoMobile.mp4';
-import imgBlog from '../../../assets/img/blogContent.png';
+// import VideoMobileLocal from "../../../assets/video/VideoMobile.mp4";
+import imgBlog from "../../../assets/img/blogContent.png";
 
 // import { Helmet } from 'react-helmet';
-import { usePhotoStore } from '../storeState/store';
-import Slider from 'react-slick';
-import Box3 from './pageElements/Box3';
+import { usePhotoStore } from "../storeState/store";
+import Slider from "react-slick";
+import Box3 from "./pageElements/Box3";
 
-// import "slick-carousel/slick/slick-theme.css";
-
-import IMG_1233 from "../../../assets/img/Сжатые фото/IMG_1233.jpg"
-import IMG_1243 from "../../../assets/img/Сжатые фото/IMG_1243.jpg"
-import IMG_1248 from "../../../assets/img/Сжатые фото/IMG_1248.jpg"
-import IMG_1249 from "../../../assets/img/Сжатые фото/IMG_1249.jpg"
-import IMG_1258 from "../../../assets/img/Сжатые фото/IMG_1258.jpg"
-import IMG_1259 from "../../../assets/img/Сжатые фото/IMG_1259.jpg"
-import IMG_1261 from "../../../assets/img/Сжатые фото/IMG_1261.jpg"
-import IMG_1262 from "../../../assets/img/Сжатые фото/IMG_1262.jpg"
-import IMG_1270 from "../../../assets/img/Сжатые фото/IMG_1270.jpg"
-import IMG_1273 from "../../../assets/img/Сжатые фото/IMG_1273.jpg"
-import IMG_1274 from "../../../assets/img/Сжатые фото/IMG_1274.jpg"
-import IMG_1278 from "../../../assets/img/Сжатые фото/IMG_1278.jpg"
-import IMG_1280 from "../../../assets/img/Сжатые фото/IMG_1280.jpg"
-import IMG_1281 from "../../../assets/img/Сжатые фото/IMG_1281.jpg"
-import IMG_1282 from "../../../assets/img/Сжатые фото/IMG_1282.jpg"
-import IMG_1285 from "../../../assets/img/Сжатые фото/IMG_1285.jpg"
-import IMG_1286 from "../../../assets/img/Сжатые фото/IMG_1286.jpg"
-import IMG_1295 from "../../../assets/img/Сжатые фото/IMG_1295.jpg"
-import IMG_1297 from "../../../assets/img/Сжатые фото/IMG_1297.jpg"
-import IMG_1300 from "../../../assets/img/Сжатые фото/IMG_1300.jpg"
-import IMG_1302 from "../../../assets/img/Сжатые фото/IMG_1302.jpg"
-import IMG_1303 from "../../../assets/img/Сжатые фото/IMG_1303.jpg"
-import IMG_1309 from "../../../assets/img/Сжатые фото/IMG_1309.jpg"
-import IMG_1313 from "../../../assets/img/Сжатые фото/IMG_1313.jpg"
-import IMG_1366 from "../../../assets/img/Сжатые фото/IMG_1366.jpg"
-import IMG_1373 from "../../../assets/img/Сжатые фото/IMG_1373.jpg"
-import IMG_1385 from "../../../assets/img/Сжатые фото/IMG_1385.jpg"
-import IMG_1387 from "../../../assets/img/Сжатые фото/IMG_1387.jpg"
-import IMG_1388 from "../../../assets/img/Сжатые фото/IMG_1388.jpg"
-import IMG_1390 from "../../../assets/img/Сжатые фото/IMG_1390.jpg"
-import IMG_1418 from "../../../assets/img/Сжатые фото/IMG_1418.jpg"
-import IMG_1420 from "../../../assets/img/Сжатые фото/IMG_1420.jpg"
-import IMG_1437 from "../../../assets/img/Сжатые фото/IMG_1437.jpg"
-import IMG_1455 from "../../../assets/img/Сжатые фото/IMG_1455.jpg"
-import IMG_1468 from "../../../assets/img/Сжатые фото/IMG_1468.jpg"
-import IMG_1471 from "../../../assets/img/Сжатые фото/IMG_1471.jpg"
-import IMG_1480 from "../../../assets/img/Сжатые фото/IMG_1480.jpg"
-import IMG_1490 from "../../../assets/img/Сжатые фото/IMG_1490.jpg"
-import IMG_1501 from "../../../assets/img/Сжатые фото/IMG_1501.jpg"
-import IMG_1504 from "../../../assets/img/Сжатые фото/IMG_1504.jpg"
-import IMG_1512 from "../../../assets/img/Сжатые фото/IMG_1512.jpg"
-import IMG_1522 from "../../../assets/img/Сжатые фото/IMG_1522.jpg"
-import IMG_1529 from "../../../assets/img/Сжатые фото/IMG_1529.jpg"
-import IMG_1535 from "../../../assets/img/Сжатые фото/IMG_1535.jpg"
-import IMG_1555 from "../../../assets/img/Сжатые фото/IMG_1555.jpg"
-import IMG_1556 from "../../../assets/img/Сжатые фото/IMG_1556.jpg"
-import IMG_1560 from "../../../assets/img/Сжатые фото/IMG_1560.jpg"
-import IMG_1563 from "../../../assets/img/Сжатые фото/IMG_1563.jpg"
-import IMG_1566 from "../../../assets/img/Сжатые фото/IMG_1566.jpg"
-import IMG_1586 from "../../../assets/img/Сжатые фото/IMG_1586.jpg"
-
-const images = [
-  IMG_1233,
-  IMG_1243,
-  IMG_1248,
-  IMG_1249,
-  IMG_1258,
-  IMG_1259,
-  IMG_1261,
-  IMG_1262,
-  IMG_1270,
-  IMG_1273,
-  IMG_1274,
-  IMG_1278,
-  IMG_1280,
-  IMG_1281,
-  IMG_1282,
-  IMG_1285,
-  IMG_1286,
-  IMG_1295,
-  IMG_1297,
-  IMG_1300,
-  IMG_1302,
-  IMG_1303,
-  IMG_1309,
-  IMG_1313,
-  IMG_1366,
-  IMG_1373,
-  IMG_1385,
-  IMG_1387,
-  IMG_1388,
-  IMG_1390,
-  IMG_1418,
-  IMG_1420,
-  IMG_1437,
-  IMG_1455,
-  IMG_1468,
-  IMG_1471,
-  IMG_1480,
-  IMG_1490,
-  IMG_1501,
-  IMG_1504,
-  IMG_1512,
-  IMG_1522,
-  IMG_1529,
-  IMG_1535,
-  IMG_1555,
-  IMG_1556,
-  IMG_1560,
-  IMG_1563,
-  IMG_1566,
-  IMG_1586,
-];
-
+import apiClient from "../../../utils/api";
 
 const BlogData = [
   {
     image: imgBlog,
-    title: ' энергетическим напиткам'
+    title: " энергетическим напиткам",
   },
   {
     image: imgBlog,
-    title: ' энергетическим напиткам'
+    title: " энергетическим напиткам",
   },
   {
     image: imgBlog,
-    title: ' энергетическим напиткам'
-  }
-]
-
-
+    title: " энергетическим напиткам",
+  },
+];
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -150,20 +40,97 @@ const useMediaQuery = (query) => {
 
     const listener = () => setMatches(media.matches);
 
-    media.addEventListener('change', listener);
+    media.addEventListener("change", listener);
 
-    return () => media.removeEventListener('change', listener);
+    return () => media.removeEventListener("change", listener);
   }, [query]);
 
   return matches;
 };
 
-
-
-
 export default function MainPage() {
-  const widthLap = '1020px'
+  const widthLap = "1020px";
+  const isDesktop = useMediaQuery(`(min-width: ${widthLap})`);
   const { photos, fetchPhotos } = usePhotoStore();
+  const token = localStorage.getItem("token");
+  const [bunnertTitle, setTitleBunner] = useState();
+  const [bunnerVideoDesk, setVideoDeskBunner] = useState();
+  const [images, setImage] = useState({});
+
+  const settings = {
+    className: "slider variable-width slider-blog",
+    dots: true,
+    infinite: true,
+    centerMode: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    variableWidth: true,
+  };
+
+  const GetBunner = async () => {
+    if (isDesktop) {
+      try {
+        const response = await apiClient.get(`/Banner/get-all-banners`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setVideoDeskBunner(response.data[response.data.length - 1].source);
+      } catch (error) {
+        console.error("Error fetching photos:", error);
+      }
+    } else {
+      try {
+        const response = await apiClient.get(`/Banner/get-all-banner-mobile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setVideoDeskBunner(response.data[response.data.length - 1].source);
+      } catch (error) {
+        console.error("Error fetching photos:", error);
+      }
+    }
+
+    // await setVideoPc(VideoPc);
+    // await setVideoMobile(VideoMobileLocal);
+  };
+  const GetBunnerTitle = async () => {
+    try {
+      const response = await apiClient.get(
+        `/CollectionProduct/get-all-collection-banner`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setTitleBunner(response.data);
+    } catch (error) {
+      console.error("Error fetching photos:", error);
+    }
+  };
+
+  const GetGallery = async () => {
+    try {
+      const response = await apiClient.get(
+        `/CollectionGallery/get-gallery-collection?limit=${1}&page=${1}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      setImage(response?.data?.galleries[0][0]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    window.scroll(0, 0);
+    // GetBunner();
+    GetBunnerTitle();
+  }, []);
   useEffect(() => {
     const timer = setTimeout(() => {
       if (photos?.length > 0) {
@@ -173,88 +140,99 @@ export default function MainPage() {
           page: 1,
           limit: 50,
         });
-        console.log('====================================');
+        console.log("====================================");
         console.log("fetching !!");
-        console.log('====================================');
+        console.log("====================================");
       }
     }, 5000);
 
     // Clear the timeout if the component unmounts
     return () => clearTimeout(timer);
   }, [photos]);
-
-
-
-
-
-  const settings = {
-    className: "slider variable-width slider-blog",
-    dots: true,
-    infinite: true,
-    centerMode: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    variableWidth: true
-  };
-  useEffect(() => {
-    window.scroll(0, 0)
-  }, [])
   // useEffect(() => {
   //   if (fetching) {
   //     fetchPhotos({ limit: 50, page: 1 });
   //   }
   // }, [fetching]);
-  console.log('====================================');
+
+  useEffect(() => {
+    GetBunner();
+    GetGallery();
+  }, []);
+  console.log("====================================");
   console.log(photos);
-  console.log('====================================');
+  console.log("images", images);
+  console.log("====================================");
 
   return (
     <>
-      {/* VideoPc
-  VideoMobile */}
-      <div className='box1'>
-
-        <video autoPlay loop muted playsInline>
-          <source src={useMediaQuery(`(min-width: ${widthLap})`) ? VideoPc : VideoMobile} type="video/mp4" />
-          Ваш браузер не поддерживает видео.
-        </video>
+      <div className="box1">
+        {bunnerVideoDesk?.length && (
+          <video autoPlay loop muted playsInline>
+            <source src={bunnerVideoDesk} type="video/mp4" />
+            {/* Ваш браузер не поддерживает видео. */}
+          </video>
+        )}
 
         <div className="box1newCollection">
-          <div className='newCollection'>
+          <div className="newCollection">
             <div className="comLeftColl">
-              <img src={element2Box1Logo} alt="element2Box1Logo" className='element2Box1Logo' />
-              <img src={elementBox1Logo} className='elementBox1Logo' alt="elementBox1Logo" />
+              <img
+                src={element2Box1Logo}
+                alt="element2Box1Logo"
+                className="element2Box1Logo"
+              />
+              <img
+                src={elementBox1Logo}
+                className="elementBox1Logo"
+                alt="elementBox1Logo"
+              />
             </div>
-
             <div className="comRightColl">
+              {/* https://backendeleven.ru/CollectionProduct/get-all-collection-banner */}
               <h2>New collection</h2>
-              <h2>ESSENTIAL</h2>
+              <h2>{bunnertTitle?.[bunnertTitle.length - 1]?.name}</h2>
               {/* <img src={comRightColl} alt="comRightColl" /> */}
             </div>
           </div>
         </div>
       </div>
       <div className="header headerBox2 ">
-        <div className='headerCom1'>
-          <h2>Essential collection</h2>
+        <div className="headerCom1">
+          <h2>{bunnertTitle?.[bunnertTitle.length - 1]?.name}</h2>
         </div>
-        {useMediaQuery(`(min-width: ${widthLap})`) &&
-          <div className='headerCom2'>
-            <Link to='products/all'>Смотреть все</Link>
-          </div>}
+        {useMediaQuery(`(min-width: ${widthLap})`) ? (
+          <div className="headerCom2">
+            <Link to="products/all">Смотреть все</Link>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <Box2 arrDataImg={photos.filter((prev, i) => prev.popular && i < 32)} />
 
-      {useMediaQuery(`(max-width: ${widthLap})`) &&
-        <div className="header headerBox2 " style={{ display: 'flex', justifyContent: 'center' }}>
-          <div className='headerCom2'>
-            <Link to='products/all' style={{ margin: '0 auto' }}>Смотреть все</Link>
+      {useMediaQuery(`(max-width: ${widthLap})`) ? (
+        <div
+          className="header headerBox2 "
+          style={{ display: "flex", justifyContent: "center" }}
+        >
+          <div className="headerCom2">
+            <Link to="products/all" style={{ margin: "0 auto" }}>
+              Смотреть все
+            </Link>
           </div>
         </div>
-      }
-      {useMediaQuery(`(min-width: ${widthLap})`) &&
-        <SendEmail />}
-      <Box3 images={images.filter((_, i) => i < 10)} title={'Фотогалерея'} />
+      ) : (
+        ""
+      )}
+      {useMediaQuery(`(min-width: ${widthLap}`) ? <SendEmail /> : ""}
+      {images?.photos?.length && (
+        <Box3
+          images={images?.photos}
+          title={images?.nameCollection}
+          id={images?.id}
+        />
+      )}
       {/* <div>
         <div className="box3">
           <div className="header">
@@ -308,9 +286,7 @@ export default function MainPage() {
             <h3>Вся фотогалерея</h3>
           </div>
       </div> */}
-      {useMediaQuery(`(max-width: ${widthLap})`) &&
-        <SendEmail />
-      }
+      {useMediaQuery(`(max-width: ${widthLap})`) ? <SendEmail /> : ""}
       {/* <div className="box4">
         <div className="header">
           <div className='headerCom1'>

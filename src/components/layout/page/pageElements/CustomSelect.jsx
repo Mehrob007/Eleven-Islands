@@ -35,7 +35,7 @@ export default function CustomSelect({
     useEffect(() => {
         if (vlaueSelect) {
             if (vlaueSelect.value === "*") {
-                onClick(['XS', 'S', 'M', 'L', 'XL'])
+                onClick(null)
             } else {
                 onClick(vlaueSelect.value)
             }
@@ -51,7 +51,6 @@ export default function CustomSelect({
                     <ul className={`${title == 'Сортировать по' && 'right-0'} customUl p-[20px] bg-white text-black w-[250px] flex flex-col gap-[15px]`}>
                         {value && value?.map((el) => (
                             <li onClick={() => {
-
                                 setValueSelect(el)
                                 toggle()
                             }} className="cursor-pointer flex gap-[10px] items-center" key={el.value}>
