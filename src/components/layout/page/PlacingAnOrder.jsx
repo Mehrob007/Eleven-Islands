@@ -142,6 +142,11 @@ export default function PlacingAnOrder() {
           setLoading(true)
         try {
           const {data} = await apiClient.post("/api/Pay/create-payment",body)
+
+          if (!data?.Success) {
+            throw new Error("Произошла ошибка при попытке создания платежа");
+          }
+
           window.open(data?.PaymentURL,"_self")
         } catch (error) {
           console.log("error",error)
