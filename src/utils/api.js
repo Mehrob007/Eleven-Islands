@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://Backendeleven.ru',
+  baseURL: 'https://backendeleven.ru/Api/',
 });
 
 export default apiClient;
