@@ -70,7 +70,7 @@ export default function MainPage() {
   const GetBunner = async () => {
     if (isDesktop) {
       try {
-        const response = await apiClient.get(`/Banner/get-all-banners`, {
+        const response = await apiClient.get(`/Api/get-all-banners`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -81,7 +81,7 @@ export default function MainPage() {
       }
     } else {
       try {
-        const response = await apiClient.get(`/Banner/get-all-banner-mobile`, {
+        const response = await apiClient.get(`/Api/get-all-banner-mobile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
