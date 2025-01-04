@@ -85,9 +85,9 @@ export default function Products() {
 
       setTypeSelect([
         { label: "Все типы", value: "" },
-        ...newPhotos.map((e) => ({
+        ...newPhotos.map((e, i) => ({
           label: e.name,
-          value: e.categoryId,
+          value: i + 1,
         })),
       ]);
     } catch (error) {
@@ -210,32 +210,34 @@ export default function Products() {
         <div>
           {" "}
           {isLargeScreen ? (
-            <div className="filterProbucts">
-              <CustomSelect
-                onClick={(id) => {
-                  setCount(0);
-                  setdataGetSearsh([]);
-                  setDateSearch({ ...dateSearch, categoryId: id });
-                }}
-                title="Тип продукции"
-                open={openSelect === "type"}
-                toggle={() => toggleSelect("type")}
-                value={typeSelect}
-              />
-              {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
-              <CustomSelect
-                onClick={(id) => {
-                  setSelectedSizes(id);
-                  setCount(0);
-                  // handleSizeChange(id)
-                  setDateSearch({ ...dateSearch, reset: !dateSearch.reset });
-                }}
-                title="Размер"
-                value={sizes}
-                open={openSelect === "size"}
-                toggle={() => toggleSelect("size")}
-              />
-            </div>
+            typeSelect?.length > 0 && (
+              <div className="filterProbucts">
+                <CustomSelect
+                  onClick={(id) => {
+                    setCount(0);
+                    setdataGetSearsh([]);
+                    setDateSearch({ ...dateSearch, categoryId: id });
+                  }}
+                  title="Тип продукции"
+                  open={openSelect === "type"}
+                  toggle={() => toggleSelect("type")}
+                  value={typeSelect}
+                />
+                {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
+                <CustomSelect
+                  onClick={(id) => {
+                    setSelectedSizes(id);
+                    setCount(0);
+                    // handleSizeChange(id)
+                    setDateSearch({ ...dateSearch, reset: !dateSearch.reset });
+                  }}
+                  title="Размер"
+                  value={sizes}
+                  open={openSelect === "size"}
+                  toggle={() => toggleSelect("size")}
+                />
+              </div>
+            )
           ) : (
             <button
               onClick={() => setModalStateFilter(true)}

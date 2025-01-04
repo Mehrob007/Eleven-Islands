@@ -151,7 +151,7 @@ export default function Gelary() {
               <Box3 images={el?.photos} title={el?.nameCollection} id={el?.id} />
             </div>
           ))
-        : "loading..."}
+        : "Загрузка..."}
       {/* <br /><br /><br />
             <Box3 images={images.filter((_, i) => i < 20 && i > 10)} title={'Фотогалерея'} />
             <br /><br /><br />

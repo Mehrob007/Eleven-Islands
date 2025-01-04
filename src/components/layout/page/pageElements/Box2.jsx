@@ -209,7 +209,7 @@ export default function Box2({ arrDataImg }) {
               </>
             ))
           ) : (
-            <h2>Loading...</h2>
+            <h2>Загрузка...</h2>
           )}
           {/* {loading && <h2 style={{ textAlign: 'center' }}>loading...</h2>} */}
         </div>

@@ -64,7 +64,7 @@ export default function ModalBasket() {
         </div>
         <div className="divParsingSearchData">
           {loadingSearch
-            ? "loading..."
+            ? "Загрузка..."
             : dataSearch?.map((e, i) => <Link to={`/product/${e.id}`} onClick={() => setModalStateSeatch(false)} key={i}>
               <h1>{e.shortDescription}</h1>
             </Link>)}

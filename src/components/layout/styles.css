@@ -1992,7 +1992,7 @@ video {
   padding: 15px 0 5px 0px;
   display: flex;
   align-items: center;
-  border-bottom: 2px solid #26262693;
+  border-bottom: 2px solid #B3B3B3;
 }
 @media screen and (max-width: 1020px) {
   .ImageComDiv {
@@ -2854,8 +2854,20 @@ video {
     font-size: 14px;
   }
 }
-
+/* @media screen and (max-width: 500px) {
+  .ImageComDiv {
+    width: 300px;
+    grid-template-columns: repeat(4, 140px);
+    top: 67%;
+    left: 35px;
+  }} */
 @media screen and (max-width: 330px) {
+  .ImageComDiv {
+    width: 580px;
+    grid-template-columns: repeat(4, 140px);
+    top: 67%;
+    left: 35px;
+  }
   .slider1 > .slick-dots {
     bottom: 10px;
   }

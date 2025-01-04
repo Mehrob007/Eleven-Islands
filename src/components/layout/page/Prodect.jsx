@@ -276,7 +276,7 @@ export default function Prodect() {
             <div className="contectProductId__info">
               {/* Prodect{id} */}
               <div className="header-div-product">
-                {findeElement?.newCollection && (
+                {!findeElement?.newCollection && (
                   <img src={NewCollection} alt="NewCollection" />
                 )}
                 <div style={{ width: "300px", height: "90px" }}>
@@ -294,8 +294,8 @@ export default function Prodect() {
                   <h4>
                     <span>
                       {findeElement.discount != 0
-                        ? findeElement?.discount
-                        : findeElement?.price}
+                        ? findeElement?.discount || "AAAAAAAA"
+                        : findeElement?.price || "000000"}
                     </span>{" "}
                     ₽
                   </h4>
