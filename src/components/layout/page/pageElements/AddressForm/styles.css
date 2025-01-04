@@ -1,0 +1,12 @@
+.address-form {
+    display: grid !important;
+    grid-gap: 16px !important;
+}
+
+.address-form__inputs {
+    display: grid !important;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: flex-end;
+    gap: 16px;
+}

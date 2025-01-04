@@ -126,6 +126,7 @@ export default function Prodect() {
           ...dataGelary,
           {
             id: id,
+            idProduct: findeElement?.idProduct,
             title: findeElement?.name,
             name: findeElement?.shortDescription,
             price: findeElement?.price,
@@ -141,6 +142,7 @@ export default function Prodect() {
           ...dataGelary,
           {
             id: id,
+            idProduct: findeElement?.idProduct,
             title: findeElement?.name,
             name: findeElement?.shortDescription,
             price: findeElement?.price,
