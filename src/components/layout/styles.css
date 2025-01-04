@@ -442,7 +442,7 @@ header {
   position: relative;
   /* max-width: 1440px; */
   /* width: 100%; */
-  height: 790px;
+  height: 100%;
   margin: 50px 0;
   /* background: #f1f4fd ; */
 }
@@ -458,7 +458,7 @@ header {
   overflow-x: auto;
   scrollbar-width: none;
   gap: 40px;
-  grid-template-columns: repeat(10, 1fr);
+  grid-auto-flow: column;
 }
 .slider-wrapper .image-list::-webkit-scrollbar {
   display: none;
@@ -1753,7 +1753,7 @@ select {
   max-width: 650px;
   min-width: 650px;
   width: 100%;
-  height: 650px;
+  height: fit-content;
   /* border: 1px solid #408759; */
   position: relative;
 }
@@ -1874,7 +1874,7 @@ select {
   color: white;
 }
 .block__button {
-  background-color: #70bd8b;
+  background-color: #b3b3b3;
   cursor: default;
 }
 .error-p-send-email {
@@ -2351,11 +2351,15 @@ video {
   .itemBox2 {
     width: 100%;
     min-width: none;
-    max-height: 350px;
+    height: fit-content;
     min-height: none;
     position: relative;
     overflow: hidden;
-    gap: 5px;
+    gap: 15px;
+
+    @media (max-width: 768px) {
+      gap: 10px;
+    }
   }
   .itemBox2 > a {
     max-width: 100%;
