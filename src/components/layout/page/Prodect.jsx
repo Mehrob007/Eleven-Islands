@@ -21,10 +21,10 @@ import SendEmail from "./pageElements/SendEmail";
 
 import { usePhotoStore } from "../storeState/store";
 import { PiMinus, PiPlus } from "react-icons/pi";
-// import axios from 'axios';
 import Slider from "react-slick";
 import ImageCom from "./pageElements/ImageCom";
 import { Helmet } from "react-helmet";
+import {getImageSrc} from "../../../utils/getImageSrc.js";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -43,7 +43,6 @@ const useMediaQuery = (query) => {
 };
 
 export default function Prodect() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const { findeElement, findeProduct } = usePhotoStore();
   const [count, setCount] = useState(null);
@@ -247,7 +246,7 @@ export default function Prodect() {
                         })
                       }
                       key={i}
-                      src={prev}
+                      src={getImageSrc(prev)}
                       alt="imgProduct"
                     />
                   ))}
@@ -257,7 +256,6 @@ export default function Prodect() {
               <div className="contectProductId_phone">
                 <Slider {...settingsGelary}>
                   {findeElement?.images?.map((prev, i) => {
-                    console.log(prev);
                     return (
                       <img
                         // style={{
@@ -267,7 +265,7 @@ export default function Prodect() {
                         // }}
                         className="img_phone_items"
                         key={i}
-                        src={prev}
+                        src={getImageSrc(prev)}
                         alt="imgProduct"
                       />
                     );

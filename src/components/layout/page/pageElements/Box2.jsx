@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import plus from '../../../../assets/icon/plus.svg'
-import { FiPlus } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import {getImageSrc} from "../../../../utils/getImageSrc.js";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -98,21 +97,14 @@ export default function Box2({ arrDataImg }) {
                     onMouseLeave={() => setHoveredIndex(null)}
                     // className='hoverable-item'
                   >
-                    <div
+                    <img
                       className="itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7"
-                      style={{
-                        background: `url('${
-                          hoveredIndex !== i
-                            ? item?.images[0]
-                            : item?.images?.[1]
-                        }') center / cover no-repeat`,
-                        // background: `url('${hoveredIndex !== i ? item?.images[0].src : item?.images?.[1]?.src}') center / cover no-repeat`,
-                      }}
+                      src={getImageSrc(hoveredIndex === i ? item?.images[1] : item?.images[0])}
                     >
                       {/* <div className='h-full w-full object-cover object-center group-hover:opacity-75'
                     
                   </div> */}
-                    </div>
+                    </img>
                   </Link>
                   <div className="color-product">
                     {/* <a key={i} style={{ borderColor: localStorage.getItem('colorVibor') == el.name.split("|")[0] && '#000' }}>
