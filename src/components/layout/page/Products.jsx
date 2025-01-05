@@ -8,6 +8,7 @@ import { useModalFilter, useModalReset } from "../storeState/modalBasket";
 import ModalFilter from "../modalNavigate/ModalFilter";
 import ModalReset from "../modalNavigate/ModalReset";
 import apiClient from "../../../utils/api";
+import { useParams } from "react-router-dom";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -23,6 +24,7 @@ const useMediaQuery = (query) => {
   return matches;
 };
 export default function Products() {
+  const { id } = useParams();
   const { photos, fetchPhotos } = usePhotoStore();
   const [selectedSizes, setSelectedSizes] = useState("");
   const { modalStateFilter, setModalStateFilter } = useModalFilter();
@@ -33,7 +35,6 @@ export default function Products() {
   const [dataGetSearsh, setdataGetSearsh] = useState([]);
   const [dateSearch, setDateSearch] = useState({ reset: true });
   const [stemsSort, setItemsSort] = useState();
-
   const sizes = [
     {
       label: "Все размеры",
@@ -85,9 +86,9 @@ export default function Products() {
 
       setTypeSelect([
         { label: "Все типы", value: "" },
-        ...newPhotos.map((e, i) => ({
-          label: e.name,
-          value: i + 1,
+        ...newPhotos.map((e) => ({
+          label: e?.name,
+          value: e?.categoryId,
         })),
       ]);
     } catch (error) {
@@ -166,6 +167,12 @@ export default function Products() {
   }, [count, isFetching]);
 
   useEffect(() => {
+    setCount(0);
+    setdataGetSearsh([]);
+    setDateSearch({ ...dateSearch, categoryId: id });
+  }, []);
+
+  useEffect(() => {
     if (selectedSizes === "*" || !selectedSizes) {
       setdataGetSearsh(photos);
     } else {
@@ -202,6 +209,7 @@ export default function Products() {
   console.log("selectedSizes", selectedSizes);
   console.log("dateSearch", dateSearch);
   console.log("typeSelect", typeSelect);
+  console.log("id", id);
   console.log("====================================");
   return (
     <>
@@ -308,6 +316,7 @@ export default function Products() {
                 title="Тип продукции"
                 phone={true}
                 value={typeSelect}
+                id={id}
               />
               {/* <CustomSelect title='Цвет' value={''} open={openSelect === "color"} toggle={() => toggleSelect("color")} /> */}
               <CustomSelect

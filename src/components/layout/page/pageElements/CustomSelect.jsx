@@ -11,6 +11,7 @@ export default function CustomSelect({
   open,
   toggle,
   onClick = () => {},
+ id
 }) {
   const [vlaueSelect, setValueSelect] = useState(
     title === "Размер"
@@ -20,8 +21,8 @@ export default function CustomSelect({
           // ['XS', 'S', 'M', 'L', 'XL']
         }
       : {
-          value: value?.[0]?.value || "",
-          label: value?.[0]?.label || "",
+          value: value?.vlaueSelect?.filter((el) => el?.value === id)?.value || "",
+          label: value?.vlaueSelect?.filter((el) => el?.value === id)?.label || "",
         },
   );
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function CustomSelect({
   }, [vlaueSelect]);
 
   console.log("vlaueSelect", vlaueSelect);
+
 
   if (!phone) {
     return (

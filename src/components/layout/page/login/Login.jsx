@@ -93,7 +93,7 @@ export default function Login({ onHash = false }) {
 
   return (
     <div className="login-box">
-      {!loading ? (
+      {loading ? (
         <div className="loading-login">
           <h1>
             Идет потверждение E-mail пожалуйста подождите!
