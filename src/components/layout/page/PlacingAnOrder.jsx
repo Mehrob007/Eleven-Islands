@@ -229,9 +229,9 @@ export default function PlacingAnOrder() {
     if (promo.type) {
       setPromo({ ...promo, type: null, procent: null, itogProcent: 0, promocode: "" })
     } else if (code === "WELCOME10") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 10} руб.`, itogProcent: amountPrice / 100 * 10 })
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${Math.round(amountPrice / 100 * 10)} руб.`, itogProcent: Math.round(amountPrice / 100 * 10) })
     } else if (code === "TEST90") {
-      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${amountPrice / 100 * 90} руб.`, itogProcent: amountPrice / 100 * 90 })
+      setPromo({ ...promo, type: true, procent: `Промокод активирован. Воша сидка ${Math.round(amountPrice / 100 * 90)} руб.`, itogProcent: Math.round(amountPrice / 100 * 90) })
     }
     else {
       setPromo({ ...promo, type: false, procent: "Неверный промокод или его срок действия истек", promocode: "", itogProcent: 0 })

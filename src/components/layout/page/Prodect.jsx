@@ -25,6 +25,7 @@ import { PiMinus, PiPlus } from "react-icons/pi";
 import Slider from "react-slick";
 import ImageCom from "./pageElements/ImageCom";
 import { Helmet } from "react-helmet";
+import DolyameModal from "./DolyameModal";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -217,6 +218,17 @@ export default function Prodect() {
 
   console.log("photos", photos);
 
+  useEffect(() => {
+    if (window.Dolyame) {
+      window.Dolyame.init({
+        productId: findeElement.id,
+        price: findeElement.price,
+        name: findeElement.shortDescription,
+        currency: "RUB",
+      });
+    }
+  }, [findeElement]);
+
   return (
     <>
       <Helmet>
@@ -281,7 +293,7 @@ export default function Prodect() {
                 {findeElement?.newCollection && (
                   <img src={NewCollection} alt="NewCollection" />
                 )}
-                <div >
+                <div>
                   <h2>{findeElement?.shortDescription}</h2>
                   {/* <h2>{findeElement?.name}</h2> */}
                   <p>{findeElement?.descriptionProduct}</p>
@@ -368,6 +380,7 @@ export default function Prodect() {
                   />
                 </div>
               )}
+              {/* <DolyameModal product={findeElement} /> */}
               <div className="color-div-product">
                 <h2>Другие цвета</h2>
                 <div>
@@ -597,7 +610,10 @@ export default function Prodect() {
                           <div
                             style={{ fontSize: "14px" }}
                             dangerouslySetInnerHTML={{
-                              __html: findeElement?.fullDescription?.replace(/\n/g, "<br>"),
+                              __html: findeElement?.fullDescription?.replace(
+                                /\n/g,
+                                "<br>",
+                              ),
                             }}
                           />
                         </div>
@@ -631,7 +647,10 @@ export default function Prodect() {
                           <div
                             style={{ fontSize: "14px" }}
                             dangerouslySetInnerHTML={{
-                              __html: findeElement?.care?.replace(/\n/g, "<br>"),
+                              __html: findeElement?.care?.replace(
+                                /\n/g,
+                                "<br>",
+                              ),
                             }}
                           />
                         </div>
@@ -664,15 +683,14 @@ export default function Prodect() {
                           style={{ padding: "10px 0" }}
                         >
                           <div style={{ fontSize: 14 }}>
-                            Стандартная доставка занимает 3-7 
-                            рабочих дней. <br />
+                            Стандартная доставка занимает 3-7 рабочих дней.{" "}
+                            <br />
                             Экспресс-доставка возможна за дополнительную плату и
                             займет 1-3 рабочих дня. <br />
-                            Вернуть или обменять товары
-                            возможно в течение 14 дней с момента получения
-                            заказа. <br />
-                            Подробности о возвратах и обменах можно
-                            найти на нашей странице "Возвраты и обмены"
+                            Вернуть или обменять товары возможно в течение 14
+                            дней с момента получения заказа. <br />
+                            Подробности о возвратах и обменах можно найти на
+                            нашей странице "Возвраты и обмены"
                           </div>
                         </div>
                       </CSSTransition>
@@ -693,7 +711,7 @@ export default function Prodect() {
               </div>
               <div className="headerCom2"></div>
             </div>
-            <Box2 arrDataImg={photos?.filter((_, i) => i < 4 )} />
+            <Box2 arrDataImg={photos?.filter((_, i) => i < 4)} />
             <SendEmail />
           </div>
         </>
