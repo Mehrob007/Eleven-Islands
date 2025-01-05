@@ -1352,11 +1352,11 @@ label {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  gap: 10px;
+  gap: 20px;
 }
 .header-div-product > div:first-child {
-  max-width: 370px;
-  height: 52px;
+  width: 470px;
+  max-height: 72px;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -1364,13 +1364,13 @@ label {
   gap: 10px;
 }
 .header-div-product > div {
-  max-width: 370px;
-  height: 52px;
+  width: 470px;
+  max-height: 72px;
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: start;
-  gap: 3px;
+  gap: 6px;
 }
 .header-div-product > div > h2 {
   font-family: AGAvantGardeCyr;
@@ -1383,7 +1383,7 @@ label {
 }
 .header-div-product > div > p {
   font-family: AGAvantGardeCyr;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 15.4px;
   text-align: left;
@@ -2005,10 +2005,23 @@ video {
 }
 @media screen and (max-width: 1020px) {
   .ImageComDiv {
-    width: 580px;
-    grid-template-columns: repeat(4, 140px);
-    top: 67%;
-    left: 35px;
+    width: 300px;
+    grid-template-columns: repeat(4, 80px);
+    height: 30px;
+    top: 39%;
+    left: 25px;
+  }
+  .ImageComDiv > div{
+    font-size: 10px !important;
+  }
+  .ImageCom > div{
+    min-width: 375px;
+    max-width: 375px;
+  }
+  .ImageCom > div > img{
+    min-width: 375px;
+    max-width: 375px;
+    margin: 0 auto;
   }
   .PlacingAnOrder__form__div__4 {
     min-width: 0 !important;
@@ -2719,7 +2732,7 @@ video {
     line-height: 17.6px;
     text-align: left;
     color: #262626;
-    margin-bottom: 5px;
+    margin: 0;
   }
   .header-div-product > div > p {
     font-family: AGAvantGardeCyr;
@@ -2732,10 +2745,19 @@ video {
   .header-div-product > div > h4 {
     margin-top: -10px;
   }
+  .header-div-product > div {
+    width: 370px;
+    max-height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    gap: 6px;
+  }
   .header-div-product {
-    width: 156px;
-    height: 70px;
-    /* gap: 10px; */
+    width: 260px;
+    height: 85px;
+    gap: 10px;
   }
   .price-product > h4,
   .price-product > h4 > span {
@@ -2870,13 +2892,14 @@ video {
     margin: 3px 0;
   }
 }
-/* @media screen and (max-width: 500px) {
+@media screen and (max-width: 500px) {
   .ImageComDiv {
-    width: 300px;
-    grid-template-columns: repeat(4, 140px);
-    top: 67%;
-    left: 35px;
-  }} */
+    width: 100%;
+    grid-template-columns: repeat(4, 100px);
+    top: 50.5%;
+    left: 20px;
+  }
+}
 @media screen and (max-width: 330px) {
   
   .ImageComDiv {

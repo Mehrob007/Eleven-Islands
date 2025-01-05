@@ -281,7 +281,7 @@ export default function Prodect() {
                 {findeElement?.newCollection && (
                   <img src={NewCollection} alt="NewCollection" />
                 )}
-                <div style={{ width: "300px", height: "90px" }}>
+                <div >
                   <h2>{findeElement?.shortDescription}</h2>
                   {/* <h2>{findeElement?.name}</h2> */}
                   <p>{findeElement?.descriptionProduct}</p>
