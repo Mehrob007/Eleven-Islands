@@ -597,7 +597,7 @@ export default function Prodect() {
                           <div
                             style={{ fontSize: "14px" }}
                             dangerouslySetInnerHTML={{
-                              __html: findeElement?.fullDescription,
+                              __html: findeElement?.fullDescription?.replace(/\n/g, "<br>"),
                             }}
                           />
                         </div>
@@ -631,7 +631,7 @@ export default function Prodect() {
                           <div
                             style={{ fontSize: "14px" }}
                             dangerouslySetInnerHTML={{
-                              __html: findeElement?.care,
+                              __html: findeElement?.care?.replace(/\n/g, "<br>"),
                             }}
                           />
                         </div>
@@ -664,11 +664,14 @@ export default function Prodect() {
                           style={{ padding: "10px 0" }}
                         >
                           <div style={{ fontSize: 14 }}>
-                            Стандартная доставка занимает 3-7 рабочих дней.
+                            Стандартная доставка занимает 3-7 
+                            рабочих дней. <br />
                             Экспресс-доставка возможна за дополнительную плату и
-                            займет 1-3 рабочих дня. Вернуть или обменять товары
+                            займет 1-3 рабочих дня. <br />
+                            Вернуть или обменять товары
                             возможно в течение 14 дней с момента получения
-                            заказа. Подробности о возвратах и обменах можно
+                            заказа. <br />
+                            Подробности о возвратах и обменах можно
                             найти на нашей странице "Возвраты и обмены"
                           </div>
                         </div>
