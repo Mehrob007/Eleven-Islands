@@ -193,10 +193,13 @@ export default function PlacingAnOrder() {
               const numericPrice = parseInt(pricing_total);
             setDeliveryPrice(numericPrice);
             setAmountPrice(calculatedBasketPrice + numericPrice);
-            paymentMethodRef.current.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            })
+
+            if (formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT) {
+              paymentMethodRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              })
+            }
           })
 
           return;
@@ -367,7 +370,7 @@ export default function PlacingAnOrder() {
                                                                               onAddressChange={(address) => handleChangeAddress({ address })}/>,
                       [DELIVERY_SERVICES.CDEK]: <CDEKMap city={formState.city} onAddressChange={handleChangeAddress}/>,
                     }[formState.deliveryService] :
-                <AddressForm onChange={onChange} onFormBlur={conditionallyUpdateAddress} />}
+                <AddressForm onChange={onChange} />}
               </div>
             </div>
             </div>
