@@ -32,7 +32,7 @@ export default function Gelary() {
   };
   const GetBunner = async () => {
     try {
-      const response = await apiClient.get(`/Banner/get-all-banners`, {
+      const response = await apiClient.get(`/Api/get-all-banners`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

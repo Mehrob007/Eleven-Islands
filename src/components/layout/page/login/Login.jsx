@@ -96,7 +96,7 @@ export default function Login({ onHash = false }) {
       {loading ? (
         <div className="loading-login">
           <h1>
-            Идет потверждение E-mail пожалуйста подождите!
+            Идет подтверждение E-mail, пожалуйста, подождите!
           </h1>
         </div>
       ) : (

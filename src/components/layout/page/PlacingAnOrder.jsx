@@ -62,7 +62,7 @@ export default function PlacingAnOrder() {
     entrance: '',
     message: '',
     deliveryType: DELIVERY_TYPES.DOOR_TO_DOOR, // По дефолту выбрана доставка до двери
-    deliveryService: DELIVERY_SERVICES.CDEK, // По дефолту выбрана доставка CDEK
+    deliveryService: DELIVERY_SERVICES.YANDEX_DELIVERY, // По дефолту выбрана доставка Яндекс
     isAgreedWithPolicies: false, // Согласен ли с условиями оферты
     platformStationId: '', // ID платформы для доставки до ПВЗ
     address: '', // Полный адрес для доставки до двери
@@ -294,12 +294,16 @@ export default function PlacingAnOrder() {
             </div>
             <div className="PlacingAnOrder__form__div__1">
               <RadioGroup currentValue={formState.deliveryService} radios={[{
-                value: DELIVERY_SERVICES.CDEK,
-                icon: cdekDeliveryIcon,
-              }, {
                 value: DELIVERY_SERVICES.YANDEX_DELIVERY,
                 icon: yandexDeliveryIcon,
-              }]} onChange={(newDeliveryService) => onChange('deliveryService', newDeliveryService)}/>
+              }, {
+                value: DELIVERY_SERVICES.CDEK,
+                icon: cdekDeliveryIcon,
+                isDisabled: true,
+              }]} onChange={(newDeliveryService) => {
+                setDeliveryPrice(0);
+                onChange('deliveryService', newDeliveryService);
+              }}/>
             </div>
             <div className="PlacingAnOrder__form__div__1">
               <div>
@@ -447,7 +451,7 @@ export default function PlacingAnOrder() {
               <div className="PlacingAnOrder__form__raschot">
                 <div>
                   <p>Сумма:</p>
-                  <p>{amountPrice} руб</p>
+                  <p>{calculatedBasketPrice} руб</p>
                 </div>
                 <div>
                   <p>Стоимость доставки:</p>
