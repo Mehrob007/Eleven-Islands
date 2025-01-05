@@ -11,6 +11,18 @@ export const YandexDeliveryMap = ({ city, onAddressChange }) => {
     );
 
     useEffect(() => {
+        const iframeWindow = iframeRef?.current?.contentWindow
+
+        if (iframeWindow) {
+            const yaDeliveryWidget = iframeWindow.YaDelivery;
+
+            if (yaDeliveryWidget) {
+                yaDeliveryWidget.setParams({ city });
+            }
+        }
+    }, [iframeRef, city])
+
+    useEffect(() => {
         const iframe = iframeRef.current;
         if (!iframe) return;
 
@@ -62,6 +74,7 @@ export const YandexDeliveryMap = ({ city, onAddressChange }) => {
 
             document.addEventListener('YaNddWidgetPointSelected', function (data) {
               const address = data.detail.id;
+                            
               window.parent.postMessage({ type: 'addressChange', address }, '*');
             });
           </script>
