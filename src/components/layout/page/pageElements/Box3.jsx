@@ -46,7 +46,7 @@ export default function Box3({ images, title, id }) {
     if (imageListRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = imageListRef.current;
       setIsAtStart(scrollLeft === 0);
-      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 5);
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 10);
     }
   };
   const imageListRef = useRef(null);
@@ -79,7 +79,7 @@ export default function Box3({ images, title, id }) {
               className={`slider-button material-symbols-rounded ${
                 isAtStart ? "offButtonSlider" : ""
               }`}
-              onClick={() => scrollSlider(-1)}
+              onClick={() => scrollSlider(-0.3)}
             >
               <img src={StrelkaLeft} alt="StrelkaLeft" />
             </button>
@@ -88,7 +88,7 @@ export default function Box3({ images, title, id }) {
               className={`slider-button material-symbols-rounded ${
                 isAtEnd ? "offButtonSlider" : ""
               }`}
-              onClick={() => scrollSlider(1)}
+              onClick={() => scrollSlider(0.3)}
             >
               <img src={StrelkaRight} alt="StrelkaRight" />
             </button>
