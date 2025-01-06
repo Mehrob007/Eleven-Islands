@@ -189,10 +189,9 @@ export default function PlacingAnOrder() {
               platform_station_id: address,
             } : {
               address
-            })}).then(({ data: { pricing_total }}) => {
-              const numericPrice = parseInt(pricing_total);
-            setDeliveryPrice(numericPrice);
-            setAmountPrice(calculatedBasketPrice + numericPrice);
+            })}).then(({ data: pricingTotal }) => {
+            setDeliveryPrice(pricingTotal);
+            setAmountPrice(calculatedBasketPrice + pricingTotal);
 
             if (formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT) {
               paymentMethodRef.current.scrollIntoView({
@@ -261,7 +260,7 @@ export default function PlacingAnOrder() {
               </div>
               <div style={{ position: 'relative', height: '90px' }}>
                 <label htmlFor="phoneNumber">Телефон*</label>
-                <InputMask mask="9 (999) 9999 999" style={{ borderColor: errors.phoneNumber && 'red' }} type="text" required id="phoneNumber" onChange={e => onChange('phoneNumber', e.target.value)} >
+                <InputMask mask="+7 (999) 9999 999" style={{ borderColor: errors.phoneNumber && 'red' }} type="text" required id="phoneNumber" onChange={e => onChange('phoneNumber', e.target.value)} >
                 {(inputProps) => <input {...inputProps} style={{ borderColor: errors.phoneNumber && 'red' }} type="text" id="phoneNumber"  />
                 }
                 </InputMask>
