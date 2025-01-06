@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
 import img from '../../../assets/img/1.png';
 import minus from '../../../assets/icon/minus.svg';
 import plus from '../../../assets/icon/plus.svg';
 import { RiDeleteBin6Fill } from 'react-icons/ri';
-import axios from 'axios';
-import { dataBasketItems } from '../storeState/modalBasket';
-import { dataGelaryStore } from '../../layout/storeState/modalBasket'
+import { dataGelaryStore } from '../storeState/modalBasket.js'
+import {getImageSrc} from "../../../utils/getImageSrc.js";
 
 export default function ItemModalBasket({ see = false }) {
     const { dataGelary, setDataGelary } = dataGelaryStore()
@@ -71,7 +69,7 @@ export default function ItemModalBasket({ see = false }) {
     return dataGelary.map((product, index) => (
         <div className='itemModalBasket' key={index}>
             <div className='modalBasketImg'>
-                <img src={product?.titleImg || img} alt={product?.title} />
+                <img src={getImageSrc(product?.titleImg || img)} alt={product?.title} />
             </div>
             <div className='modalBasketInfo'>
                 <div className='info'>
