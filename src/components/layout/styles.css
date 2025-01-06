@@ -1766,6 +1766,13 @@ select {
   /* border: 1px solid #408759; */
   position: relative;
 }
+.ImageComDiv {
+  width: 580px;
+  grid-template-columns: repeat(4, 140px);
+  gap: 20px;
+  top: 300px;
+  left: 70px;
+}
 .Addres {
   display: grid !important;
   gap: 10px;
@@ -2006,14 +2013,18 @@ video {
 @media screen and (max-width: 1020px) {
   .ImageComDiv {
     width: 300px;
-    grid-template-columns: repeat(4, 80px);
-    height: 30px;
-    top: 39%;
-    left: 25px;
+    grid-template-columns: repeat(4, 57px);
+    height: 15px;
+    gap: 25px;
+    top: 294px;
+    left: 34px;
   }
   .ImageComDiv > div{
-    font-size: 10px !important;
-  }
+    font-size: 15px !important;
+    padding: 0 !important;
+    display: flex;
+    align-items: center ;
+  }  
   .ImageCom > div{
     min-width: 375px;
     max-width: 375px;
@@ -2892,22 +2903,22 @@ video {
     margin: 3px 0;
   }
 }
-@media screen and (max-width: 500px) {
+/* @media screen and (max-width: 500px) {
   .ImageComDiv {
     width: 100%;
     grid-template-columns: repeat(4, 100px);
     top: 50.5%;
     left: 20px;
   }
-}
+} */
 @media screen and (max-width: 330px) {
   
-  .ImageComDiv {
+  /* .ImageComDiv {
     width: 580px;
     grid-template-columns: repeat(4, 140px);
     top: 67%;
     left: 35px;
-  }
+  } */
   .slider1 > .slick-dots {
     bottom: 10px;
   }

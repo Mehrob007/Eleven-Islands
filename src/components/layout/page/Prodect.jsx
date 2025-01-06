@@ -163,6 +163,9 @@ export default function Prodect() {
     }
   }, [count]);
 
+  console.log(window.Dolyame);
+
+
   const widthLap = "1020px";
   const settingsGelary = {
     className: "slider1 product-gelary variable-width-menu",

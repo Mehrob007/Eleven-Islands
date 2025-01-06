@@ -1,21 +1,36 @@
 import { useEffect } from "react";
 
 function DolyameModal({ product }) {
-  // Загружаем SDK
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://secure.dolyame.ru/sdk/v1/dolyame.js";
     script.async = true;
+
+    // Скрипт успешно загружен
     script.onload = () => {
-      if (window.Dolyame) {
-        window.Dolyame.init({
-          productId: product.id,
-          price: product.price,
-          name: product.shortDescription,
-          currency: "RUB",
-        });
+      console.log("Dolyame SDK загружен!");
+      if (window.Dolyame && typeof window.Dolyame.init === "function") {
+        try {
+          window.Dolyame.init({
+            productId: product.id,
+            price: product.price,
+            name: product.shortDescription || "Без названия",
+            currency: "RUB",
+          });
+          console.log("Dolyame успешно инициализирован.");
+        } catch (error) {
+          console.error("Ошибка при инициализации Dolyame:", error);
+        }
+      } else {
+        console.error("Dolyame SDK недоступен!");
       }
     };
+
+    // Ошибка при загрузке скрипта
+    script.onerror = () => {
+      console.error("Не удалось загрузить Dolyame SDK!");
+    };
+
     document.body.appendChild(script);
 
     return () => {
@@ -23,12 +38,11 @@ function DolyameModal({ product }) {
     };
   }, [product]);
 
-  // Функция для открытия модального окна
   const openDolyameModal = () => {
-    if (window.Dolyame && window.Dolyame.openModal) {
-      window.Dolyame.openModal(); // Вызываем метод открытия модалки
+    if (window.Dolyame && typeof window.Dolyame.openModal === "function") {
+      window.Dolyame.openModal();
     } else {
-      console.error("Dolyame не загрузился корректно!");
+      alert("Dolyame временно недоступен. Попробуйте позже.");
     }
   };
 
