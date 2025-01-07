@@ -197,13 +197,34 @@ export default function PlacingAnOrder() {
     setShowDropdown(false);
   };
 
-  const handleChangeAddress = useCallback(
-    ({ address }) => {
-      setFormState((prevState) => ({
-        ...prevState,
-        ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR
-          ? {
-              address,
+  const handleChangeAddress = useCallback(({ address }) => {
+    setFormState(prevState => ({
+      ...prevState,
+      ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR ? {
+        address
+      } : {
+        platformStationId: address
+      }),
+    }))
+
+    if (paymentMethodRef.current) {
+      switch (formState.deliveryService) {
+        case DELIVERY_SERVICES.YANDEX_DELIVERY: {
+          apiClient.post('/YandexOrder/calculate-order', {
+            delivery_type: formState.deliveryType,
+            ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ? {
+              platform_station_id: address,
+            } : {
+              address
+            })}).then(({ data: pricingTotal }) => {
+            setDeliveryPrice(pricingTotal);
+            setAmountPrice(calculatedBasketPrice + pricingTotal);
+
+            if (formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT) {
+              paymentMethodRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              })
             }
           : {
               platformStationId: address,
@@ -375,22 +396,9 @@ export default function PlacingAnOrder() {
               </div>
               <div style={{ position: "relative", height: "90px" }}>
                 <label htmlFor="phoneNumber">Телефон*</label>
-                <InputMask
-                  mask="9 (999) 9999 999"
-                  style={{ borderColor: errors.phoneNumber && "red" }}
-                  type="text"
-                  required
-                  id="phoneNumber"
-                  onChange={(e) => onChange("phoneNumber", e.target.value)}
-                >
-                  {(inputProps) => (
-                    <input
-                      {...inputProps}
-                      style={{ borderColor: errors.phoneNumber && "red" }}
-                      type="text"
-                      id="phoneNumber"
-                    />
-                  )}
+                <InputMask mask="+7 (999) 9999 999" style={{ borderColor: errors.phoneNumber && 'red' }} type="text" required id="phoneNumber" onChange={e => onChange('phoneNumber', e.target.value)} >
+                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.phoneNumber && 'red' }} type="text" id="phoneNumber"  />
+                }
                 </InputMask>
                 {errors.phoneNumber && (
                   <p
