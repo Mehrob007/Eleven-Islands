@@ -3002,3 +3002,6 @@ video {
 .loading-login {
   margin: 200px 0;
 }
+.address-form{
+  position: relative;
+}

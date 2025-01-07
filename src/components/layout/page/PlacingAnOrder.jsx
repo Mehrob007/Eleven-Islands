@@ -196,35 +196,55 @@ export default function PlacingAnOrder() {
     setSearchQuery(cityName?.name);
     setShowDropdown(false);
   };
+  const onChangePromo = async () => {
+    // const code = promo.promocode.toUpperCase()
 
-  const handleChangeAddress = useCallback(({ address }) => {
-    setFormState(prevState => ({
-      ...prevState,
-      ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR ? {
-        address
-      } : {
-        platformStationId: address
-      }),
-    }))
+    console.log("promo.promocode", promo.promocode);
 
-    if (paymentMethodRef.current) {
-      switch (formState.deliveryService) {
-        case DELIVERY_SERVICES.YANDEX_DELIVERY: {
-          apiClient.post('/YandexOrder/calculate-order', {
-            delivery_type: formState.deliveryType,
-            ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT ? {
-              platform_station_id: address,
-            } : {
-              address
-            })}).then(({ data: pricingTotal }) => {
-            setDeliveryPrice(pricingTotal);
-            setAmountPrice(calculatedBasketPrice + pricingTotal);
+    if (!promo.type) {
+      try {
+        const res = await apiClient.get(
+          `/Api/get-promo-for-user?name=${promo.promocode.trim()}`,
+        );
+        setPromo({
+          ...promo,
+          type: true,
+          procent: `Промокод активирован. Воша сидка ${Math.round(
+            (amountPrice / 100) * res.data.promo,
+          )} руб.`,
+          itogProcent: Math.round((amountPrice / 100) * res.data.promo),
+        });
+        setAmountPrice(
+          amountPrice - Math.round((amountPrice / 100) * res.data.promo),
+        );
+      } catch (e) {
+        console.error(e);
+        setPromo({
+          ...promo,
+          type: false,
+          procent: "Неверный промокод или его срок действия истек",
+          promocode: "",
+          itogProcent: 0,
+        });
+      }
+    } else {
+      setPromo({
+        ...promo,
+        type: false,
+        procent: "",
+        promocode: "",
+        itogProcent: 0,
+      });
+    }
+  };
 
-            if (formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT) {
-              paymentMethodRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-              })
+  const handleChangeAddress = useCallback(
+    ({ address }) => {
+      setFormState((prevState) => ({
+        ...prevState,
+        ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR
+          ? {
+              address,
             }
           : {
               platformStationId: address,
@@ -293,48 +313,6 @@ export default function PlacingAnOrder() {
     formState.deliveryType,
   ]);
 
-  const onChangePromo = async () => {
-    // const code = promo.promocode.toUpperCase()
-
-    console.log("promo.promocode", promo.promocode);
-
-    if (!promo.type) {
-      try {
-        const res = await apiClient.get(
-          `/Api/get-promo-for-user?name=${promo.promocode}`,
-        );
-        setPromo({
-          ...promo,
-          type: true,
-          procent: `Промокод активирован. Воша сидка ${Math.round(
-            (amountPrice / 100) * res.data.promo,
-          )} руб.`,
-          itogProcent: Math.round((amountPrice / 100) * res.data.promo),
-        });
-        setAmountPrice(
-          amountPrice - Math.round((amountPrice / 100) * res.data.promo),
-        );
-      } catch (e) {
-        console.error(e);
-        setPromo({
-          ...promo,
-          type: false,
-          procent: "Неверный промокод или его срок действия истек",
-          promocode: "",
-          itogProcent: 0,
-        });
-      }
-    } else {
-      setPromo({
-        ...promo,
-        type: false,
-        procent: "",
-        promocode: "",
-        itogProcent: 0,
-      });
-    }
-  };
-
   return (
     <div className="PlacingAnOrder">
       <h1>Оформление</h1>
@@ -396,9 +374,22 @@ export default function PlacingAnOrder() {
               </div>
               <div style={{ position: "relative", height: "90px" }}>
                 <label htmlFor="phoneNumber">Телефон*</label>
-                <InputMask mask="+7 (999) 9999 999" style={{ borderColor: errors.phoneNumber && 'red' }} type="text" required id="phoneNumber" onChange={e => onChange('phoneNumber', e.target.value)} >
-                {(inputProps) => <input {...inputProps} style={{ borderColor: errors.phoneNumber && 'red' }} type="text" id="phoneNumber"  />
-                }
+                <InputMask
+                  mask="9 (999) 9999 999"
+                  style={{ borderColor: errors.phoneNumber && "red" }}
+                  type="text"
+                  required
+                  id="phoneNumber"
+                  onChange={(e) => onChange("phoneNumber", e.target.value)}
+                >
+                  {(inputProps) => (
+                    <input
+                      {...inputProps}
+                      style={{ borderColor: errors.phoneNumber && "red" }}
+                      type="text"
+                      id="phoneNumber"
+                    />
+                  )}
                 </InputMask>
                 {errors.phoneNumber && (
                   <p
