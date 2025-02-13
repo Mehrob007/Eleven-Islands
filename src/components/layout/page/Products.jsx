@@ -26,29 +26,30 @@ const useMediaQuery = (query) => {
 export default function Products() {
   const { id } = useParams();
   const { photos, fetchPhotos } = usePhotoStore();
-  const [selectedSizes, setSelectedSizes] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState(0);
   const { modalStateFilter, setModalStateFilter } = useModalFilter();
   const { setModalStateReset, modalStateReset } = useModalReset();
   const [openSelect, setOpenSelect] = useState(null);
   const [typeSelect, setTypeSelect] = useState([]);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
   const [dataGetSearsh, setdataGetSearsh] = useState([]);
   const [dateSearch, setDateSearch] = useState({ reset: true });
   const [stemsSort, setItemsSort] = useState();
-  const sizes = [
-    {
-      label: "Все размеры",
-      value: "*",
-      // ['XS', 'S', 'M', 'L', 'XL']
-    },
-    { label: "XXS", value: "XXS" },
-    { label: "XS", value: "XS" },
-    { label: "S", value: "S" },
-    { label: "M", value: "M" },
-    { label: "L", value: "L" },
-    { label: "XL", value: "XL" },
-    { label: "XXL", value: "XXL" },
-  ];
+  // const sizes = [
+  //   {
+  //     label: "Все размеры",
+  //     value: "*",
+  //     // ['XS', 'S', 'M', 'L', 'XL']
+  //   },
+  //   { label: "XXS", value: "XXS" },
+  //   { label: "XS", value: "XS" },
+  //   { label: "S", value: "S" },
+  //   { label: "M", value: "M" },
+  //   { label: "L", value: "L" },
+  //   { label: "XL", value: "XL" },
+  //   { label: "XXL", value: "XXL" },
+  // ];
+  const [sizes, setSizes] = useState([]);
 
   // const handleSizeChange = (size) => {
 
@@ -56,39 +57,63 @@ export default function Products() {
   const [isFetching, setIsFetching] = useState(false);
 
   const getDataStaffs = async () => {
-    await fetchPhotos({
-      page: count || 1,
-      limit: 50,
+    const res = await fetchPhotos({
+      page: count || 0,
+      limit: 20,
       categoryId: dateSearch?.categoryId,
-      size: selectedSizes,
+      sizeId: selectedSizes || 0,
+      filter: stemsSort || 0,
     });
+    if (!res) {
+      setdataGetSearsh([]);
+    }
   };
 
   const arrSort = [
-    { label: "По убыванию цены", value: "1" },
-    { label: "По возрастанию цены", value: "2" },
+    { label: "По убыванию цены", value: "2" },
+    { label: "По возрастанию цены", value: "1" },
   ];
 
   const getTypeElement = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await apiClient.get(`/Category/get-all-categories`, {
+      const response = await apiClient.get(`/categories?page=0&limit=100`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const newPhotos = response.data;
-      // console.log('==============111======================');
-      // console.log(newPhotos);
-      // console.log('====================================');
-
+      const newPhotos = response.data.data.categories;
       console.log("newPhotos", newPhotos);
 
       setTypeSelect([
         { label: "Все типы", value: "" },
         ...newPhotos.map((e) => ({
           label: e?.name,
-          value: e?.categoryId,
+          value: e?.id,
+        })),
+      ]);
+    } catch (error) {
+      console.error("Error fetching photos:", error);
+    }
+  };
+  const getSizeElement = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await apiClient.get(`/sizes`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const newPhotos = response.data.data.sizes;
+      console.log("newPhotos", newPhotos);
+      setSizes([
+        {
+          label: "Все размеры",
+          value: "*",
+        },
+        ...newPhotos.map((e) => ({
+          label: e?.name,
+          value: e?.id,
         })),
       ]);
     } catch (error) {
@@ -98,6 +123,7 @@ export default function Products() {
 
   useEffect(() => {
     getTypeElement();
+    getSizeElement();
   }, []);
 
   // const typeSelect = [
@@ -155,8 +181,9 @@ export default function Products() {
     const fetchData = async () => {
       await fetchPhotos({
         categoryId: dateSearch?.categoryId,
-        limit: 50,
+        limit: 20,
         page: count,
+        sizeId: selectedSizes,
       });
       setIsFetching(false);
     };
@@ -172,37 +199,38 @@ export default function Products() {
     setDateSearch({ ...dateSearch, categoryId: id });
   }, []);
 
-  useEffect(() => {
-    if (selectedSizes === "*" || !selectedSizes) {
-      setdataGetSearsh(photos);
-    } else {
-      setdataGetSearsh((prevState) =>
-        prevState.filter((el) =>
-          el?.sizes?.some(
-            (attrValue) =>
-              // Array.isArray(selectedSizes)
-              // ? selectedSizes.includes(attrValue.name)
-              // : attrValue.name === selectedSizes,
-              true,
-          ),
-        ),
-      );
-    }
-  }, [selectedSizes, photos]);
+  // useEffect(() => {
+  // if (selectedSizes === "*" || !selectedSizes) {
+  //   setdataGetSearsh(photos);
+  // } else {
+  //   setdataGetSearsh((prevState) =>
+  //     prevState.filter((el) =>
+  //       el?.sizes?.some(
+  //         (attrValue) =>
+  //           // Array.isArray(selectedSizes)
+  //           // ? selectedSizes.includes(attrValue.name)
+  //           // : attrValue.name === selectedSizes,
+  //           true,
+  //       ),
+  //     ),
+  //   );
+  // }
+  // setdataGetSearsh(photos);
+  // }, [selectedSizes, photos]);
 
-  useEffect(() => {
-    if (dataGetSearsh && dataGetSearsh.length > 0) {
-      const sortedData = [...dataGetSearsh];
+  // useEffect(() => {
+  //   if (dataGetSearsh && dataGetSearsh.length > 0) {
+  //     const sortedData = [...dataGetSearsh];
 
-      // if (stemsSort == "1") {
-      //   sortedData.sort((a, b) => b.price - a.price);
-      // } else if (stemsSort == "2") {
-      //   sortedData.sort((a, b) => a.price - b.price);
-      // }
+  //     // if (stemsSort == "1") {
+  //     //   sortedData.sort((a, b) => b.price - a.price);
+  //     // } else if (stemsSort == "2") {
+  //     //   sortedData.sort((a, b) => a.price - b.price);
+  //     // }
 
-      setdataGetSearsh(sortedData);
-    }
-  }, [stemsSort]);
+  //     setdataGetSearsh(sortedData);
+  //   }
+  // }, [stemsSort]);
 
   // const resFilterType = typeSelect.filter((item, index, self) => index === self.findIndex(other => other.value === item.value))
   console.log("====================================");
@@ -236,7 +264,7 @@ export default function Products() {
                   onClick={(id) => {
                     setSelectedSizes(id);
                     setCount(0);
-                    // handleSizeChange(id)
+                    setdataGetSearsh([]);
                     setDateSearch({ ...dateSearch, reset: !dateSearch.reset });
                   }}
                   title="Размер"
@@ -261,6 +289,7 @@ export default function Products() {
                 onClick={(id) => {
                   setCount(0);
                   setItemsSort(id);
+                  setdataGetSearsh([]);
                 }}
                 title="Сортировать по"
                 value={arrSort}
@@ -282,6 +311,7 @@ export default function Products() {
                     onClick={(id) => {
                       setCount(0);
                       setItemsSort(id);
+                      setdataGetSearsh([]);
                     }}
                     title="Сортировать по"
                     value={arrSort}
@@ -309,8 +339,8 @@ export default function Products() {
               <CustomSelect
                 onClick={(id) => {
                   setCount(0);
-                  setdataGetSearsh([]);
                   setDateSearch({ ...dateSearch, categoryId: id });
+                  setdataGetSearsh([]);
                 }}
                 resetValue={resetValue}
                 title="Тип продукции"
@@ -323,6 +353,7 @@ export default function Products() {
                 onClick={(id) => {
                   setSelectedSizes(id);
                   setCount(0);
+                  setdataGetSearsh([]);
                   setDateSearch({ ...dateSearch, reset: !dateSearch.reset });
                 }}
                 resetValue={resetValue}

@@ -68,7 +68,7 @@ export default function Prodect() {
   const [parsColors, setParsColors] = useState([]);
   const [haveSize, setHaveSize] = useState([]);
   const { photos, fetchPhotos } = usePhotoStore();
-  const [sizeVibor, setSizeVibor] = useState(haveSize[0]);
+  const [sizeVibor, setSizeVibor] = useState({});
   const [modalOpen, setModalOpen] = useState({
     open: false,
     img: null,
@@ -101,7 +101,7 @@ export default function Prodect() {
     if (findeElement?.sizes) {
       const arrSize = [];
       findeElement?.sizes?.map((el) => {
-        arrSize.push(el.sizeValue);
+        arrSize.push(el);
       });
       setHaveSize(arrSize);
     }
@@ -119,7 +119,7 @@ export default function Prodect() {
         {
           ...existingProduct,
           count: count || 1,
-          countPrice: existingProduct.price * count,
+          countPrice: existingProduct.cost * count,
         },
       ]);
     } else {
@@ -131,11 +131,11 @@ export default function Prodect() {
             idProduct: findeElement?.idProduct,
             title: findeElement?.name,
             name: findeElement?.shortDescription,
-            price: findeElement?.price,
+            price: findeElement?.preCost || findeElement?.cost,
             size: sizeVibor,
             count: 1,
             titleImg: findeElement?.images?.[0],
-            countPrice: findeElement?.price,
+            // countPrice: findeElement?.preCost,
           },
         ]);
       }
@@ -147,11 +147,11 @@ export default function Prodect() {
             idProduct: findeElement?.idProduct,
             title: findeElement?.name,
             name: findeElement?.shortDescription,
-            price: findeElement?.price,
+            price: findeElement?.preCost || findeElement?.cost,
             size: sizeVibor,
             count: count || 1,
             titleImg: findeElement?.images?.[0],
-            countPrice: findeElement?.price,
+            // countPrice: findeElement?.preCost,
           },
         ]);
       }
@@ -211,8 +211,8 @@ export default function Prodect() {
       }
 
       const sortedColors = findeElement?.colors.sort((a, b) => {
-        const brightnessA = hexToBrightness(a.name.split("|")[0]);
-        const brightnessB = hexToBrightness(b.name.split("|")[0]);
+        const brightnessA = hexToBrightness(a.hex);
+        const brightnessB = hexToBrightness(b.hex);
         return brightnessB - brightnessA;
       });
       setParsColors(sortedColors);
@@ -225,12 +225,16 @@ export default function Prodect() {
     if (window.Dolyame) {
       window.Dolyame.init({
         productId: findeElement.id,
-        price: findeElement.price,
+        price: findeElement.cost,
         name: findeElement.shortDescription,
         currency: "RUB",
       });
     }
   }, [findeElement]);
+  useEffect(() => {
+    if (findeElement?.sizes?.[0]) setSizeVibor(findeElement?.sizes?.[0]);
+  }, [findeElement?.sizes]);
+  console.log("size", sizeVibor);
 
   return (
     <>
@@ -262,7 +266,7 @@ export default function Prodect() {
                         })
                       }
                       key={i}
-                      src={getImageSrc(prev)}
+                      src={getImageSrc(prev.source)}
                       alt="imgProduct"
                     />
                   ))}
@@ -281,7 +285,7 @@ export default function Prodect() {
                         // }}
                         className="img_phone_items"
                         key={i}
-                        src={getImageSrc(prev)}
+                        src={getImageSrc(prev.source)}
                         alt="imgProduct"
                       />
                     );
@@ -296,22 +300,22 @@ export default function Prodect() {
                   <img src={NewCollection} alt="NewCollection" />
                 )}
                 <div>
+                  <p>{findeElement?.name}</p>
                   <h2>{findeElement?.shortDescription}</h2>
                   {/* <h2>{findeElement?.name}</h2> */}
-                  <p>{findeElement?.descriptionProduct}</p>
                 </div>
                 <div className="price-product ">
-                  {findeElement.discount != 0 && (
+                  {findeElement.preCost != 0 && (
                     <h4 className="skitka">
                       {" "}
-                      <>{findeElement?.price} ₽</>
+                      <>{findeElement?.cost} ₽</>
                     </h4>
                   )}
                   <h4>
                     <span>
-                      {findeElement.discount != 0
-                        ? findeElement?.discount || "AAAAAAAA"
-                        : findeElement?.price || "000000"}
+                      {findeElement.preCost != 0
+                        ? findeElement?.preCost || "AAAAAAAA"
+                        : findeElement?.cost || "000000"}
                     </span>{" "}
                     ₽
                   </h4>
@@ -326,9 +330,9 @@ export default function Prodect() {
                       img: DalymiImgMobile,
                       element: {
                         priceDalymi:
-                          findeElement?.discount > 0
-                            ? findeElement?.discount / 4
-                            : findeElement?.price / 4,
+                          findeElement?.preCost > 0
+                            ? findeElement?.preCost / 4
+                            : findeElement?.cost / 4,
                         phone: true,
                       },
                     })
@@ -338,9 +342,9 @@ export default function Prodect() {
                     <img src={dalymiIcon} alt="dalymiIcon" />
                     <p>
                       4 платежа по{" "}
-                      {findeElement?.discount > 0
-                        ? findeElement?.discount / 4
-                        : findeElement?.price / 4}{" "}
+                      {findeElement?.preCost > 0
+                        ? findeElement?.preCost / 4
+                        : findeElement?.cost / 4}{" "}
                       ₽
                     </p>
                   </div>
@@ -358,9 +362,9 @@ export default function Prodect() {
                       img: DalymiImgPc,
                       element: {
                         priceDalymi:
-                          findeElement?.discount > 0
-                            ? findeElement?.discount / 4
-                            : findeElement?.price / 4,
+                          findeElement?.preCost > 0
+                            ? findeElement?.preCost / 4
+                            : findeElement?.cost / 4,
                         type: true,
                       },
                     })
@@ -370,9 +374,9 @@ export default function Prodect() {
                     <img src={dalymiIcon} alt="dalymiIcon" />
                     <p>
                       4 платежа по{" "}
-                      {findeElement?.discount > 0
-                        ? findeElement?.discount / 4
-                        : findeElement?.price / 4}{" "}
+                      {findeElement?.preCost > 0
+                        ? findeElement?.preCost / 4
+                        : findeElement?.cost / 4}{" "}
                       ₽
                     </p>
                   </div>
@@ -389,31 +393,23 @@ export default function Prodect() {
                   {parsColors.length &&
                     parsColors.map((el, i) => (
                       <Link
-                        to={`/product/${el.name.split("|")[1]}`}
+                        to={`/product/${el?.productId}`}
                         key={i}
                         style={{
                           borderColor:
-                            localStorage.getItem("colorVibor") ==
-                              el.name.split("|")[0] && "#000",
+                            localStorage.getItem("colorVibor") == el.hex &&
+                            "#000",
                         }}
                       >
                         <nav
                           onClick={() => {
-                            localStorage.setItem(
-                              "colorVibor",
-                              el.name.split("|")[0],
-                            );
-                            setColorVibor(el.name.split("|")[0]);
+                            localStorage.setItem("colorVibor", el.hex);
+                            setColorVibor(el.hex);
                           }}
                           style={{
-                            backgroundColor: el.name.startsWith("#")
-                              ? el.name.split("|")[0]
-                              : `#${el.name.split("|")[0]}`,
+                            backgroundColor: el.hex,
                             border:
-                              el.name.split("|")[0] == "ffffff" ||
-                              el.name.split("|")[0] == "#ffffff"
-                                ? "1px solid #333"
-                                : "0px",
+                              el.hex == "#ffffff" ? "1px solid #333" : "0px",
                             borderRadius: "50%",
                           }}
                         ></nav>
@@ -438,8 +434,7 @@ export default function Prodect() {
                     findeElement?.sizes
                       ?.sort(
                         (a, b) =>
-                          sizeDef.indexOf(a.sizeValue) -
-                          sizeDef.indexOf(b.sizeValue),
+                          sizeDef.indexOf(a.name) - sizeDef.indexOf(b.name),
                       )
                       .map((el, i) => {
                         return (
@@ -447,17 +442,17 @@ export default function Prodect() {
                             className={el.quantity == 0 && `size-none`}
                             key={i}
                             onClick={() => {
-                              el.quantity != 0 && setSizeVibor(el.sizeValue);
+                              el.quantity != 0 && setSizeVibor(el);
                             }}
                             style={{
                               background:
-                                el.sizeValue == sizeVibor && "#408759",
-                              color: el.sizeValue == sizeVibor && "#fff",
+                                el.name == sizeVibor.name && "#408759",
+                              color: el.name == sizeVibor.name && "#fff",
                               borderColor:
-                                el.sizeValue == sizeVibor && "transparent",
+                                el.name == sizeVibor.name && "transparent",
                             }}
                           >
-                            {el.sizeValue}
+                            {el.name}
                           </nav>
                         );
                       })}
@@ -612,7 +607,7 @@ export default function Prodect() {
                           <div
                             style={{ fontSize: "14px" }}
                             dangerouslySetInnerHTML={{
-                              __html: findeElement?.fullDescription?.replace(
+                              __html: findeElement?.description?.replace(
                                 /\n/g,
                                 "<br>",
                               ),

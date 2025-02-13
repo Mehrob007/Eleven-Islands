@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {getImageSrc} from "../../../../utils/getImageSrc.js";
+import { getImageSrc } from "../../../../utils/getImageSrc.js";
 
 const useMediaQuery = (query) => {
   const [matches, setMatches] = useState(window.matchMedia(query).matches);
@@ -20,7 +20,7 @@ const useMediaQuery = (query) => {
 
 export default function Box2({ arrDataImg }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [parseProduct, setParseProduct] = useState([])
+  const [parseProduct, setParseProduct] = useState([]);
   // const navogate = useNavigate()
 
   // const addToBasket = async (id) => {
@@ -55,13 +55,13 @@ export default function Box2({ arrDataImg }) {
       const sortedData = arrDataImg?.map((group) => ({
         ...group,
         colors: group.colors.sort((a, b) => {
-          const brightnessA = hexToBrightness(a.name.split("|")[0]);
-          const brightnessB = hexToBrightness(b.name.split("|")[0]);
-          return brightnessB - brightnessA; 
+          const brightnessA = hexToBrightness(a.hex);
+          const brightnessB = hexToBrightness(b.hex);
+          return brightnessB - brightnessA;
         }),
       }));
       console.log("sortedData", sortedData);
-      setParseProduct(sortedData)
+      setParseProduct(sortedData);
     }
   }, [arrDataImg]);
 
@@ -99,7 +99,11 @@ export default function Box2({ arrDataImg }) {
                   >
                     <img
                       className="itemImgProduct aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200 xl:aspect-h-8 xl:aspect-w-7"
-                      src={getImageSrc(hoveredIndex === i ? item?.images[1] : item?.images[0])}
+                      src={getImageSrc(
+                        hoveredIndex === i
+                          ? item?.images[1]?.source
+                          : item?.images[0]?.source,
+                      )}
                     >
                       {/* <div className='h-full w-full object-cover object-center group-hover:opacity-75'
                     
@@ -133,30 +137,32 @@ export default function Box2({ arrDataImg }) {
                           border: "1px solid",
                           padding: "1px",
                           borderColor:
-                            item.id == el.name.split("|")[1]
-                              ? "#000"
-                              : "transparent",
+                            item.id == el.productId ? "#000" : "transparent",
+                          position: 'relative',
+                          width: '28px',
+                          height: "28px"
                         }}
                       >
                         <nav
                           onClick={() => {
-                            // localStorage.setItem('colorVibor', el.name.split("|")[0]);
+                            localStorage.setItem('colorVibor', el.hex);
                             // setColorVibor(el.name.split("|")[0])
-                            console.log(el.name);
+                            console.log(el.productId);  
 
-                            document.location.href = `/product/${
-                              el.name.split("|")[1]
-                            }`;
+                            document.location.href = `/product/${el.productId}`;
                           }}
                           style={{
-                            backgroundColor: el.name.startsWith("#")
-                              ? el.name.split("|")[0]
-                              : `#${el.name.split("|")[0]}`,
+                            backgroundColor: el.hex,
+                            // ? el.name.split("|")[0]
+                            // : `#${el.name.split("|")[0]}`
+                            position: 'absolute',
+                            width: "21px",
+                            height: "21px",
                             border:
-                              el.name.split("|")[0] == "ffffff" ||
-                              el.name.split("|")[0] == "#ffffff"
-                                ? "1px solid #333"
-                                : "0px",
+                              el.hex == "#ffffff" ? "1px solid #333" : "0px",
+                              left: "2px",
+                              right: "1.5px",
+                              top: "2px",
                           }}
                         ></nav>
                       </div>
@@ -166,11 +172,11 @@ export default function Box2({ arrDataImg }) {
                   <div className="itemInfoProduct">
                     <h2 className="productTitle">{item?.shortDescription}</h2>
                     <div className="price__div price-product">
-                      {item.discount != 0 && (
+                      {item.preCost && (
                         <h4 className="skitka" style={{ fontSize: "16px" }}>
                           {" "}
                           <>
-                            {item?.price}{" "}
+                            {item?.cost}{" "}
                             <span
                               style={{ fontFamily: "font-book, sans-serif" }}
                             >
@@ -180,7 +186,7 @@ export default function Box2({ arrDataImg }) {
                         </h4>
                       )}
                       <h2 className="productPrice" style={{ fontSize: "16px" }}>
-                        {item.discount != 0 ? item?.discount : item?.price}{" "}
+                        {item.preCost ? item?.preCost : item?.cost}{" "}
                         <span style={{ fontFamily: "font-book, sans-serif" }}>
                           ₽
                         </span>

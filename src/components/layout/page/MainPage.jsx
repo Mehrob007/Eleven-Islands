@@ -16,6 +16,7 @@ import Slider from "react-slick";
 import Box3 from "./pageElements/Box3";
 
 import apiClient from "../../../utils/api";
+import axios from "axios";
 
 const BlogData = [
   {
@@ -48,7 +49,7 @@ const useMediaQuery = (query) => {
   return matches;
 };
 
-export default function MainPage() {
+export default function MainPage({ box }) {
   const widthLap = "1020px";
   const isDesktop = useMediaQuery(`(min-width: ${widthLap})`);
   const { photos, fetchPhotos } = usePhotoStore();
@@ -70,23 +71,23 @@ export default function MainPage() {
   const GetBunner = async () => {
     if (isDesktop) {
       try {
-        const response = await apiClient.get(`/Api/get-all-banners`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setVideoDeskBunner(response.data[response.data.length - 1].source);
+        const response = await axios.get(
+          `http://45.15.158.130:5238/banner/window`,
+          { responseType: "blob" },
+        );
+        const video = URL.createObjectURL(response.data);
+        setVideoDeskBunner(video);
       } catch (error) {
         console.error("Error fetching photos:", error);
       }
     } else {
       try {
-        const response = await apiClient.get(`/Api/get-all-banner-mobile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setVideoDeskBunner(response.data[response.data.length - 1].source);
+        const response = await axios.get(
+          `http://45.15.158.130:5238/banner/mobile`,
+          { responseType: "blob" },
+        );
+        const video = URL.createObjectURL(response.data);
+        setVideoDeskBunner(video);
       } catch (error) {
         console.error("Error fetching photos:", error);
       }
@@ -97,15 +98,12 @@ export default function MainPage() {
   };
   const GetBunnerTitle = async () => {
     try {
-      const response = await apiClient.get(
-        `/CollectionProduct/get-all-collection-banner`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await apiClient.get(`/collections?isPrimary=true`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
-      setTitleBunner(response.data);
+      });
+      setTitleBunner(response.data.data.collections[0].name);
     } catch (error) {
       console.error("Error fetching photos:", error);
     }
@@ -137,7 +135,7 @@ export default function MainPage() {
         console.log("products have !!:" + photos.length + ";");
       } else {
         fetchPhotos({
-          page: 1,
+          page: 0,
           limit: 50,
         });
         console.log("====================================");
@@ -160,9 +158,46 @@ export default function MainPage() {
     GetGallery();
   }, []);
   console.log("====================================");
-  console.log(photos);
+  console.log("photos", photos);
   console.log("images", images);
+  console.log("bunnertTitle", bunnertTitle);
   console.log("====================================");
+
+  if (box === 1 || box) {
+    return (
+      <div className="box1">
+        {bunnerVideoDesk?.length && (
+          <video autoPlay loop muted playsInline>
+            <source src={bunnerVideoDesk} type="video/mp4" />
+            {/* Ваш браузер не поддерживает видео. */}
+          </video>
+        )}
+
+        <div className="box1newCollection">
+          <div className="newCollection">
+            <div className="comLeftColl">
+              <img
+                src={element2Box1Logo}
+                alt="element2Box1Logo"
+                className="element2Box1Logo"
+              />
+              <img
+                src={elementBox1Logo}
+                className="elementBox1Logo"
+                alt="elementBox1Logo"
+              />
+            </div>
+            <div className="comRightColl">
+              {/* https://backendeleven.ru/CollectionProduct/get-all-collection-banner */}
+              <h2>New collection</h2>
+              <h2>{bunnertTitle}</h2>
+              {/* <img src={comRightColl} alt="comRightColl" /> */}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -191,7 +226,7 @@ export default function MainPage() {
             <div className="comRightColl">
               {/* https://backendeleven.ru/CollectionProduct/get-all-collection-banner */}
               <h2>New collection</h2>
-              <h2>{bunnertTitle?.[bunnertTitle.length - 1]?.name}</h2>
+              <h2>{bunnertTitle}</h2>
               {/* <img src={comRightColl} alt="comRightColl" /> */}
             </div>
           </div>
@@ -199,7 +234,7 @@ export default function MainPage() {
       </div>
       <div className="header headerBox2 ">
         <div className="headerCom1">
-          <h2>{bunnertTitle?.[bunnertTitle.length - 1]?.name}</h2>
+          <h2>{bunnertTitle}</h2>
         </div>
         {useMediaQuery(`(min-width: ${widthLap})`) ? (
           <div className="headerCom2">
@@ -209,7 +244,12 @@ export default function MainPage() {
           ""
         )}
       </div>
-      <Box2 arrDataImg={photos.filter((prev, i) => prev.popular && i < 32)} />
+      <Box2
+        arrDataImg={
+          photos
+          // .filter((prev, i) => prev.popular && i < 32)
+        }
+      />
 
       {useMediaQuery(`(max-width: ${widthLap})`) ? (
         <div

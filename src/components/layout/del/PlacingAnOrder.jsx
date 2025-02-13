@@ -34,7 +34,7 @@ const DELIVERY_TYPES = Object.freeze({
 });
 
 const DELIVERY_SERVICES = Object.freeze({
-  YANDEX_DELIVERY: "YANDEX",
+  YANDEX_DELIVERY: "YANDEX_DELIVERY",
   CDEK: "CDEK",
 });
 
@@ -137,49 +137,42 @@ export default function PlacingAnOrder() {
           const cartData = localStorage.getItem("dataGelary");
           if (cartData) {
             const parse = JSON.parse(cartData);
-            console.log("JSON.parse(cartData)", JSON.parse(cartData));
-
             items = parse.map((v) => ({
               amount: v?.count,
               id: v?.id,
-              sizeId: v?.size?.id || 0,
             }));
           }
-          console.log("items", items);
 
           const body = {
-            client: {
-              name: formState.name,
-              lastName: formState.surname,
-              patronymic: "",
-              email: formState.email,
-              phone: formState.phoneNumber
-                .replace(/[()]/g, "")
-                .replace(/[ ]/g, ""),
-            },
-            address: { city: null, street: null },
+            name: formState.name,
+            surname: formState.surname,
+            email: formState.email,
+            phone: formState.phoneNumber,
             comment: formState.message || "",
-            products: items,
-            // delivery_type: formState.deliveryType,
-            deliveryService: formState.deliveryService,
+            items,
+            delivery_type: formState.deliveryType,
+            delivery_service: formState.deliveryService,
             ...(formState.deliveryType === DELIVERY_TYPES.DOOR_TO_DOOR
               ? {
                   address: formState.address,
                 }
               : {
-                  platformStationId: formState.platformStationId,
+                  platform_station_id: formState.platformStationId,
                 }),
           };
 
           setLoading(true);
           try {
-            const { data } = await apiClient.post("/order", body);
+            const { data } = await apiClient.post(
+              "/api/Pay/create-payment",
+              body,
+            );
 
-            if (!data?.code === 200) {
+            if (!data?.Success) {
               throw new Error("Произошла ошибка при попытке создания платежа");
             }
 
-            window.open(data?.data?.url, "_self");
+            window.open(data?.PaymentURL, "_self");
           } catch (error) {
             console.log("error", error);
             setPaymentError(true);
@@ -264,7 +257,7 @@ export default function PlacingAnOrder() {
         items = parse.map((v) => ({
           amount: v?.count,
           id: v?.id,
-          sizeId: v?.size?.id || 0,
+          sizeId: v?.size?.id,
         }));
       }
 
@@ -272,16 +265,12 @@ export default function PlacingAnOrder() {
         switch (formState.deliveryService) {
           case DELIVERY_SERVICES.YANDEX_DELIVERY: {
             apiClient
-              .post("/order/calculate-order", {
+              .post("/YandexOrder/calculate-order", {
                 products: items,
-                deliveryService: formState.deliveryType,
-                // address: {
-                //   city: null,
-                //   street: null,
-                // },
+                delivery_type: formState.deliveryType,
                 ...(formState.deliveryType === DELIVERY_TYPES.PICKUP_POINT
                   ? {
-                      platformStationId: address,
+                      platform_station_id: address,
                     }
                   : {
                       address,

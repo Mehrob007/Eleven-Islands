@@ -106,7 +106,7 @@ export default function Box3({ images, title, id }) {
               >
                 {images?.map((el, i) => (
                   <div key={i} className="bg">
-                    <img src={el} alt={`img-${i}`} className="image-item" />
+                    <img src={`http://45.15.158.130:5238/gallery?gallery=${el?.source}`} alt={`img-${i}`} className="image-item" />
                   </div>
                 ))}
               </div>

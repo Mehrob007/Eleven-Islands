@@ -69,13 +69,13 @@ export default function ItemModalBasket({ see = false }) {
     return dataGelary.map((product, index) => (
         <div className='itemModalBasket' key={index}>
             <div className='modalBasketImg'>
-                <img src={getImageSrc(product?.titleImg || img)} alt={product?.title} />
+                <img src={getImageSrc(product?.titleImg?.source || img)} alt={product?.title} />
             </div>
             <div className='modalBasketInfo'>
                 <div className='info'>
                     <h2 >{product?.title}</h2>
                     <p>Цена: <span style={{ color: '#262626' }}>{product?.price} руб</span></p>
-                    <p>Размер: <span style={{ color: '#262626' }}>{product?.size}</span></p>
+                    <p>Размер: <span style={{ color: '#262626' }}>{product?.size?.name}</span></p>
                 </div>
                 {!see ?
                     <div className='count'>

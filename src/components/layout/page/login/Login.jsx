@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { Await, Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import apiClient from "../../../../utils/api";
 import axios from "axios";
 
 export default function Login({ onHash = false }) {
   const { hash } = useParams();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
-    email: "",
+    source: "",
     password: "",
   });
 
@@ -22,11 +23,11 @@ export default function Login({ onHash = false }) {
     let errors = {};
     const token = localStorage.getItem("token");
 
-    if (!formState.email) {
+    if (!formState.source) {
       errors.emailError = "Поле не должно быть пустым!";
     } else if (
-      !/^\S+@\S+\.\S+$/.test(formState.email) &&
-      !/^\d{9,15}$/.test(formState.email)
+      !/^\S+@\S+\.\S+$/.test(formState.source) &&
+      !/^\d{9,15}$/.test(formState.source)
     ) {
       errors.emailError = "Введите корректный email или телефон!";
     } else {
@@ -45,21 +46,18 @@ export default function Login({ onHash = false }) {
 
     if (!errors.emailError && !errors.passwordError) {
       try {
-        const res = await axios.post(
-          "https://elevenislands.ru/token",
-          {
-            guest: false,
-            username: formState.email,
-            password: formState.password,
-            remember_me: true,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        localStorage.setItem("token", res.data.access_token);
+        const res = await apiClient.post("/auth", formState);
+        const data = res.data.data;
+        console.log("res", data);
+        if (data.role === "User") {
+          localStorage.setItem("accessToken", data.accessToken);
+          localStorage.setItem("refreshToken", data.refreshToken);
+          navigate("/");
+        } else if (data.role === "Admin") {
+          // document.cookie = `refreshToken=${data.refreshToken}; path=/; domain=localhost; Secure; SameSite=None`;
+          const encodedToken = encodeURIComponent(data.refreshToken);
+          document.location.href = `http://localhost:5173/token/${encodedToken}`;
+        }
       } catch (e) {
         console.error(e);
         setErrorState({
@@ -95,20 +93,18 @@ export default function Login({ onHash = false }) {
     <div className="login-box">
       {loading ? (
         <div className="loading-login">
-          <h1>
-            Идет подтверждение E-mail, пожалуйста, подождите!
-          </h1>
+          <h1>Идет подтверждение E-mail, пожалуйста, подождите!</h1>
         </div>
       ) : (
         <div className="box-login">
           <h2>Вход</h2>
           <form onSubmit={loginFunction} className="input-login">
             <div className="login-inputs">
-              <label htmlFor="input-email-and-tell">Email или телефон</label>
+              <label htmlFor="input-source-and-tell">Email или телефон</label>
               <input
-                onChange={(e) => onChange("email", e.target.value)}
+                onChange={(e) => onChange("source", e.target.value)}
                 type="text"
-                id="input-email-and-tell"
+                id="input-source-and-tell"
               />
               {errorState.emailError && (
                 <p

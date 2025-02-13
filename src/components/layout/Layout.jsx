@@ -34,7 +34,7 @@ const widthLap = "1020px";
 
 export default function Layout() {
   const [scrollY, setScrollY] = useState(0);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false);
   const [errorToken, setErrorToken] = useState([]);
   const location = useLocation();
   const [email_user, setEmail_user] = useState("");
@@ -48,7 +48,7 @@ export default function Layout() {
   });
 
   useEffect(() => {
-    fetchPhotos({ limit: 100, page: 1 });
+    fetchPhotos({ limit: 20, page: 0 });
   }, []);
 
   const headerStyle = {
@@ -59,26 +59,26 @@ export default function Layout() {
           : "transparent"
         : "#408759",
   };
-  const guestFun = async () => {
-    if (!localStorage.getItem("token") || errorToken) {
-      try {
+  // const guestFun = async () => {
+  //   if (!localStorage.getItem("token") || errorToken) {
+  //     try {
 
-        const res = await axios.post(
-          "https://backendeleven.ru/Token/get-token",
-          {
-            email: "guest",
-            password: "guest",
-          },
-        );
-        localStorage.setItem("token", res.data);
-        localStorage.setItem("customerId", res.data.customer_id);
-        setLoading(false)
-      } catch (error) {
-        console.error(error);
-        setErrorToken(error);
-      }
-    }
-  };
+  //       const res = await axios.post(
+  //         "https://backendeleven.ru/Token/get-token",
+  //         {
+  //           email: "guest",
+  //           password: "guest",
+  //         },
+  //       );
+  //       localStorage.setItem("token", res.data);
+  //       localStorage.setItem("customerId", res.data.customer_id);
+  //       setLoading(false)
+  //     } catch (error) {
+  //       console.error(error);
+  //       setErrorToken(error);
+  //     }
+  //   }
+  // };
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
@@ -97,7 +97,10 @@ export default function Layout() {
         },
       });
       setTopPromo(response.data?.[response?.data?.length - 1]?.promoName);
-      console.log("response.data.promoName", response.data?.[response?.data?.length - 1]?.promoName);
+      console.log(
+        "response.data.promoName",
+        response.data?.[response?.data?.length - 1]?.promoName,
+      );
     } catch (error) {
       console.error("Error fetching photos:", error);
     }
@@ -141,7 +144,6 @@ export default function Layout() {
   };
 
   useEffect(() => {
-   
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -149,14 +151,14 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    if(!loading){
-      setTimeout(() => {getPromocodeTop()}, 1000)
-    }
-  }, [loading])
-  
-  useEffect(() => {
-    guestFun();
-  }, [errorToken]);
+    setTimeout(() => {
+      // getPromocodeTop();
+    }, 1000);
+  }, []);
+
+  // useEffect(() => {
+  //   guestFun();
+  // }, [errorToken]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -175,13 +177,13 @@ export default function Layout() {
       const products = JSON.parse(localStorage.getItem("dataGelary")) || [];
       if (products.length > itemsCount) {
         setItemsCount(products.length);
-        setModalOpen(true); 
+        setModalOpen(true);
       }
     }, 500);
 
     return () => clearInterval(interval);
   }, [itemsCount]);
-  
+
   return (
     <div className="all-projact">
       <Helmet>
@@ -215,7 +217,7 @@ export default function Layout() {
         style={{ paddingTop: location.pathname != "/" && "70px" }}
       >
         {!loading && <Outlet />}
-        
+
         <footer>
           <div className="footerContent">
             <div className="footerContentCom1">

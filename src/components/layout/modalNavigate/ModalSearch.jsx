@@ -15,18 +15,11 @@ export default function ModalBasket() {
   const sendSearch = async () => {
     try {
       setLoadingSearch(true);
-      const res = await apiClient.post(
-        `/Product/search-products?name=${search}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-      setDataSearch(res.data);
+      const res = await apiClient.get(`products?filterName=${search}`);
+      setDataSearch(res.data.data.products);
     } catch (e) {
       console.error(e);
+      setDataSearch([]);
     } finally {
       setLoadingSearch(false);
     }
@@ -35,7 +28,7 @@ export default function ModalBasket() {
   console.log("dataSearch", dataSearch);
 
   useEffect(() => {
-    if (search.length) {
+    if (search.length !== 0) {
       sendSearch();
     }
   }, [search]);
@@ -65,9 +58,15 @@ export default function ModalBasket() {
         <div className="divParsingSearchData">
           {loadingSearch
             ? "Загрузка..."
-            : dataSearch?.map((e, i) => <Link to={`/product/${e.id}`} onClick={() => setModalStateSeatch(false)} key={i}>
-              <h1>{e.shortDescription}</h1>
-            </Link>)}
+            : dataSearch?.map((e, i) => (
+                <Link
+                  to={`/product/${e.id}`}
+                  onClick={() => setModalStateSeatch(false)}
+                  key={i}
+                >
+                  <h1>{e.name}</h1>
+                </Link>
+              ))}
         </div>
       </div>
     </div>
