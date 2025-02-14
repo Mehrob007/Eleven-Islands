@@ -72,7 +72,7 @@ export default function MainPage({ box }) {
     if (isDesktop) {
       try {
         const response = await axios.get(
-          `http://45.15.158.130:5238/banner/window`,
+          import.meta.env.VITE_ENV_URL_FILE + `banner/window`,
           { responseType: "blob" },
         );
         const video = URL.createObjectURL(response.data);
@@ -83,7 +83,7 @@ export default function MainPage({ box }) {
     } else {
       try {
         const response = await axios.get(
-          `http://45.15.158.130:5238/banner/mobile`,
+          import.meta.env.VITE_ENV_URL_FILE + `banner/mobile`,
           { responseType: "blob" },
         );
         const video = URL.createObjectURL(response.data);

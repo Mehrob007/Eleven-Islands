@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://45.15.158.130:5248/api/",
+  baseURL: import.meta.env.VITE_ENV_URL,
 });
 
 // Флаг для предотвращения множественных запросов на обновление токена
@@ -49,7 +49,7 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
 
         const response = await axios.post(
-          "http://45.15.158.130:5248/api/auth/refresh",
+          import.meta.env.VITE_ENV_URL + "auth/refresh",
           {
             refreshToken: refreshToken,
           },

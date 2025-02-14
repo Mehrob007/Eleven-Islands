@@ -1,1 +1,2 @@
-export const getImageSrc = (imageName) => `http://45.15.158.130:5238/photos?photo=${imageName}`
+export const getImageSrc = (imageName) =>
+  `${import.meta.env.VITE_ENV_URL_FILE}photos?photo=${imageName}`;

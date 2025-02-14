@@ -56,7 +56,8 @@ export default function Login({ onHash = false }) {
         } else if (data.role === "Admin") {
           // document.cookie = `refreshToken=${data.refreshToken}; path=/; domain=localhost; Secure; SameSite=None`;
           const encodedToken = encodeURIComponent(data.refreshToken);
-          document.location.href = `http://localhost:5173/token/${encodedToken}`;
+          document.location.href =
+            import.meta.env.VITE_ENV_URL_REDIRECT + `token/${encodedToken}`;
         }
       } catch (e) {
         console.error(e);

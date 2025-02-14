@@ -101,12 +101,21 @@ export default function Box3({ images, title, id }) {
             <div className="slider-wrapper">
               <div
                 className="image-list"
-                style={{ gridTemplateColumns: `repeat(${images?.length}, 1fr)` }}
+                style={{
+                  gridTemplateColumns: `repeat(${images?.length}, 1fr)`,
+                }}
                 ref={imageListRef}
               >
                 {images?.map((el, i) => (
                   <div key={i} className="bg">
-                    <img src={`http://45.15.158.130:5238/gallery?gallery=${el?.source}`} alt={`img-${i}`} className="image-item" />
+                    <img
+                      src={
+                        import.meta.env.VITE_ENV_URL_FILE +
+                        `gallery?gallery=${el?.source}`
+                      }
+                      alt={`img-${i}`}
+                      className="image-item"
+                    />
                   </div>
                 ))}
               </div>

@@ -92,7 +92,7 @@ export default function Registration() {
       //   const token = localStorage.getItem("token");
       try {
         const res = await axios.post(
-          "http://45.15.158.130:5248/api/auth/register",
+          import.meta.env.VITE_ENV_URL + "auth/register",
           formData,
           {
             //   headers: {
@@ -106,10 +106,9 @@ export default function Registration() {
           localStorage.setItem("accessToken", data.accessToken);
           localStorage.setItem("refreshToken", data.refreshToken);
           navigate("/");
-        } 
-        else if (data.role === "Admin") {
+        } else if (data.role === "Admin") {
           document.cookie = `refreshToken=${data.refreshToken}; path=/; domain=localhost; Secure; SameSite=None`;
-          document.location.href = "http://localhost:5173/";
+          document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
         }
       } catch (e) {
         console.error(e);
